@@ -1182,9 +1182,9 @@
     ) {
       return;
     }
-
     const href = link.getAttribute("href");
-    if (!href || href.startsWith("#") || !href.includes("peliculas/")) return;
+    const isContentLink = href.includes("peliculas/") || href.includes("series/");
+    if (!href || href.startsWith("#") || !isContentLink) return;
 
     const cleanHref = href.split("?")[0].split("#")[0];
     const returnSearch = buildReturnSearch();

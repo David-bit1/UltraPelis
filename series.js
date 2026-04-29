@@ -102,47 +102,86 @@
 
   const updateSeriesViews = () => {
     if (!seriesSlug) return;
-    const key = `ultrapelis_series_views_${seriesSlug}`;
     const viewedSessionKey = `ultrapelis_series_viewed_${seriesSlug}`;
     const formatter = new Intl.NumberFormat('es-MX');
-    const current = Number.parseInt(safeGet(localStorage, key) || '0', 10) || 0;
     const alreadyCounted = safeGet(sessionStorage, viewedSessionKey) === '1';
-    const next = alreadyCounted ? current : current + 1;
-    if (!alreadyCounted) {
-      safeSet(localStorage, key, String(next));
-      safeSet(sessionStorage, viewedSessionKey, '1');
-    }
     const viewsTarget = document.getElementById('series-views-count') || seriesViews;
-    if (viewsTarget) {
+    const renderViews = (value) => {
+      if (!viewsTarget) return;
+      const formatted = formatter.format(Math.max(0, Number(value) || 0));
       if (viewsTarget === seriesViews) {
-        viewsTarget.textContent = `Vistas: ${formatter.format(next)}`;
+        viewsTarget.textContent = `Vistas: ${formatted}`;
       } else {
-        viewsTarget.textContent = formatter.format(next);
+        viewsTarget.textContent = formatted;
       }
+    };
+    if (viewsTarget) {
+      viewsTarget.textContent = '...';
     }
 
-    if (!alreadyCounted) {
-      const slug = encodeURIComponent(seriesSlug);
-      fetch(`/api/series/${slug}/view`, { method: 'POST' })
-        .then((response) => (response.ok ? response.json() : null))
-        .then((payload) => {
-          if (!payload || typeof payload.views !== 'number') return;
-          const merged = Math.max(payload.views, next);
-          if (viewsTarget) {
-            if (viewsTarget === seriesViews) {
-              viewsTarget.textContent = `Vistas: ${formatter.format(merged)}`;
-            } else {
-              viewsTarget.textContent = formatter.format(merged);
-            }
+    const slug = encodeURIComponent(seriesSlug);
+    fetch(`/api/series/${slug}/views`)
+      .then((response) => (response.ok ? response.json() : null))
+      .then((payload) => {
+        const currentViews = payload && typeof payload.views === 'number' ? payload.views : 0;
+        renderViews(currentViews);
+        if (alreadyCounted) return null;
+        return fetch(`/api/series/${slug}/view`, { method: 'POST' });
+      })
+      .then((response) => {
+        if (!response || !response.ok) return null;
+        return response.json();
+      })
+      .then((payload) => {
+        if (!payload || typeof payload.views !== 'number') return;
+        safeSet(sessionStorage, viewedSessionKey, '1');
+        renderViews(payload.views);
+      })
+      .catch(() => {
+        if (viewsTarget && viewsTarget.textContent === '...') {
+          if (viewsTarget === seriesViews) {
+            viewsTarget.textContent = 'Vistas: 0';
+          } else {
+            viewsTarget.textContent = '0';
           }
-          safeSet(localStorage, key, String(merged));
-        })
-        .catch(() => {});
-    }
+        }
+      });
   };
 
   buildSeriesDetails();
   updateSeriesViews();
+
+  const extractSuperEmbedSource = (sources, seasonNumber, episodeNumber) => {
+    const list = Array.isArray(sources) ? sources : [];
+    for (const source of list) {
+      const raw = typeof source?.src === 'string' ? source.src.trim() : '';
+      if (!raw) continue;
+
+      if (/se_player\.php\?/i.test(raw)) {
+        return { label: 'Multi-Servidor (HD)', src: raw };
+      }
+
+      let url;
+      try {
+        url = new URL(raw, window.location.href);
+      } catch (_) {
+        continue;
+      }
+
+      const imdbId = (url.searchParams.get('imdb') || '').trim();
+      const tmdbId = (url.searchParams.get('tmdb') || '').trim();
+      const videoId = tmdbId || imdbId;
+      if (!videoId) continue;
+
+      return {
+        label: 'Multi-Servidor (HD)',
+        src: `../se_player.php?video_id=${encodeURIComponent(videoId)}&tmdb=${tmdbId ? '1' : '0'}&season=${encodeURIComponent(
+          String(seasonNumber || 0)
+        )}&episode=${encodeURIComponent(String(episodeNumber || 0))}`,
+      };
+    }
+    return null;
+  };
 
   const setPlayerSource = (src, label) => {
     if (frame) {
@@ -155,7 +194,7 @@
     }
   };
 
-  const renderSources = (sources, fallbackSrc) => {
+  const renderSources = (sources, fallbackSrc, seasonNumber, episodeNumber) => {
     if (!sourceList) return;
     sourceList.innerHTML = '';
     const list = Array.isArray(sources) && sources.length
@@ -163,6 +202,13 @@
       : fallbackSrc
         ? [{ label: 'Servidor 1', src: fallbackSrc }]
         : [];
+    const superEmbedSource = extractSuperEmbedSource(list, seasonNumber, episodeNumber);
+    if (
+      superEmbedSource &&
+      !list.some((item) => String(item?.label || '').trim().toLowerCase() === 'multi-servidor (hd)')
+    ) {
+      list.push(superEmbedSource);
+    }
     if (!list.length) {
       list.push({ label: 'Servidor 1', src: '' });
     }
@@ -361,7 +407,7 @@
           el.classList.remove('is-active');
         });
         card.classList.add('is-active');
-        renderSources(ep.sources, card.dataset.src || '');
+        renderSources(ep.sources, card.dataset.src || '', season.number, episodeNumber);
       });
       episodeList.appendChild(card);
     });

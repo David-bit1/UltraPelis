@@ -2,25 +2,25 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
   <url>
     <loc>https://ultrapelis.netlify.app/peliculas/accion/deadpool-wolverine.html</loc>
-    <lastmod>2026-04-03T21:51:45.915Z</lastmod>
+    <lastmod>2026-04-24T17:42:15.515Z</lastmod>
     <video:video>
       <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/5OKwDsJrsjOVgQLnXW6HYEOUolz.jpg</video:thumbnail_loc>
       <video:title>Deadpool y Wolverine</video:title>
       <video:description>Deadpool altera su destino cuando la TVA lo recluta para una mision que amenaza multiples realidades. Para cumplirla, necesitara trabajar con un Wolverine marcado por la perdida, desatando una aventura violenta y caotica.</video:description>
       <video:player_loc allow_embed="yes">https://vimeos.net/embed-tmbjqufb955w.html</video:player_loc>
-      <video:publication_date>2026-04-03T21:51:45.915Z</video:publication_date>
+      <video:publication_date>2026-04-24T17:42:15.515Z</video:publication_date>
       <video:duration>7680</video:duration>
     </video:video>
   </url>
   <url>
     <loc>https://ultrapelis.netlify.app/peliculas/accion/gladiator-ii.html</loc>
-    <lastmod>2026-04-03T21:51:45.915Z</lastmod>
+    <lastmod>2026-04-24T17:42:16.879Z</lastmod>
     <video:video>
       <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/fbcs5AxrdXwyj1b8bGGMgC9kXrM.jpg</video:thumbnail_loc>
       <video:title>Gladiador II</video:title>
       <video:description>Anos despues de la muerte de Maximus, Lucius regresa a Roma y es arrastrado al coliseo en medio de una lucha por el poder imperial. Entre venganza y honor, tendra que decidir que tipo de lider quiere ser.</video:description>
       <video:player_loc allow_embed="yes">https://vimeos.net/embed-k32v2qz0q9ug.html</video:player_loc>
-      <video:publication_date>2026-04-03T21:51:45.915Z</video:publication_date>
+      <video:publication_date>2026-04-24T17:42:16.879Z</video:publication_date>
       <video:duration>8880</video:duration>
     </video:video>
   </url>
@@ -58,6 +58,18 @@
       <video:player_loc allow_embed="yes">https://vimeos.net/embed-5z0kyms1zyct.html</video:player_loc>
       <video:publication_date>2026-04-03T21:51:45.915Z</video:publication_date>
       <video:duration>6600</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://ultrapelis.netlify.app/peliculas/accion/the-batman.html</loc>
+    <lastmod>2026-04-29T19:03:54.129Z</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/mo7teil1qH0SxgLijnqeYP1Eb4w.jpg</video:thumbnail_loc>
+      <video:title>The Batman</video:title>
+      <video:description>En su segundo año luchando contra el crimen, Batman descubre una red de corrupción en Gotham que conecta con su propia familia mientras persigue al Acertijo, un asesino serial que deja pistas para exponer a la ciudad.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/the-batman</video:player_loc>
+      <video:publication_date>2026-04-29T19:03:54.129Z</video:publication_date>
+      <video:duration>10560</video:duration>
     </video:video>
   </url>
   <url>
@@ -142,6 +154,18 @@
       <video:player_loc allow_embed="yes">https://myvidplay.com/e/rdeccb63yahj</video:player_loc>
       <video:publication_date>2026-04-03T21:51:45.914Z</video:publication_date>
       <video:duration>7020</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://ultrapelis.netlify.app/peliculas/animacion/the-super-mario-bros-movie-2023.html</loc>
+    <lastmod>2026-04-23T02:34:45.299Z</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/zNKs1T0VZuJiVuhuL5GSCNkGdxf.jpg</video:thumbnail_loc>
+      <video:title>Super Mario Bros. La película (2023)</video:title>
+      <video:description>Mientras trabaja bajo tierra para arreglar una tubería de agua, los plomeros de Brooklyn Mario y su hermano Luigi son transportados por una misteriosa tubería y llegan a un nuevo mundo mágico.</video:description>
+      <video:player_loc allow_embed="yes">https://www.youtube.com/embed/3iIjli_lx-g</video:player_loc>
+      <video:publication_date>2026-04-23T02:34:45.299Z</video:publication_date>
+      <video:duration>5520</video:duration>
     </video:video>
   </url>
   <url>
@@ -350,13 +374,13 @@
   </url>
   <url>
     <loc>https://ultrapelis.netlify.app/peliculas/drama/peaky-blinders-el-hombre-inmortal-2026.html</loc>
-    <lastmod>2026-04-03T21:51:45.924Z</lastmod>
+    <lastmod>2026-04-24T17:42:19.633Z</lastmod>
     <video:video>
       <video:thumbnail_loc>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9VOONs9kHxK-803mQNd3gVeNkfNR-ou09wQ&amp;s</video:thumbnail_loc>
       <video:title>Peaky Blinders: El hombre inmortal (2026)</video:title>
       <video:description>Birmingham, 1940. En medio del caos de la Segunda Guerra Mundial, Tommy Shelby regresa de su exilio autoimpuesto para enfrentar su ajuste de cuentas más destructivo hasta el momento. Con el futuro de la familia y del país en juego, Tommy debe enfrentarse a sus propios demonios y elegir entre confrontar su legado o quemarlo hasta los cimientos. Por orden de los Peaky Blinders.</video:description>
       <video:player_loc allow_embed="yes">https://myvidplay.com/e/erg330e2h70f</video:player_loc>
-      <video:publication_date>2026-04-03T21:51:45.924Z</video:publication_date>
+      <video:publication_date>2026-04-24T17:42:19.633Z</video:publication_date>
       <video:duration>6720</video:duration>
     </video:video>
   </url>
@@ -445,6 +469,42 @@
     </video:video>
   </url>
   <url>
+    <loc>https://ultrapelis.netlify.app/peliculas/superheroes/aquaman-2018.html</loc>
+    <lastmod>2026-04-29T19:10:09.886Z</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/yTzr6Nc4RcTXVw9SsWQNJdcjTz5.jpg</video:thumbnail_loc>
+      <video:title>Aquaman (2018)</video:title>
+      <video:description>Cuando Arthur Curry descubre que es mitad humano y mitad atlante, emprenderá el viaje de su vida en esta aventura que no sólo le obligará a enfrentarse a quién es en realidad, sino también a descubrir si es digno de cumplir con su destino: ser rey, y convertirse en Aquaman.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/arfqbrgelqty</video:player_loc>
+      <video:publication_date>2026-04-29T19:10:09.886Z</video:publication_date>
+      <video:duration>8580</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://ultrapelis.netlify.app/peliculas/superheroes/aquaman-and-the-lost-kingdom-2023.html</loc>
+    <lastmod>2026-04-29T19:10:11.433Z</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/a0QwtpUNIKjOlNoOVmk7d2LFnQW.jpg</video:thumbnail_loc>
+      <video:title>Aquaman y el reino perdido (2023)</video:title>
+      <video:description>Black Manta, todavía impulsado por la necesidad de vengar la muerte de su padre y ejerciendo el poder del mítico Tridente Negro, no se detendrá ante nada para acabar con Aquaman de una vez por todas. Para derrotarlo, Aquaman debe recurrir a su hermano encarcelado Orm, el ex rey de la Atlántida, para forjar una alianza improbable con el fin de salvar al mundo de una destrucción irreversible.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/bki69y9iii5e</video:player_loc>
+      <video:publication_date>2026-04-29T19:10:11.433Z</video:publication_date>
+      <video:duration>7440</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://ultrapelis.netlify.app/peliculas/superheroes/avengers-age-of-ultron-2015.html</loc>
+    <lastmod>2026-04-23T02:34:47.435Z</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/ggyEm4OkePLo8zEdDm5Pac2fOgz.jpg</video:thumbnail_loc>
+      <video:title>Avengers: Era de Ultrón (2015)</video:title>
+      <video:description>Cuando Tony Stark y Bruce Banner intentan poner en marcha un inactivo programa de mantenimiento de la paz llamado Ultrón, las cosas van terriblemente mal y depende de los héroes más poderosos de la Tierra evitar que el villano Ultrón lleve a cabo su terrible plan.</video:description>
+      <video:player_loc allow_embed="yes">https://www.youtube.com/embed/DMFBm_lp4rU</video:player_loc>
+      <video:publication_date>2026-04-23T02:34:47.435Z</video:publication_date>
+      <video:duration>8460</video:duration>
+    </video:video>
+  </url>
+  <url>
     <loc>https://ultrapelis.netlify.app/peliculas/superheroes/avengers-endgame-2019.html</loc>
     <lastmod>2026-04-03T21:51:45.916Z</lastmod>
     <video:video>
@@ -454,6 +514,66 @@
       <video:player_loc allow_embed="yes">https://www.youtube.com/embed/4KUQVkNBUS4</video:player_loc>
       <video:publication_date>2026-04-03T21:51:45.916Z</video:publication_date>
       <video:duration>10800</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://ultrapelis.netlify.app/peliculas/superheroes/avengers-infinity-war-2018.html</loc>
+    <lastmod>2026-04-23T02:34:48.943Z</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/ksBQ4oHQDdJwND8H90ay8CbMihU.jpg</video:thumbnail_loc>
+      <video:title>Avengers: Infinity War (2018)</video:title>
+      <video:description>Los Vengadores y sus aliados deben estar dispuestos a sacrificarlo todo para intentar derrotar al poderoso Thanos antes de que su ataque de devastación y ruina ponga fin al universo.</video:description>
+      <video:player_loc allow_embed="yes">https://www.youtube.com/embed/6ZfuNTqbHE8</video:player_loc>
+      <video:publication_date>2026-04-23T02:34:48.943Z</video:publication_date>
+      <video:duration>8940</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://ultrapelis.netlify.app/peliculas/superheroes/batman-v-superman-dawn-of-justice-2016.html</loc>
+    <lastmod>2026-04-23T02:34:49.735Z</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/ogl7euSNTWPpnB7nnq9E6RDTHNK.jpg</video:thumbnail_loc>
+      <video:title>Batman v Superman: Dawn of Justice (2016)</video:title>
+      <video:description>Dos años después de la destrucción de Metrópolis, la humanidad aún intenta determinar el rol de Superman en el mundo. Para evitar que las acciones del Hombre de Acero pasen desapercibidas, Batman se enfrenta a Superman, mientras una amenaza surge de las sombras.</video:description>
+      <video:player_loc allow_embed="yes">https://www.youtube.com/embed/NhWg7AQLI_8</video:player_loc>
+      <video:publication_date>2026-04-23T02:34:49.735Z</video:publication_date>
+      <video:duration>9060</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://ultrapelis.netlify.app/peliculas/superheroes/birds-of-prey-2020.html</loc>
+    <lastmod>2026-04-23T02:34:50.435Z</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/1wLqXiiiaTSK8Y0n7N85O0jaNJm.jpg</video:thumbnail_loc>
+      <video:title>Birds of Prey (2020)</video:title>
+      <video:description>Después de separarse de Joker, Harley Quinn y otras tres heroínas (Canario Negro, Cazadora y Renée Montoya) unen sus fuerzas para salvar a una niña (Cassandra Cain) del malvado rey del crimen Máscara Negra.</video:description>
+      <video:player_loc allow_embed="yes">https://www.youtube.com/embed/kGM4uYZzfu0</video:player_loc>
+      <video:publication_date>2026-04-23T02:34:50.435Z</video:publication_date>
+      <video:duration>6540</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://ultrapelis.netlify.app/peliculas/superheroes/black-adam-2022.html</loc>
+    <lastmod>2026-04-23T02:34:51.203Z</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/moDLTCdLx38kMhN53KOTw0LdWMh.jpg</video:thumbnail_loc>
+      <video:title>Black Adam (2022)</video:title>
+      <video:description>Casi 5,000 años después de obtener los poderes supremos de los antiguos dioses, y de ser encarcelado igual de rápido, Teth Adam se libera de su tumba terrenal, listo para desatar su peculiar forma de justicia en el mundo moderno.</video:description>
+      <video:player_loc allow_embed="yes">https://www.youtube.com/embed/6FvFxKrdbew</video:player_loc>
+      <video:publication_date>2026-04-23T02:34:51.203Z</video:publication_date>
+      <video:duration>7500</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://ultrapelis.netlify.app/peliculas/superheroes/blue-beetle-2023.html</loc>
+    <lastmod>2026-04-23T02:34:52.891Z</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/tf5Mqgoj1fFIeP7Ktfn8KGrYhup.jpg</video:thumbnail_loc>
+      <video:title>Blue Beetle (2023)</video:title>
+      <video:description>Un adolescente mexicano encuentra un escarabajo alienígena que le proporciona una armadura superpoderosa.</video:description>
+      <video:player_loc allow_embed="yes">https://www.youtube.com/embed/-PEODBVHCgU</video:player_loc>
+      <video:publication_date>2026-04-23T02:34:52.891Z</video:publication_date>
+      <video:duration>7680</video:duration>
     </video:video>
   </url>
   <url>
@@ -502,6 +622,30 @@
       <video:player_loc allow_embed="yes">https://myvidplay.com/e/pzajusoz2y6t</video:player_loc>
       <video:publication_date>2026-04-03T21:51:45.918Z</video:publication_date>
       <video:duration>8160</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://ultrapelis.netlify.app/peliculas/superheroes/deadpool-2-2018.html</loc>
+    <lastmod>2026-04-23T02:34:53.759Z</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/84NUrv5kuMUDDlOPqi97KGJMdLm.jpg</video:thumbnail_loc>
+      <video:title>Deadpool 2 (2018)</video:title>
+      <video:description>El mercenario mutante malhablado Wade Wilson (alias Deadpool), reúne a un equipo de mutantes para proteger a un joven con habilidades sobrenaturales del brutal cyborg Cable, que viaja a través del tiempo.</video:description>
+      <video:player_loc allow_embed="yes">https://www.youtube.com/embed/20bpjtCbCz0</video:player_loc>
+      <video:publication_date>2026-04-23T02:34:53.759Z</video:publication_date>
+      <video:duration>7200</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://ultrapelis.netlify.app/peliculas/superheroes/deadpool-2016.html</loc>
+    <lastmod>2026-04-23T02:34:54.415Z</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/3TUYy0XvhPQBhrXJwRIaOoYFOBO.jpg</video:thumbnail_loc>
+      <video:title>Deadpool (2016)</video:title>
+      <video:description>Basado en el anti-héroe menos convencional de la Marvel, Deadpool narra el origen de un ex-operativo de la fuerzas especiales llamado Wade Wilson, reconvertido a mercenario, y que tras ser sometido a un cruel experimento adquiere poderes de curación rápida, adoptando Wade entonces el alter ego de Deadpool. Armado con sus nuevas habilidades y un oscuro y retorcido sentido del humor, Deadpool intentará dar caza al hombre que casi destruye su vida.</video:description>
+      <video:player_loc allow_embed="yes">https://www.youtube.com/embed/0JnRdfiUMa8</video:player_loc>
+      <video:publication_date>2026-04-23T02:34:54.415Z</video:publication_date>
+      <video:duration>6480</video:duration>
     </video:video>
   </url>
   <url>
@@ -589,6 +733,42 @@
     </video:video>
   </url>
   <url>
+    <loc>https://ultrapelis.netlify.app/peliculas/superheroes/man-of-steel-2013.html</loc>
+    <lastmod>2026-04-23T02:34:55.188Z</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/5JW44QGgpEWx4aWXM0uVSi2xtrI.jpg</video:thumbnail_loc>
+      <video:title>Man of Steel (2013)</video:title>
+      <video:description>Un niño extraterrestre es evacuado de su mundo moribundo y enviado a la Tierra para vivir entre los humanos. Su paz se ve amenazada cuando los sobrevivientes de su planeta invaden la Tierra.</video:description>
+      <video:player_loc allow_embed="yes">https://www.youtube.com/embed/T6DJcgm3wNY</video:player_loc>
+      <video:publication_date>2026-04-23T02:34:55.188Z</video:publication_date>
+      <video:duration>8580</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://ultrapelis.netlify.app/peliculas/superheroes/shazam-2019.html</loc>
+    <lastmod>2026-04-23T02:34:56.875Z</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kIFthNFctw1ZYEIMer0dVnOln78.jpg</video:thumbnail_loc>
+      <video:title>Shazam! (2019)</video:title>
+      <video:description>Billy Batson, un chico astuto de 14 años, puede transformarse mágicamente en el superhéroe adulto Shazam. Sus poderes se pondrán a prueba contra el malvado Dr. Thaddeus Sivana.</video:description>
+      <video:player_loc allow_embed="yes">https://www.youtube.com/embed/B_DpkUSH2Mk</video:player_loc>
+      <video:publication_date>2026-04-23T02:34:56.875Z</video:publication_date>
+      <video:duration>7920</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://ultrapelis.netlify.app/peliculas/superheroes/shazam-fury-of-the-gods-2023.html</loc>
+    <lastmod>2026-04-23T02:34:57.607Z</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/xCxwaQeoIr4FcjlPgHfzog0x4B8.jpg</video:thumbnail_loc>
+      <video:title>Shazam! Fury of the Gods (2023)</video:title>
+      <video:description>Billy Batson y sus hermanos adoptivos, que se transforman en superhéroes al decir “¡Shazam!”, se ven obligados a volver a la acción y luchar contra las Hijas de Atlas, a quienes deben evitar que use un arma que podría destruir el mundo.</video:description>
+      <video:player_loc allow_embed="yes">https://www.youtube.com/embed/Zi88i4CpHe4</video:player_loc>
+      <video:publication_date>2026-04-23T02:34:57.607Z</video:publication_date>
+      <video:duration>7800</video:duration>
+    </video:video>
+  </url>
+  <url>
     <loc>https://ultrapelis.netlify.app/peliculas/superheroes/spider-man-2-2004.html</loc>
     <lastmod>2026-04-03T21:51:45.921Z</lastmod>
     <video:video>
@@ -661,6 +841,18 @@
     </video:video>
   </url>
   <url>
+    <loc>https://ultrapelis.netlify.app/peliculas/superheroes/suicide-squad-2016.html</loc>
+    <lastmod>2026-04-23T02:34:58.251Z</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/9ymhU7NclJr29MpZnBQbJurYbuc.jpg</video:thumbnail_loc>
+      <video:title>Suicide Squad (2016)</video:title>
+      <video:description>La agencia secreta gubernamental A.R.G.U.S., liderada por Amanda Waller, crea una fuerza especial con los peores villanos del mundo: el «Escuadrón Suicida», un equipo asignado a misiones mortales a cambio de acortar sus estancias en prisión.</video:description>
+      <video:player_loc allow_embed="yes">https://www.youtube.com/embed/CmRih_VtVAs</video:player_loc>
+      <video:publication_date>2026-04-23T02:34:58.251Z</video:publication_date>
+      <video:duration>7380</video:duration>
+    </video:video>
+  </url>
+  <url>
     <loc>https://ultrapelis.netlify.app/peliculas/superheroes/superman.html</loc>
     <lastmod>2026-04-03T21:51:45.920Z</lastmod>
     <video:video>
@@ -697,6 +889,30 @@
     </video:video>
   </url>
   <url>
+    <loc>https://ultrapelis.netlify.app/peliculas/superheroes/the-avengers-2012.html</loc>
+    <lastmod>2026-04-23T02:34:58.999Z</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/ay29o6P7HWTSMoKVVI3xgRHiRkC.jpg</video:thumbnail_loc>
+      <video:title>The Avengers (2012)</video:title>
+      <video:description>Cuando un enemigo inesperado surge como una gran amenaza para la seguridad mundial, Nick Fury, director de la Agencia SHIELD, decide reclutar a un equipo para salvar al mundo de un desastre casi seguro. Adaptación del cómic de Marvel &quot;Los Vengadores&quot;, el legendario grupo de superhéroes formado por Ironman, Hulk, Thor y el Capitán América entre otros.</video:description>
+      <video:player_loc allow_embed="yes">https://www.youtube.com/embed/hIR8Ar-Z4hw</video:player_loc>
+      <video:publication_date>2026-04-23T02:34:58.999Z</video:publication_date>
+      <video:duration>8580</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://ultrapelis.netlify.app/peliculas/superheroes/the-flash-2023.html</loc>
+    <lastmod>2026-04-23T02:35:00.651Z</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/gNbZNuZ2fBferjJspfmvnskODGc.jpg</video:thumbnail_loc>
+      <video:title>The Flash (2023)</video:title>
+      <video:description>Cuando su intento de salvar a su familia altera el futuro sin darse cuenta, Barry Allen queda atrapado en una realidad en la que el general Zod ha regresado y no hay superhéroes a los que recurrir. En última instancia, para salvar el mundo en el que se encuentra y regresar al futuro que conoce, la única esperanza de Barry es escapar de él para salvar su vida. Pero, ¿será suficiente hacer el último sacrificio para reiniciar el universo?</video:description>
+      <video:player_loc allow_embed="yes">https://www.youtube.com/embed/hebWYacbdvc</video:player_loc>
+      <video:publication_date>2026-04-23T02:35:00.651Z</video:publication_date>
+      <video:duration>8640</video:duration>
+    </video:video>
+  </url>
+  <url>
     <loc>https://ultrapelis.netlify.app/peliculas/superheroes/the-incredible-hulk-2008.html</loc>
     <lastmod>2026-04-03T21:51:45.918Z</lastmod>
     <video:video>
@@ -706,6 +922,18 @@
       <video:player_loc allow_embed="yes">https://myvidplay.com/e/hz49lptxasxw</video:player_loc>
       <video:publication_date>2026-04-03T21:51:45.918Z</video:publication_date>
       <video:duration>6720</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://ultrapelis.netlify.app/peliculas/superheroes/the-suicide-squad-2021.html</loc>
+    <lastmod>2026-04-23T02:35:01.339Z</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/fPJWlhXA2VXf4MlQ3JenVsz1iba.jpg</video:thumbnail_loc>
+      <video:title>The Suicide Squad (2021)</video:title>
+      <video:description>Los supervillanos Harley Quinn, Bloodsport, Peacemaker y una colección de convictos desquiciados de la prisión de Belle Reve se unen a la super-secreta y super-oscura Fuerza Especial X mientras son arrojados a la remota isla de Corto Maltese, infestada de enemigos.</video:description>
+      <video:player_loc allow_embed="yes">https://www.youtube.com/embed/eg5ciqQzmK0</video:player_loc>
+      <video:publication_date>2026-04-23T02:35:01.339Z</video:publication_date>
+      <video:duration>7920</video:duration>
     </video:video>
   </url>
   <url>
@@ -793,6 +1021,30 @@
     </video:video>
   </url>
   <url>
+    <loc>https://ultrapelis.netlify.app/peliculas/superheroes/wonder-woman-1984-2020.html</loc>
+    <lastmod>2026-04-23T02:35:02.515Z</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/uR8N4ZyQs7dI1lRFxGdPF0oiOZp.jpg</video:thumbnail_loc>
+      <video:title>Wonder Woman 1984 (2020)</video:title>
+      <video:description>En 1984, en plena Guerra Fría, Diana Prince, conocida como Wonder Woman, se enfrenta al empresario Maxwell Lord y a su antigua amiga Barbara Minerva / Cheetah, una villana que posee fuerza y agilidad sobrehumanas.</video:description>
+      <video:player_loc allow_embed="yes">https://www.youtube.com/embed/sfM7_JLk-84</video:player_loc>
+      <video:publication_date>2026-04-23T02:35:02.515Z</video:publication_date>
+      <video:duration>9300</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://ultrapelis.netlify.app/peliculas/superheroes/wonder-woman-2017.html</loc>
+    <lastmod>2026-04-23T02:35:03.731Z</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/js7cN75bbBnNeQScT0jTRfIkTAa.jpg</video:thumbnail_loc>
+      <video:title>Wonder Woman (2017)</video:title>
+      <video:description>Cuando un piloto se estrella y habla de un conflicto en el mundo exterior, Diana, una guerrera amazónica en entrenamiento, sale de su casa para luchar en una guerra, descubriendo sus plenos poderes y su verdadero destino.</video:description>
+      <video:player_loc allow_embed="yes">https://www.youtube.com/embed/VSB4wGIdDwo</video:player_loc>
+      <video:publication_date>2026-04-23T02:35:03.731Z</video:publication_date>
+      <video:duration>8460</video:duration>
+    </video:video>
+  </url>
+  <url>
     <loc>https://ultrapelis.netlify.app/peliculas/superheroes/x-men-2-2003.html</loc>
     <lastmod>2026-04-12T03:08:23.034Z</lastmod>
     <video:video>
@@ -829,14 +1081,26 @@
     </video:video>
   </url>
   <url>
+    <loc>https://ultrapelis.netlify.app/peliculas/superheroes/zack-snyders-justice-league-2021.html</loc>
+    <lastmod>2026-04-23T02:35:05.671Z</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/wcIJgChypo0s6ILm9Dkr13rV5q0.jpg</video:thumbnail_loc>
+      <video:title>Zack Snyder’s Justice League (2021)</video:title>
+      <video:description>Decidido a asegurarse de que el sacrificio final de Superman no fue en vano, Bruce Wayne alinea fuerzas con Diana Prince con planes para reclutar un equipo de metahumanos para proteger al mundo de una amenaza de proporciones catastróficas que se aproxima.</video:description>
+      <video:player_loc allow_embed="yes">https://www.youtube.com/embed/oTXrl8H6luI</video:player_loc>
+      <video:publication_date>2026-04-23T02:35:05.671Z</video:publication_date>
+      <video:duration>14520</video:duration>
+    </video:video>
+  </url>
+  <url>
     <loc>https://ultrapelis.netlify.app/peliculas/terror/28-years-later.html</loc>
-    <lastmod>2026-04-03T21:51:45.924Z</lastmod>
+    <lastmod>2026-04-24T17:42:18.139Z</lastmod>
     <video:video>
       <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/gc5oHGz2AugoAlnfsmie1I0ZdOM.jpg</video:thumbnail_loc>
       <video:title>28 años después</video:title>
       <video:description>Han pasado casi tres decadas desde el brote del virus de la rabia. En una Gran Bretana aislada y devastada, un nuevo grupo de sobrevivientes enfrenta mutaciones, violencia y decisiones extremas para mantenerse con vida.</video:description>
       <video:player_loc allow_embed="yes">https://vimeos.net/embed-pa7gebprea45.html</video:player_loc>
-      <video:publication_date>2026-04-03T21:51:45.924Z</video:publication_date>
+      <video:publication_date>2026-04-24T17:42:18.139Z</video:publication_date>
       <video:duration>6900</video:duration>
     </video:video>
   </url>
@@ -913,6 +1177,42 @@
     </video:video>
   </url>
   <url>
+    <loc>https://ultrapelis.netlify.app/peliculas/thriller/hannibal-2001.html</loc>
+    <lastmod>2026-04-29T19:10:12.435Z</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/v5wAZwRqpGWmyAaaJ8BBHYuNXnj.jpg</video:thumbnail_loc>
+      <video:title>Hannibal (2001)</video:title>
+      <video:description>Han pasado diez años desde que Lecter, tras su entrevista con la agente del FBI Clarice Starling, escapara del hospital de máxima seguridad en el que estaba recluido. Ahora vive en Italia, pero Starling no ha podido olvidarlo: su fría voz sigue resonando en sus sueños. Mason Verger también recuerda a Lecter: fue su sexta víctima y, pese a quedar horriblemente desfigurado, logró sobrevivir. Tras heredar una fortuna, Verger decide emplearla en satisfacer sus deseos de venganza, pero pronto se da cuenta de que, para sacar a Lecter de su escondite, debe ponerle delante un cebo irresistible: Clarice Starling.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/wq3mcgllqvl5</video:player_loc>
+      <video:publication_date>2026-04-29T19:10:12.435Z</video:publication_date>
+      <video:duration>7860</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://ultrapelis.netlify.app/peliculas/thriller/hannibal-rising-2007.html</loc>
+    <lastmod>2026-04-29T19:10:15.075Z</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/AfIIQ5lMbqpCa3UQCwHVieLRpyE.jpg</video:thumbnail_loc>
+      <video:title>Hannibal: El origen del mal (2007)</video:title>
+      <video:description>La película intenta ilustrar lo que hizo que Hanibal se convirtiera en el temible caníbal. Cuenta su comienzo y lo que le llevó a cometer esos brutales asesinatos. Desde su infancia en Lituania donde estaba interno en un orfanato durante la Segunda Guerra Mundial, hasta los años que pasó en Rusia antes de que le capturara el FBI. De niño presencia como su familia es asesinada, ese día el pequeño Hanibal muere para convertirse en un hombre sediento de venganza, dispuesto a hacer cosas impensables para conseguirla.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/um8vxmjylc8r</video:player_loc>
+      <video:publication_date>2026-04-29T19:10:15.075Z</video:publication_date>
+      <video:duration>7260</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://ultrapelis.netlify.app/peliculas/thriller/red-dragon-2002.html</loc>
+    <lastmod>2026-04-29T19:10:13.304Z</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/y6wmFX2hY3GS1rWpCwh5MnsMzLa.jpg</video:thumbnail_loc>
+      <video:title>Dragón Rojo (2002)</video:title>
+      <video:description>Un investigador del FBI especializado en analizar la mente y el comportamiento de los asesinos en serie se ve obligado a recurrir a Hannibal Lecter, a quien mandó a la cárcel, para que le ayude en el caso de un asesino de familias, cuyo patrón de conducta le resulta imposible desentrañar.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/um8vxmjylc8r</video:player_loc>
+      <video:publication_date>2026-04-29T19:10:13.304Z</video:publication_date>
+      <video:duration>7440</video:duration>
+    </video:video>
+  </url>
+  <url>
     <loc>https://ultrapelis.netlify.app/peliculas/thriller/the-long-walk.html</loc>
     <lastmod>2026-04-03T21:51:45.923Z</lastmod>
     <video:video>
@@ -922,6 +1222,18 @@
       <video:player_loc allow_embed="yes">https://vimeos.net/embed-rw58x1x4hp1y.html</video:player_loc>
       <video:publication_date>2026-04-03T21:51:45.923Z</video:publication_date>
       <video:duration>6480</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://ultrapelis.netlify.app/peliculas/thriller/the-silence-of-the-lambs-1991.html</loc>
+    <lastmod>2026-04-29T19:10:14.405Z</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/jrzX7TCmoD5gedFeqb1iB9sBaSn.jpg</video:thumbnail_loc>
+      <video:title>El silencio de los inocentes (1991)</video:title>
+      <video:description>Clarice Starling, del FBI, se aventura a una prisión de máxima seguridad para analizar el cerebro enfermo de Hannibal Lecter, un psiquiatra convertido en caníbal.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/ct7o4yawsmid</video:player_loc>
+      <video:publication_date>2026-04-29T19:10:14.405Z</video:publication_date>
+      <video:duration>7080</video:duration>
     </video:video>
   </url>
   <url>
@@ -1424,76 +1736,321 @@
   </url>
   <url>
     <loc>https://ultrapelis.netlify.app/series/mr-robot.html</loc>
-    <lastmod>2026-04-18T23:48:49.241Z</lastmod>
+    <lastmod>2026-04-26T21:34:52.358Z</lastmod>
     <video:video>
       <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
-      <video:title>Mr. Robot - T1E1 Episodio 1</video:title>
+      <video:title>Mr. Robot - T1E1 Hola amigo</video:title>
       <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
       <video:player_loc allow_embed="yes">https://myvidplay.com/e/4tkvefi7e7rl</video:player_loc>
-      <video:publication_date>2026-04-18T23:48:49.241Z</video:publication_date>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
     </video:video>
     <video:video>
       <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
-      <video:title>Mr. Robot - T1E2 Episodio 2</video:title>
+      <video:title>Mr. Robot - T1E2 UNOS Y CER0S</video:title>
       <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
       <video:player_loc allow_embed="yes">https://myvidplay.com/e/c1uxtsph7on7</video:player_loc>
-      <video:publication_date>2026-04-18T23:48:49.241Z</video:publication_date>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
     </video:video>
     <video:video>
       <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
-      <video:title>Mr. Robot - T1E3 Episodio 3</video:title>
+      <video:title>Mr. Robot - T1E3 D3PURAR</video:title>
       <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
       <video:player_loc allow_embed="yes">https://myvidplay.com/e/63h2rasfgwqa</video:player_loc>
-      <video:publication_date>2026-04-18T23:48:49.241Z</video:publication_date>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
     </video:video>
     <video:video>
       <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
-      <video:title>Mr. Robot - T1E4 Episodio 4</video:title>
+      <video:title>Mr. Robot - T1E4 D3MON1OS</video:title>
       <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
       <video:player_loc allow_embed="yes">https://myvidplay.com/e/5hr6he0iblkm</video:player_loc>
-      <video:publication_date>2026-04-18T23:48:49.241Z</video:publication_date>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
     </video:video>
     <video:video>
       <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
-      <video:title>Mr. Robot - T1E5 Episodio 5</video:title>
+      <video:title>Mr. Robot - T1E5 3XP1OITS</video:title>
       <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
       <video:player_loc allow_embed="yes">https://myvidplay.com/e/tq9euqd6t5h7</video:player_loc>
-      <video:publication_date>2026-04-18T23:48:49.241Z</video:publication_date>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
     </video:video>
     <video:video>
       <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
-      <video:title>Mr. Robot - T1E6 Episodio 6</video:title>
+      <video:title>Mr. Robot - T1E6 6. VIAJ3R0 V4LIENTE</video:title>
       <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
       <video:player_loc allow_embed="yes">https://myvidplay.com/e/g086vqkof0xb</video:player_loc>
-      <video:publication_date>2026-04-18T23:48:49.241Z</video:publication_date>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
     </video:video>
     <video:video>
       <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
-      <video:title>Mr. Robot - T1E7 Episodio 7</video:title>
+      <video:title>Mr. Robot - T1E7 V3R FUENT3</video:title>
       <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
       <video:player_loc allow_embed="yes">https://myvidplay.com/e/jjgp57e6vqwk</video:player_loc>
-      <video:publication_date>2026-04-18T23:48:49.241Z</video:publication_date>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
     </video:video>
     <video:video>
       <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
-      <video:title>Mr. Robot - T1E8 Episodio 8</video:title>
+      <video:title>Mr. Robot - T1E8 Wh1ter0se</video:title>
       <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
       <video:player_loc allow_embed="yes">https://myvidplay.com/e/xdg7pzk88h2n</video:player_loc>
-      <video:publication_date>2026-04-18T23:48:49.241Z</video:publication_date>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
     </video:video>
     <video:video>
       <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
-      <video:title>Mr. Robot - T1E9 Episodio 9</video:title>
+      <video:title>Mr. Robot - T1E9 1MITAC1ON</video:title>
       <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
       <video:player_loc allow_embed="yes">https://myvidplay.com/e/hdh4rx4gp920</video:player_loc>
-      <video:publication_date>2026-04-18T23:48:49.241Z</video:publication_date>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
     </video:video>
     <video:video>
       <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
-      <video:title>Mr. Robot - T1E10 Episodio 10</video:title>
+      <video:title>Mr. Robot - T1E10 D1A CERO</video:title>
       <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
       <video:player_loc allow_embed="yes">https://myvidplay.com/d/fsc5uryzkxt2</video:player_loc>
-      <video:publication_date>2026-04-18T23:48:49.241Z</video:publication_date>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T2E1 Má5cara5 - Parte 1</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/6wj4jqjuvjo8</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T2E2 Má5cara5 - Parte 2</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/uxp6ap8a2a04</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T2E3 3RROR INT3RN0 FAT4L</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/u8la39wm7xug</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T2E4 Init1</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/njnpguc8xet9</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T2E5 Bomb4 Lógic4</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/wh3tdel5f1rs</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T2E6 Amo-Escl4vo</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/5g6whq26lf5d</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T2E7 Apr3tón de M4anos</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/znf2563imf4v</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T2E8 Suc3sor</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/q8avxw4nhdok</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T2E9 Init 5</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/xg7dixq3tcq9</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T2E10 Pr0c3s0 0cul70</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/u9is19xdtzqy</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T2E11 P1tón - Parte 1</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/aow4xy8nhqla</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T2E12 P1tón - Parte 2</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/cq645yoytyhf</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T3E1 eps3.0_modo-ahorro-de-energia.h</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/q817qd0lrww1</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T3E2 eps3.1_deshacer.gz</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/zcjxkfcpwef7</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T3E3 eps3.2_legado.so</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/aocactwhmn9b</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T3E4 eps3.3_metadatos.par2</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/y7eklbmycgdt</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T3E5 eps3.4_error-de-ejecucion.r00</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/u0oe7y2yw3g6</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T3E6 eps3.5_matar-proceso.inc</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/8gcpib0ezt2u</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T3E7 eps3.6_fredrick+tanya.chk</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/oxns63v45s5t</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T3E8 eps3.7_no-borres-esta-consulta.m4v</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/2wm71ko5z46k</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T3E9 eps3.8_fase3.torrent</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/ez4ctgzzcxo0</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T3E10 eps3.9_apagado-r.n</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/1jlnjssh8lhs</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T4E1 401 Unauthorized</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/hcw7d78xpqur</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T4E2 402 Payment Required</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/254kh9w295op</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T4E3 403 Forbidden</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/b6co6lj6ki65</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T4E4 404 Not Found</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/3b3jw9nwwf26</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T4E5 405 Method Not Allowed</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/37e6w0ltp9et</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T4E6 406 Not Acceptable</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/r1t7ssubopcm</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T4E7 407 Proxy Authentication Required</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/5wuuulzungyv</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T4E8 408 Request Timeout</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/trvekrz4mf14</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T4E9 409 Conflict</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/yepqraec7ipf</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T4E10 410 Gone</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/q4f1njs92cdr</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T4E11 eXit</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/7g8cv981ooyn</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T4E12 whoami</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/5rq7z8wnvzqo</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg</video:thumbnail_loc>
+      <video:title>Mr. Robot - T4E13 Hello, Elliot</video:title>
+      <video:description>Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/w9n42b10rgcb</video:player_loc>
+      <video:publication_date>2026-04-26T21:34:52.358Z</video:publication_date>
     </video:video>
   </url>
   <url>

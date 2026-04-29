@@ -726,6 +726,10 @@ function parseSeriesHtml(filePath, html) {
     matchFirst(html, /<meta\s+[^>]*?name=["']banner["'][^>]*?content=["']([^"']+)["']/i) ||
     matchFirst(html, /<meta\s+[^>]*?content=["']([^"']+)["'][^>]*?name=["']banner["']/i);
 
+  const tmdbId =
+    matchFirst(html, /<meta\s+[^>]*?name=["']tmdb_id["'][^>]*?content=["']([^"']+)["']/i) ||
+    matchFirst(html, /<meta\s+[^>]*?content=["']([^"']+)["'][^>]*?name=["']tmdb_id["']/i);
+
   const bgMatch = html.match(/--movie-bg:\s*url\(\s*['"]?([^'"]+?)['"]?\s*\)(?:\s*,\s*url\(\s*['"]?([^'"]+?)['"]?\s*\))?/i);
   const bannerUrl = bgMatch ? normalizeText(bgMatch[1]) : '';
   const posterUrlFromBg = bgMatch ? normalizeText(bgMatch[2] || bgMatch[1]) : '';
@@ -1128,6 +1132,21 @@ function maybeSyncMoviesFromHtml() {
   syncMoviesFromHtml();
 }
 
+function maybeRefreshSeriesIndexCache() {
+  const files = walkHtmlFiles(SERIES_DIR);
+  const fingerprint = computeMoviesFingerprint(files);
+  if (fingerprint === lastSeriesFingerprint) return false;
+  lastSeriesFingerprint = fingerprint;
+  renderedIndexCache = renderIndexFromTemplate(moviesCache);
+  writeIndexFile(moviesCache);
+  try {
+    maybeWriteSitemap();
+  } catch (error) {
+    console.warn('No se pudo regenerar sitemap al refrescar series:', error.message);
+  }
+  return true;
+}
+
 function getAllMovies() {
   return runQuery(`
     SELECT
@@ -1193,15 +1212,7 @@ async function registerMovieViewSupabase(slug) {
   const safeSlug = normalizeSlug(slug);
   if (!safeSlug) return null;
   try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/increment_movie_view`, {
-      method: 'POST',
-      headers: {
-        apikey: SUPABASE_ANON_KEY,
-        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ slug_input: safeSlug }),
-    });
+    const res = await callSupabaseRpc('increment_movie_view', { slug_input: safeSlug });
     if (!res.ok) return null;
     const payload = await res.json();
     const views = typeof payload === 'number'
@@ -1213,20 +1224,94 @@ async function registerMovieViewSupabase(slug) {
   }
 }
 
-async function registerSeriesViewSupabase(slug) {
+async function callSupabaseRpc(rpcName, body) {
+  return fetch(`${SUPABASE_URL}/rest/v1/rpc/${rpcName}`, {
+    method: 'POST',
+    headers: {
+      apikey: SUPABASE_ANON_KEY,
+      Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body || {}),
+  });
+}
+
+async function fetchSingleSupabaseView(rpcName, slug, limit = 500) {
   if (!USE_SUPABASE_VIEWS) return null;
   const safeSlug = normalizeSlug(slug);
   if (!safeSlug) return null;
+  const safeLimit = Number.isFinite(limit)
+    ? Math.min(Math.max(Math.floor(limit), 1), 5000)
+    : 500;
   try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/increment_series_view`, {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${rpcName}`, {
       method: 'POST',
       headers: {
         apikey: SUPABASE_ANON_KEY,
         Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ slug_input: safeSlug }),
+      body: JSON.stringify({ limit_input: safeLimit }),
     });
+    if (!res.ok) return null;
+    const payload = await res.json();
+    if (!Array.isArray(payload)) return 0;
+    const row = payload.find((item) => normalizeSlug(item?.slug) === safeSlug);
+    if (!row) return 0;
+    const views = Number.parseInt(String(row.views || '0'), 10);
+    return Number.isFinite(views) ? views : 0;
+  } catch (_) {
+    return null;
+  }
+}
+
+async function fetchDirectSupabaseView(rpcName, slug) {
+  if (!USE_SUPABASE_VIEWS) return null;
+  const safeSlug = normalizeSlug(slug);
+  if (!safeSlug) return null;
+  try {
+    const res = await callSupabaseRpc(rpcName, { slug_input: safeSlug });
+    if (!res.ok) return null;
+    const payload = await res.json();
+    if (typeof payload === 'number') {
+      return Number.isFinite(payload) ? payload : 0;
+    }
+    if (Array.isArray(payload)) {
+      const first = payload[0];
+      const views = Number.parseInt(String(first?.views ?? first?.vistas ?? 0), 10);
+      return Number.isFinite(views) ? views : 0;
+    }
+    if (payload && typeof payload === 'object') {
+      const views = Number.parseInt(String(payload.views ?? payload.vistas ?? 0), 10);
+      return Number.isFinite(views) ? views : 0;
+    }
+    return 0;
+  } catch (_) {
+    return null;
+  }
+}
+
+async function getMovieViewsSupabase(slug) {
+  const direct = await fetchDirectSupabaseView('get_movie_views', slug);
+  if (direct != null) return direct;
+  const movieCount = Array.isArray(moviesCache) && moviesCache.length ? moviesCache.length : 500;
+  return fetchSingleSupabaseView('get_top_movie_views', slug, movieCount + 25);
+}
+
+async function getSeriesViewsSupabase(slug) {
+  const direct = await fetchDirectSupabaseView('get_series_views', slug);
+  if (direct != null) return direct;
+  const seriesData = loadSeriesData();
+  const seriesCount = Array.isArray(seriesData) && seriesData.length ? seriesData.length : 200;
+  return fetchSingleSupabaseView('get_top_series_views', slug, seriesCount + 25);
+}
+
+async function registerSeriesViewSupabase(slug) {
+  if (!USE_SUPABASE_VIEWS) return null;
+  const safeSlug = normalizeSlug(slug);
+  if (!safeSlug) return null;
+  try {
+    const res = await callSupabaseRpc('increment_series_view', { slug_input: safeSlug });
     if (!res.ok) return null;
     const payload = await res.json();
     const views = typeof payload === 'number'
@@ -1241,31 +1326,7 @@ async function registerSeriesViewSupabase(slug) {
 async function registerMovieView(slug) {
   const safeSlug = normalizeSlug(slug);
   if (!safeSlug) return null;
-
-  const supabaseViews = await registerMovieViewSupabase(safeSlug);
-  if (supabaseViews != null) return supabaseViews;
-
-  const movieRows = runQuery(
-    `SELECT id FROM peliculas WHERE slug=${sqlValue(safeSlug)} LIMIT 1;`
-  );
-  if (!movieRows.length) return null;
-
-  const movieId = Number.parseInt(String(movieRows[0].id || '0'), 10);
-  if (!Number.isFinite(movieId) || movieId <= 0) return null;
-
-  runExec(
-    `INSERT INTO pelicula_popularidad (pelicula_id, vistas, updated_at)
-     VALUES (${movieId}, 1, datetime('now'))
-     ON CONFLICT(pelicula_id) DO UPDATE
-     SET vistas = pelicula_popularidad.vistas + 1,
-         updated_at = datetime('now');`
-  );
-
-  const rows = runQuery(
-    `SELECT vistas FROM pelicula_popularidad WHERE pelicula_id=${movieId} LIMIT 1;`
-  );
-  if (!rows.length) return null;
-  return Number.parseInt(String(rows[0].vistas || '0'), 10) || 0;
+  return registerMovieViewSupabase(safeSlug);
 }
 
 async function registerSeriesView(slug) {
@@ -1281,15 +1342,7 @@ async function fetchSupabaseTopViews(rpcName, limit = 10) {
     ? Math.min(Math.max(Math.floor(limit), 1), 50)
     : 10;
   try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${rpcName}`, {
-      method: 'POST',
-      headers: {
-        apikey: SUPABASE_ANON_KEY,
-        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ limit_input: safeLimit }),
-    });
+    const res = await callSupabaseRpc(rpcName, { limit_input: safeLimit });
     if (!res.ok) return [];
     const payload = await res.json();
     return Array.isArray(payload) ? payload : [];
@@ -2341,6 +2394,7 @@ function serveStaticFile(req, reqPath, res) {
 function startServer() {
   ensureDatabase();
   const synced = syncMoviesFromHtml();
+  maybeRefreshSeriesIndexCache();
   const doodSync = syncDoodstreamEmbeds();
   const veoSync = syncVeoEmbeds();
 
@@ -2383,6 +2437,7 @@ function startServer() {
         } catch (error) {
           console.warn('No se pudo refrescar sitemap.xml:', error.message);
         }
+        maybeRefreshSeriesIndexCache();
       }
 
       if (method === 'OPTIONS') {
@@ -2400,7 +2455,7 @@ function startServer() {
         maybeSyncMoviesFromHtml();
         return sendJson(res, 200, {
           id: ADDON_ID,
-          version: '1.0.1',
+          version: '1.0.2',
           name: ADDON_NAME,
           description: 'Catalogo y streams de Ultrapelis',
           resources: ['catalog', 'meta', 'stream'],
@@ -2678,11 +2733,31 @@ function startServer() {
         return sendJson(res, 200, movie);
       }
 
+      const movieViewsApiMatch = pathname.match(/^\/api\/peliculas\/([a-z0-9-]+)\/views$/i);
+      if (movieViewsApiMatch) {
+        if (method !== 'GET') {
+          return sendJson(res, 405, { error: 'Metodo no permitido' });
+        }
+        if (!USE_SUPABASE_VIEWS) {
+          return sendJson(res, 503, { error: 'Supabase no configurado para vistas' });
+        }
+        maybeSyncMoviesFromHtml();
+        const slug = movieViewsApiMatch[1];
+        const movie = movieBySlugCache.get(slug);
+        if (!movie) return sendJson(res, 404, { error: 'Pelicula no encontrada' });
+        const views = await getMovieViewsSupabase(slug);
+        if (views == null) return sendJson(res, 502, { error: 'No se pudieron leer las vistas' });
+        return sendJson(res, 200, { ok: true, slug, views });
+      }
+
       // Endpoint para registrar una vista de una película.
       const movieViewApiMatch = pathname.match(/^\/api\/peliculas\/([a-z0-9-]+)\/view$/i);
       if (movieViewApiMatch) {
         if (method !== 'POST') {
           return sendJson(res, 405, { error: 'Metodo no permitido' });
+        }
+        if (!USE_SUPABASE_VIEWS) {
+          return sendJson(res, 503, { error: 'Supabase no configurado para vistas' });
         }
         maybeSyncMoviesFromHtml();
         const slug = movieViewApiMatch[1];
@@ -2691,11 +2766,31 @@ function startServer() {
         return sendJson(res, 200, { ok: true, slug, views });
       }
 
+      const seriesViewsApiMatch = pathname.match(/^\/api\/series\/([a-z0-9-]+)\/views$/i);
+      if (seriesViewsApiMatch) {
+        if (method !== 'GET') {
+          return sendJson(res, 405, { error: 'Metodo no permitido' });
+        }
+        if (!USE_SUPABASE_VIEWS) {
+          return sendJson(res, 503, { error: 'Supabase no configurado para vistas' });
+        }
+        const slug = seriesViewsApiMatch[1];
+        const seriesData = loadSeriesData();
+        const exists = seriesData.some((item) => normalizeSlug(item?.slug) === normalizeSlug(slug));
+        if (!exists) return sendJson(res, 404, { error: 'Serie no encontrada' });
+        const views = await getSeriesViewsSupabase(slug);
+        if (views == null) return sendJson(res, 502, { error: 'No se pudieron leer las vistas' });
+        return sendJson(res, 200, { ok: true, slug, views });
+      }
+
       // Endpoint para registrar una vista de una serie.
       const seriesViewApiMatch = pathname.match(/^\/api\/series\/([a-z0-9-]+)\/view$/i);
       if (seriesViewApiMatch) {
         if (method !== 'POST') {
           return sendJson(res, 405, { error: 'Metodo no permitido' });
+        }
+        if (!USE_SUPABASE_VIEWS) {
+          return sendJson(res, 503, { error: 'Supabase no configurado para vistas' });
         }
         const slug = seriesViewApiMatch[1];
         const views = await registerSeriesView(slug);

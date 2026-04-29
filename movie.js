@@ -75,19 +75,9 @@
 
   const updateViews = () => {
     const movieId = getMovieId();
-    const key = `ultrapelis_views_${movieId}`;
     const viewedSessionKey = `ultrapelis_viewed_${movieId}`;
     const formatter = new Intl.NumberFormat('es-MX');
-    const current = Number.parseInt(safeGet(localStorage, key) || '0', 10) || 0;
-
-    // Avoid counting multiple times when user refreshes the same tab.
     const alreadyCountedInSession = safeGet(sessionStorage, viewedSessionKey) === '1';
-    const next = alreadyCountedInSession ? current : current + 1;
-
-    if (!alreadyCountedInSession) {
-      safeSet(localStorage, key, String(next));
-      safeSet(sessionStorage, viewedSessionKey, '1');
-    }
 
     const grid = document.querySelector('.info-grid');
     if (!grid) return;
@@ -114,23 +104,37 @@
 
     const countEl = card.querySelector('#views-count');
     if (countEl) {
-      countEl.textContent = formatter.format(next);
+      countEl.textContent = '...';
     }
 
-    if (!alreadyCountedInSession) {
-      const slug = encodeURIComponent(movieId);
-      fetch(`/api/peliculas/${slug}/view`, { method: 'POST' })
-        .then((response) => (response.ok ? response.json() : null))
-        .then((payload) => {
-          if (!payload || typeof payload.views !== 'number') return;
-          const mergedViews = Math.max(payload.views, next);
-          if (countEl) {
-            countEl.textContent = formatter.format(mergedViews);
-          }
-          safeSet(localStorage, key, String(mergedViews));
-        })
-        .catch(() => {});
-    }
+    const slug = encodeURIComponent(movieId);
+    const renderViews = (value) => {
+      if (!countEl) return;
+      countEl.textContent = formatter.format(Math.max(0, Number(value) || 0));
+    };
+
+    fetch(`/api/peliculas/${slug}/views`)
+      .then((response) => (response.ok ? response.json() : null))
+      .then((payload) => {
+        const currentViews = payload && typeof payload.views === 'number' ? payload.views : 0;
+        renderViews(currentViews);
+        if (alreadyCountedInSession) return null;
+        return fetch(`/api/peliculas/${slug}/view`, { method: 'POST' });
+      })
+      .then((response) => {
+        if (!response || !response.ok) return null;
+        return response.json();
+      })
+      .then((payload) => {
+        if (!payload || typeof payload.views !== 'number') return;
+        safeSet(sessionStorage, viewedSessionKey, '1');
+        renderViews(payload.views);
+      })
+      .catch(() => {
+        if (countEl && countEl.textContent === '...') {
+          countEl.textContent = '0';
+        }
+      });
   };
 
   updateViews();
@@ -269,7 +273,7 @@
     });
   }
 
-  if (!buttons.length || !frame) return;
+  if (!frame) return;
   frame.setAttribute('loading', 'lazy');
   if (isCompatMode) {
     document.body.classList.add('compat-mode');
@@ -309,6 +313,41 @@
       if (note) note.textContent = 'Servidor sin enlace. Agrega un enlace legal.';
     }
   }
+
+  const addSuperEmbedButton = async () => {
+    const list = document.querySelector('.server-list');
+    if (!list) return;
+    if (list.querySelector('button[data-superembed]')) return;
+    const movieId = getMovieId();
+    if (!movieId) return;
+    try {
+      const resp = await fetch(`/api/peliculas/${encodeURIComponent(movieId)}`);
+      if (!resp.ok) return;
+      const data = await resp.json();
+      const src = typeof data?.superembed_url === 'string' ? data.superembed_url.trim() : '';
+      if (!src) return;
+      const btn = document.createElement('button');
+      btn.className = 'server-btn';
+      btn.type = 'button';
+      btn.setAttribute('data-src', src);
+      btn.setAttribute('data-superembed', 'true');
+      btn.textContent = 'Multi-Servidor (HD)';
+      const trailerBtn = list.querySelector('button[data-trailer]');
+      if (trailerBtn) {
+        list.insertBefore(btn, trailerBtn);
+      } else {
+        list.appendChild(btn);
+      }
+      buttons.push(btn);
+      btn.addEventListener('click', () => {
+        setActive(btn);
+        frame.src = btn.dataset.src || '';
+        if (note) note.textContent = 'Reproduciendo desde Multi-Servidor (HD).';
+      });
+    } catch (_) {
+      // ignore failures
+    }
+  };
 
   // try to append a trailer button automatically by querying our backend
   const addTrailerButton = async () => {
@@ -367,5 +406,6 @@
     });
   }
 
+  addSuperEmbedButton();
   addTrailerButton();
 })();

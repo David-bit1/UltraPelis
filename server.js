@@ -175,6 +175,14 @@ function ensureAnalyticsTables() {
       FOREIGN KEY (pelicula_id) REFERENCES peliculas(id) ON DELETE CASCADE
     );
   `);
+
+  runExec(`
+    CREATE TABLE IF NOT EXISTS serie_popularidad (
+      serie_slug TEXT PRIMARY KEY,
+      vistas INTEGER NOT NULL DEFAULT 0,
+      updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+  `);
 }
 
 function runQuery(sql) {
@@ -1307,6 +1315,109 @@ async function getSeriesViewsSupabase(slug) {
   return fetchSingleSupabaseView('get_top_series_views', slug, seriesCount + 25);
 }
 
+function getMovieViewsLocal(slug) {
+  const safeSlug = normalizeSlug(slug);
+  if (!safeSlug) return null;
+  try {
+    const row = db.prepare(`
+      SELECT COALESCE(pp.vistas, 0) AS vistas
+      FROM peliculas p
+      LEFT JOIN pelicula_popularidad pp ON pp.pelicula_id = p.id
+      WHERE p.slug = ?
+      LIMIT 1
+    `).get(safeSlug);
+    if (!row) return null;
+    const views = Number.parseInt(String(row.vistas || 0), 10);
+    return Number.isFinite(views) ? views : 0;
+  } catch (_) {
+    return null;
+  }
+}
+
+function registerMovieViewLocal(slug) {
+  const safeSlug = normalizeSlug(slug);
+  if (!safeSlug) return null;
+  try {
+    const row = db.prepare('SELECT id FROM peliculas WHERE slug = ? LIMIT 1').get(safeSlug);
+    if (!row || !row.id) return null;
+    db.prepare(`
+      INSERT INTO pelicula_popularidad (pelicula_id, vistas, updated_at)
+      VALUES (?, 1, datetime('now'))
+      ON CONFLICT(pelicula_id) DO UPDATE SET
+        vistas = pelicula_popularidad.vistas + 1,
+        updated_at = datetime('now')
+    `).run(row.id);
+    return getMovieViewsLocal(safeSlug);
+  } catch (_) {
+    return null;
+  }
+}
+
+function getSeriesViewsLocal(slug) {
+  const safeSlug = normalizeSlug(slug);
+  if (!safeSlug) return null;
+  try {
+    const row = db.prepare('SELECT vistas FROM serie_popularidad WHERE serie_slug = ? LIMIT 1').get(safeSlug);
+    if (!row) return 0;
+    const views = Number.parseInt(String(row.vistas || 0), 10);
+    return Number.isFinite(views) ? views : 0;
+  } catch (_) {
+    return null;
+  }
+}
+
+function registerSeriesViewLocal(slug) {
+  const safeSlug = normalizeSlug(slug);
+  if (!safeSlug) return null;
+  try {
+    db.prepare(`
+      INSERT INTO serie_popularidad (serie_slug, vistas, updated_at)
+      VALUES (?, 1, datetime('now'))
+      ON CONFLICT(serie_slug) DO UPDATE SET
+        vistas = serie_popularidad.vistas + 1,
+        updated_at = datetime('now')
+    `).run(safeSlug);
+    return getSeriesViewsLocal(safeSlug);
+  } catch (_) {
+    return null;
+  }
+}
+
+function getPopularSeriesLocal(limit = 12) {
+  const safeLimit = Number.isFinite(limit)
+    ? Math.min(Math.max(Math.floor(limit), 1), 30)
+    : 12;
+  const seriesData = loadSeriesData();
+  const viewsRows = runQuery(`
+    SELECT serie_slug, vistas, updated_at
+    FROM serie_popularidad
+    ORDER BY vistas DESC, updated_at DESC, serie_slug COLLATE NOCASE ASC
+    LIMIT ${safeLimit * 3};
+  `);
+  const bySlug = new Map(seriesData.map((item) => [String(item.slug || '').trim(), item]));
+  const seen = new Set();
+  const ranked = [];
+
+  viewsRows.forEach((row) => {
+    const slug = normalizeSlug(row.serie_slug);
+    const serie = bySlug.get(slug);
+    if (!slug || !serie || seen.has(slug)) return;
+    seen.add(slug);
+    ranked.push({ ...serie, vistas: Number(row.vistas || 0) || 0 });
+  });
+
+  if (ranked.length < safeLimit) {
+    seriesData.forEach((serie) => {
+      const slug = normalizeSlug(serie?.slug);
+      if (!slug || seen.has(slug) || ranked.length >= safeLimit) return;
+      seen.add(slug);
+      ranked.push({ ...serie, vistas: 0 });
+    });
+  }
+
+  return ranked.slice(0, safeLimit);
+}
+
 async function registerSeriesViewSupabase(slug) {
   if (!USE_SUPABASE_VIEWS) return null;
   const safeSlug = normalizeSlug(slug);
@@ -1324,17 +1435,36 @@ async function registerSeriesViewSupabase(slug) {
   }
 }
 
+async function getMovieViews(slug) {
+  const safeSlug = normalizeSlug(slug);
+  if (!safeSlug) return null;
+  const supabaseViews = await getMovieViewsSupabase(safeSlug);
+  if (supabaseViews != null) return supabaseViews;
+  return getMovieViewsLocal(safeSlug);
+}
+
+async function getSeriesViews(slug) {
+  const safeSlug = normalizeSlug(slug);
+  if (!safeSlug) return null;
+  const supabaseViews = await getSeriesViewsSupabase(safeSlug);
+  if (supabaseViews != null) return supabaseViews;
+  return getSeriesViewsLocal(safeSlug);
+}
+
 async function registerMovieView(slug) {
   const safeSlug = normalizeSlug(slug);
   if (!safeSlug) return null;
-  return registerMovieViewSupabase(safeSlug);
+  const supabaseViews = await registerMovieViewSupabase(safeSlug);
+  if (supabaseViews != null) return supabaseViews;
+  return registerMovieViewLocal(safeSlug);
 }
 
 async function registerSeriesView(slug) {
   const safeSlug = normalizeSlug(slug);
   if (!safeSlug) return null;
-  const views = await registerSeriesViewSupabase(safeSlug);
-  return views == null ? null : views;
+  const supabaseViews = await registerSeriesViewSupabase(safeSlug);
+  if (supabaseViews != null) return supabaseViews;
+  return registerSeriesViewLocal(safeSlug);
 }
 
 async function fetchSupabaseTopViews(rpcName, limit = 10) {
@@ -2712,7 +2842,7 @@ function startServer() {
           }
           return sendJson(res, 200, mapped.slice(0, limit));
         }
-        return sendJson(res, 200, seriesData.slice(0, limit));
+        return sendJson(res, 200, getPopularSeriesLocal(limit));
       }
 
       // Endpoints para forzar la sincronización de datos.
@@ -2755,14 +2885,11 @@ function startServer() {
         if (method !== 'GET') {
           return sendJson(res, 405, { error: 'Metodo no permitido' });
         }
-        if (!USE_SUPABASE_VIEWS) {
-          return sendJson(res, 503, { error: 'Supabase no configurado para vistas' });
-        }
         maybeSyncMoviesFromHtml();
         const slug = movieViewsApiMatch[1];
         const movie = movieBySlugCache.get(slug);
         if (!movie) return sendJson(res, 404, { error: 'Pelicula no encontrada' });
-        const views = await getMovieViewsSupabase(slug);
+        const views = await getMovieViews(slug);
         if (views == null) return sendJson(res, 502, { error: 'No se pudieron leer las vistas' });
         return sendJson(res, 200, { ok: true, slug, views });
       }
@@ -2772,9 +2899,6 @@ function startServer() {
       if (movieViewApiMatch) {
         if (method !== 'POST') {
           return sendJson(res, 405, { error: 'Metodo no permitido' });
-        }
-        if (!USE_SUPABASE_VIEWS) {
-          return sendJson(res, 503, { error: 'Supabase no configurado para vistas' });
         }
         maybeSyncMoviesFromHtml();
         const slug = movieViewApiMatch[1];
@@ -2788,14 +2912,11 @@ function startServer() {
         if (method !== 'GET') {
           return sendJson(res, 405, { error: 'Metodo no permitido' });
         }
-        if (!USE_SUPABASE_VIEWS) {
-          return sendJson(res, 503, { error: 'Supabase no configurado para vistas' });
-        }
         const slug = seriesViewsApiMatch[1];
         const seriesData = loadSeriesData();
         const exists = seriesData.some((item) => normalizeSlug(item?.slug) === normalizeSlug(slug));
         if (!exists) return sendJson(res, 404, { error: 'Serie no encontrada' });
-        const views = await getSeriesViewsSupabase(slug);
+        const views = await getSeriesViews(slug);
         if (views == null) return sendJson(res, 502, { error: 'No se pudieron leer las vistas' });
         return sendJson(res, 200, { ok: true, slug, views });
       }
@@ -2805,9 +2926,6 @@ function startServer() {
       if (seriesViewApiMatch) {
         if (method !== 'POST') {
           return sendJson(res, 405, { error: 'Metodo no permitido' });
-        }
-        if (!USE_SUPABASE_VIEWS) {
-          return sendJson(res, 503, { error: 'Supabase no configurado para vistas' });
         }
         const slug = seriesViewApiMatch[1];
         const views = await registerSeriesView(slug);

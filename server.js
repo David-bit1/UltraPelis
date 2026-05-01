@@ -1137,6 +1137,7 @@ function maybeRefreshSeriesIndexCache() {
   const fingerprint = computeMoviesFingerprint(files);
   if (fingerprint === lastSeriesFingerprint) return false;
   lastSeriesFingerprint = fingerprint;
+  syncSeriesJsonFromHtml();
   renderedIndexCache = renderIndexFromTemplate(moviesCache);
   writeIndexFile(moviesCache);
   try {
@@ -1411,6 +1412,7 @@ function refreshCacheFromDatabase() {
   moviesCache = movies;
   movieBySlugCache = bySlug;
   movieByCategorySlugCache = byCategorySlug;
+  syncSeriesJsonFromHtml();
   renderedIndexCache = renderIndexFromTemplate(moviesCache);
 
   // also update the static index.html so that even file:// usage shows the
@@ -1538,6 +1540,20 @@ function loadSeriesData() {
       return null;
     }
   }).filter(Boolean);
+}
+
+function syncSeriesJsonFromHtml() {
+  const series = loadSeriesData();
+  const normalized = JSON.stringify(series, null, 2);
+  let current = '';
+  try {
+    current = fs.existsSync(SERIES_FILE) ? fs.readFileSync(SERIES_FILE, 'utf8').trim() : '';
+  } catch (_) {
+    current = '';
+  }
+  if (current === normalized.trim()) return false;
+  fs.writeFileSync(SERIES_FILE, `${normalized}\n`, 'utf8');
+  return true;
 }
 
 const SERIES_DATA_REGEX = /<script[^>]*id=["']series-data["'][^>]*>([\s\S]*?)<\/script>/i;
@@ -2394,6 +2410,7 @@ function serveStaticFile(req, reqPath, res) {
 function startServer() {
   ensureDatabase();
   const synced = syncMoviesFromHtml();
+  syncSeriesJsonFromHtml();
   maybeRefreshSeriesIndexCache();
   const doodSync = syncDoodstreamEmbeds();
   const veoSync = syncVeoEmbeds();

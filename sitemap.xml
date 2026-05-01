@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
   <url>
     <loc>https://ultrapelis.netlify.app/</loc>
-    <lastmod>2026-04-29T19:12:56.892Z</lastmod>
+    <lastmod>2026-04-30T21:12:55.426Z</lastmod>
   </url>
   <url>
     <loc>https://ultrapelis.netlify.app/peliculas/accion/deadpool-wolverine.html</loc>
@@ -162,13 +162,13 @@
   </url>
   <url>
     <loc>https://ultrapelis.netlify.app/peliculas/animacion/the-super-mario-bros-movie-2023.html</loc>
-    <lastmod>2026-04-23T02:34:45.299Z</lastmod>
+    <lastmod>2026-04-30T20:56:06.355Z</lastmod>
     <video:video>
       <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/zNKs1T0VZuJiVuhuL5GSCNkGdxf.jpg</video:thumbnail_loc>
-      <video:title>Super Mario Bros. La película (2023)</video:title>
+      <video:title>Super Mario Bros. La película</video:title>
       <video:description>Mientras trabaja bajo tierra para arreglar una tubería de agua, los plomeros de Brooklyn Mario y su hermano Luigi son transportados por una misteriosa tubería y llegan a un nuevo mundo mágico.</video:description>
-      <video:player_loc allow_embed="yes">https://www.youtube.com/embed/3iIjli_lx-g</video:player_loc>
-      <video:publication_date>2026-04-23T02:34:45.299Z</video:publication_date>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/xzdw20e7wbjt</video:player_loc>
+      <video:publication_date>2026-04-30T20:56:06.355Z</video:publication_date>
       <video:duration>5520</video:duration>
     </video:video>
   </url>
@@ -498,85 +498,85 @@
   </url>
   <url>
     <loc>https://ultrapelis.netlify.app/peliculas/superheroes/avengers-age-of-ultron-2015.html</loc>
-    <lastmod>2026-04-23T02:34:47.435Z</lastmod>
+    <lastmod>2026-04-30T20:55:53.605Z</lastmod>
     <video:video>
       <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/ggyEm4OkePLo8zEdDm5Pac2fOgz.jpg</video:thumbnail_loc>
-      <video:title>Avengers: Era de Ultrón (2015)</video:title>
-      <video:description>Cuando Tony Stark y Bruce Banner intentan poner en marcha un inactivo programa de mantenimiento de la paz llamado Ultrón, las cosas van terriblemente mal y depende de los héroes más poderosos de la Tierra evitar que el villano Ultrón lleve a cabo su terrible plan.</video:description>
-      <video:player_loc allow_embed="yes">https://www.youtube.com/embed/DMFBm_lp4rU</video:player_loc>
-      <video:publication_date>2026-04-23T02:34:47.435Z</video:publication_date>
+      <video:title>Avengers: Era de Ultrón</video:title>
+      <video:description>Cuando Tony Stark intenta reactivar un programa caído de mantenimiento de la paz, las cosas salen mal y los héroes más poderosos de la Tierra deben unirse para detener a Ultrón.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/m18awhgmfglk</video:player_loc>
+      <video:publication_date>2026-04-30T20:55:53.605Z</video:publication_date>
       <video:duration>8460</video:duration>
     </video:video>
   </url>
   <url>
     <loc>https://ultrapelis.netlify.app/peliculas/superheroes/avengers-endgame-2019.html</loc>
-    <lastmod>2026-04-03T21:51:45.916Z</lastmod>
+    <lastmod>2026-04-30T20:55:51.811Z</lastmod>
     <video:video>
       <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/br6krBFpaYmCSglLBWRuhui7tPc.jpg</video:thumbnail_loc>
       <video:title>Avengers: Endgame</video:title>
-      <video:description>Después de los devastadores eventos de los Vengadores: Infinity War (2018), el universo está en ruinas. Con la ayuda de los aliados restantes, los Vengadores se reúnen una vez más para revertir las acciones de Thanos y restaurar el equilibrio del universo.</video:description>
-      <video:player_loc allow_embed="yes">https://www.youtube.com/embed/4KUQVkNBUS4</video:player_loc>
-      <video:publication_date>2026-04-03T21:51:45.916Z</video:publication_date>
-      <video:duration>10800</video:duration>
+      <video:description>Después de los devastadores eventos de Infinity War, el universo está en ruinas. Con la ayuda de los aliados restantes, los Vengadores se reúnen una vez más para intentar restaurar el equilibrio del universo.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/7jovrw5ecbkl</video:player_loc>
+      <video:publication_date>2026-04-30T20:55:51.811Z</video:publication_date>
+      <video:duration>10860</video:duration>
     </video:video>
   </url>
   <url>
     <loc>https://ultrapelis.netlify.app/peliculas/superheroes/avengers-infinity-war-2018.html</loc>
-    <lastmod>2026-04-23T02:34:48.943Z</lastmod>
+    <lastmod>2026-04-30T20:55:49.874Z</lastmod>
     <video:video>
       <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/ksBQ4oHQDdJwND8H90ay8CbMihU.jpg</video:thumbnail_loc>
-      <video:title>Avengers: Infinity War (2018)</video:title>
+      <video:title>Avengers: Infinity War</video:title>
       <video:description>Los Vengadores y sus aliados deben estar dispuestos a sacrificarlo todo para intentar derrotar al poderoso Thanos antes de que su ataque de devastación y ruina ponga fin al universo.</video:description>
-      <video:player_loc allow_embed="yes">https://www.youtube.com/embed/6ZfuNTqbHE8</video:player_loc>
-      <video:publication_date>2026-04-23T02:34:48.943Z</video:publication_date>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/f02t3fk95q9x</video:player_loc>
+      <video:publication_date>2026-04-30T20:55:49.874Z</video:publication_date>
       <video:duration>8940</video:duration>
     </video:video>
   </url>
   <url>
     <loc>https://ultrapelis.netlify.app/peliculas/superheroes/batman-v-superman-dawn-of-justice-2016.html</loc>
-    <lastmod>2026-04-23T02:34:49.735Z</lastmod>
+    <lastmod>2026-04-30T20:55:55.570Z</lastmod>
     <video:video>
       <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/ogl7euSNTWPpnB7nnq9E6RDTHNK.jpg</video:thumbnail_loc>
-      <video:title>Batman v Superman: Dawn of Justice (2016)</video:title>
-      <video:description>Dos años después de la destrucción de Metrópolis, la humanidad aún intenta determinar el rol de Superman en el mundo. Para evitar que las acciones del Hombre de Acero pasen desapercibidas, Batman se enfrenta a Superman, mientras una amenaza surge de las sombras.</video:description>
-      <video:player_loc allow_embed="yes">https://www.youtube.com/embed/NhWg7AQLI_8</video:player_loc>
-      <video:publication_date>2026-04-23T02:34:49.735Z</video:publication_date>
+      <video:title>Batman v Superman: El origen de la justicia</video:title>
+      <video:description>Temiendo que las acciones de Superman no hayan sido supervisadas, Batman se enfrenta al Hombre de Acero mientras el mundo intenta decidir qué tipo de héroe necesita.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/0h2rgzxezbog</video:player_loc>
+      <video:publication_date>2026-04-30T20:55:55.570Z</video:publication_date>
       <video:duration>9060</video:duration>
     </video:video>
   </url>
   <url>
     <loc>https://ultrapelis.netlify.app/peliculas/superheroes/birds-of-prey-2020.html</loc>
-    <lastmod>2026-04-23T02:34:50.435Z</lastmod>
+    <lastmod>2026-04-30T20:56:08.734Z</lastmod>
     <video:video>
       <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/1wLqXiiiaTSK8Y0n7N85O0jaNJm.jpg</video:thumbnail_loc>
-      <video:title>Birds of Prey (2020)</video:title>
-      <video:description>Después de separarse de Joker, Harley Quinn y otras tres heroínas (Canario Negro, Cazadora y Renée Montoya) unen sus fuerzas para salvar a una niña (Cassandra Cain) del malvado rey del crimen Máscara Negra.</video:description>
-      <video:player_loc allow_embed="yes">https://www.youtube.com/embed/kGM4uYZzfu0</video:player_loc>
-      <video:publication_date>2026-04-23T02:34:50.435Z</video:publication_date>
+      <video:title>Aves de presa</video:title>
+      <video:description>Después de separarse de Joker, Harley Quinn y otras tres heroínas unen sus fuerzas para salvar a una niña del malvado rey del crimen Máscara Negra.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/yoksaxgp3fes</video:player_loc>
+      <video:publication_date>2026-04-30T20:56:08.734Z</video:publication_date>
       <video:duration>6540</video:duration>
     </video:video>
   </url>
   <url>
     <loc>https://ultrapelis.netlify.app/peliculas/superheroes/black-adam-2022.html</loc>
-    <lastmod>2026-04-23T02:34:51.203Z</lastmod>
+    <lastmod>2026-04-30T20:55:57.549Z</lastmod>
     <video:video>
       <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/moDLTCdLx38kMhN53KOTw0LdWMh.jpg</video:thumbnail_loc>
-      <video:title>Black Adam (2022)</video:title>
-      <video:description>Casi 5,000 años después de obtener los poderes supremos de los antiguos dioses, y de ser encarcelado igual de rápido, Teth Adam se libera de su tumba terrenal, listo para desatar su peculiar forma de justicia en el mundo moderno.</video:description>
-      <video:player_loc allow_embed="yes">https://www.youtube.com/embed/6FvFxKrdbew</video:player_loc>
-      <video:publication_date>2026-04-23T02:34:51.203Z</video:publication_date>
+      <video:title>Black Adam</video:title>
+      <video:description>Casi 5,000 años después de obtener los poderes de los antiguos dioses, Black Adam es liberado de su tumba terrenal, listo para desatar su justicia en el mundo moderno.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/y3b4q7llkqfs</video:player_loc>
+      <video:publication_date>2026-04-30T20:55:57.549Z</video:publication_date>
       <video:duration>7500</video:duration>
     </video:video>
   </url>
   <url>
     <loc>https://ultrapelis.netlify.app/peliculas/superheroes/blue-beetle-2023.html</loc>
-    <lastmod>2026-04-23T02:34:52.891Z</lastmod>
+    <lastmod>2026-04-30T20:55:59.554Z</lastmod>
     <video:video>
       <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/tf5Mqgoj1fFIeP7Ktfn8KGrYhup.jpg</video:thumbnail_loc>
-      <video:title>Blue Beetle (2023)</video:title>
+      <video:title>Blue Beetle</video:title>
       <video:description>Un adolescente mexicano encuentra un escarabajo alienígena que le proporciona una armadura superpoderosa.</video:description>
-      <video:player_loc allow_embed="yes">https://www.youtube.com/embed/-PEODBVHCgU</video:player_loc>
-      <video:publication_date>2026-04-23T02:34:52.891Z</video:publication_date>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/2i6jo0ls5mx1</video:player_loc>
+      <video:publication_date>2026-04-30T20:55:59.554Z</video:publication_date>
       <video:duration>7680</video:duration>
     </video:video>
   </url>
@@ -630,25 +630,25 @@
   </url>
   <url>
     <loc>https://ultrapelis.netlify.app/peliculas/superheroes/deadpool-2-2018.html</loc>
-    <lastmod>2026-04-23T02:34:53.759Z</lastmod>
+    <lastmod>2026-04-30T20:56:03.867Z</lastmod>
     <video:video>
       <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/84NUrv5kuMUDDlOPqi97KGJMdLm.jpg</video:thumbnail_loc>
-      <video:title>Deadpool 2 (2018)</video:title>
-      <video:description>El mercenario mutante malhablado Wade Wilson (alias Deadpool), reúne a un equipo de mutantes para proteger a un joven con habilidades sobrenaturales del brutal cyborg Cable, que viaja a través del tiempo.</video:description>
-      <video:player_loc allow_embed="yes">https://www.youtube.com/embed/20bpjtCbCz0</video:player_loc>
-      <video:publication_date>2026-04-23T02:34:53.759Z</video:publication_date>
+      <video:title>Deadpool 2</video:title>
+      <video:description>Deadpool debe proteger a un joven mutante de las manos de Cable, un cyborg que viene del futuro para asesinarlo.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/ku9tqeqssxza</video:player_loc>
+      <video:publication_date>2026-04-30T20:56:03.867Z</video:publication_date>
       <video:duration>7200</video:duration>
     </video:video>
   </url>
   <url>
     <loc>https://ultrapelis.netlify.app/peliculas/superheroes/deadpool-2016.html</loc>
-    <lastmod>2026-04-23T02:34:54.415Z</lastmod>
+    <lastmod>2026-04-30T20:56:01.685Z</lastmod>
     <video:video>
       <video:thumbnail_loc>https://image.tmdb.org/t/p/w500/3TUYy0XvhPQBhrXJwRIaOoYFOBO.jpg</video:thumbnail_loc>
-      <video:title>Deadpool (2016)</video:title>
-      <video:description>Basado en el anti-héroe menos convencional de la Marvel, Deadpool narra el origen de un ex-operativo de la fuerzas especiales llamado Wade Wilson, reconvertido a mercenario, y que tras ser sometido a un cruel experimento adquiere poderes de curación rápida, adoptando Wade entonces el alter ego de Deadpool. Armado con sus nuevas habilidades y un oscuro y retorcido sentido del humor, Deadpool intentará dar caza al hombre que casi destruye su vida.</video:description>
-      <video:player_loc allow_embed="yes">https://www.youtube.com/embed/0JnRdfiUMa8</video:player_loc>
-      <video:publication_date>2026-04-23T02:34:54.415Z</video:publication_date>
+      <video:title>Deadpool</video:title>
+      <video:description>Wade Wilson se convierte en Deadpool tras un experimento fallido para curar su cáncer, adquiriendo habilidades de curación acelerada y un humor retorcido.</video:description>
+      <video:player_loc allow_embed="yes">https://myvidplay.com/e/ta6nn0nxiode</video:player_loc>
+      <video:publication_date>2026-04-30T20:56:01.685Z</video:publication_date>
       <video:duration>6480</video:duration>
     </video:video>
   </url>

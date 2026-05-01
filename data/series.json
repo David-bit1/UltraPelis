@@ -1,32 +1,97 @@
 [
   {
-    "slug": "breaking-bad",
-    "title": "Breaking Bad",
-    "poster": "https://image.tmdb.org/t/p/w500/ztkUQFLlC19CCMYHW9o1zWhJRNq.jpg",
-    "tmdb_id": 1396,
-    "banner": "https://image.tmdb.org/t/p/original/9fa979McZmr8P3jS9vSRQpavYFy.jpg",
-    "genres": ["Drama", "Crimen"],
-    "added_at": "2026-03-27T00:00:00Z",
-    "description": "Walter White, un profesor de química con cáncer, se alía con un exalumno para cocinar metanfetamina."
-  },
-  {
-    "slug": "parasyte-los-grises",
-    "title": "Parasyte: Los grises",
-    "poster": "https://image.tmdb.org/t/p/w500/1ov3Hh0xsZDQvAAkpJUF7gzYoLe.jpg",
-    "tmdb_id": 231679,
-    "banner": "https://image.tmdb.org/t/p/original/p4rJTY1rvQrffoh2P09sty5cz8B.jpg",
-    "genres": ["Ciencia ficcion", "Terror"],
-    "added_at": "2026-04-03T00:00:00Z",
-    "description": "Parásitos desconocidos toman el control de humanos y desatan una crisis. Una joven intenta sobrevivir mientras carga con una conexión inesperada con una de estas criaturas."
-  },
-  {
-    "slug": "avatar-la-leyenda-de-aang-live-action",
     "title": "Avatar: La leyenda de Aang (Live Action)",
+    "slug": "avatar-la-leyenda-de-aang-live-action",
     "poster": "https://image.tmdb.org/t/p/w500/lzZpWEaqzP0qVA5nkCc5ASbNcSy.jpg",
-    "tmdb_id": 120960,
     "banner": "https://image.tmdb.org/t/p/original/imlTCObfzISogbvcwB1dokoXAIc.jpg",
-    "genres": ["Fantasia", "Aventura"],
-    "added_at": "2026-04-03T00:00:00Z",
-    "description": "Aang, el último nómada aire, despierta para asumir su destino como Avatar y restaurar el equilibrio entre las naciones mientras enfrenta una guerra que amenaza al mundo."
+    "description": "Aang, el último nómada aire, despierta para asumir su destino como Avatar y restaurar el equilibrio entre las naciones mientras enfrenta una guerra que amenaza al mundo.",
+    "genres": [
+      "Accion",
+      "Aventura",
+      "Fantasia"
+    ],
+    "added_at": "2026-04-12T21:03:43.748Z"
+  },
+  {
+    "title": "Breaking Bad",
+    "slug": "breaking-bad",
+    "poster": "https://image.tmdb.org/t/p/w500/ztkUQFLlC19CCMYHW9o1zWhJRNq.jpg",
+    "banner": "https://image.tmdb.org/t/p/original/tsRy63Mu5cu8etL1X7ZLyf7UP1M.jpg",
+    "description": "Walter White es un profesor de química que comienza a fabricar metanfetamina para asegurar el futuro de su familia.",
+    "genres": [
+      "Drama",
+      "Crimen"
+    ],
+    "added_at": "2026-04-12T20:59:40.135Z"
+  },
+  {
+    "title": "Dexter",
+    "slug": "dexter",
+    "poster": "https://image.tmdb.org/t/p/w500/q8dWfc4JwQuv3HayIZeO84jAXED.jpg",
+    "banner": "https://image.tmdb.org/t/p/original/nS5ZSmrX92lu1GYAlXZye1mkDfd.jpg",
+    "description": "Dexter Morgan, un analista de patrones de salpicaduras de sangre de la Policía Metropolitana de Miami, también lleva una vida secreta como asesino en serie, persiguiendo a criminales que han escapado a la justicia.",
+    "genres": [
+      "Crimen",
+      "Drama",
+      "Misterio"
+    ],
+    "added_at": "2026-04-12T20:59:40.547Z"
+  },
+  {
+    "title": "Hannibal",
+    "slug": "hannibal",
+    "poster": "https://image.tmdb.org/t/p/w500/pbV2eLnKSIm1epSZt473UYfqaeZ.jpg",
+    "banner": "https://image.tmdb.org/t/p/original/vlG182ZY2WMzD5bjFZNnhyvv5V4.jpg",
+    "description": "Will Graham, que trabaja en el FBI como analista de crímenes, tiene una capacidad innata para empatizar con los psicópatas, lo que le permite entender sus motivaciones. Pero, cuando se da cuenta de que la mente del asesino en serie que está buscando es demasiado compleja incluso para él, recaba la ayuda de uno de principales psiquiatras del país, el Dr. Hannibal Lecter.",
+    "genres": [
+      "Drama",
+      "Crimen"
+    ],
+    "added_at": "2026-04-12T20:59:41.011Z"
+  },
+  {
+    "title": "Dr. House",
+    "slug": "house-md",
+    "poster": "https://image.tmdb.org/t/p/w500/lW7MvZ4m49IUj2UrUu4z0xVVl81.jpg",
+    "banner": "https://image.tmdb.org/t/p/original/r0Q6eeN9L1ORL9QsV0Sg8ZV3vnv.jpg",
+    "description": "El Dr. Gregory House, un genio médico misántropo, poco convencional y adicto a las drogas, lidera un equipo de diagnosticadores en el ficticio Hospital Universitario Princeton-Plainsboro en Nueva Jersey.",
+    "genres": [
+      "Drama"
+    ],
+    "added_at": "2026-04-12T20:59:41.419Z"
+  },
+  {
+    "title": "Mr. Robot",
+    "slug": "mr-robot",
+    "poster": "https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg",
+    "banner": "https://image.tmdb.org/t/p/original/hZOuVkhAWX9viLJuaIsMh8cM3Jz.jpg",
+    "description": "Elliot Anderson es un joven y brillante programador con problemas para las relaciones sociales que durante el día trabaja como técnico de ciberseguridad de una importante empresa informática y por la noche es un desinteresado justiciero cibernético, que se verá envuelto en una oscura trama.",
+    "genres": [
+      "Crimen",
+      "Drama"
+    ],
+    "added_at": "2026-04-26T21:34:52.358Z"
+  },
+  {
+    "title": "Parasyte: Los grises",
+    "slug": "parasyte-los-grises",
+    "poster": "https://image.tmdb.org/t/p/w500/1ov3Hh0xsZDQvAAkpJUF7gzYoLe.jpg",
+    "banner": "https://image.tmdb.org/t/p/original/p4rJTY1rvQrffoh2P09sty5cz8B.jpg",
+    "description": "Parásitos desconocidos toman el control de humanos y desatan una crisis. Una joven intenta sobrevivir mientras carga con una conexión inesperada con una de estas criaturas.",
+    "genres": [
+      "Drama"
+    ],
+    "added_at": "2026-04-12T20:59:42.847Z"
+  },
+  {
+    "title": "Stranger Things",
+    "slug": "stranger-things",
+    "poster": "https://image.tmdb.org/t/p/w500/1sRJ8D1vpXE5WQBGrUBky3uUwvX.jpg",
+    "banner": "https://image.tmdb.org/t/p/original/8zbAoryWbtH0DKdev8abFAjdufy.jpg",
+    "description": "Después de la extraña desaparición de un niño, un pueblo se encuentra ante un misterio que revela experimentos secretos, fuerzas sobrenaturales y a una niña muy especial.",
+    "genres": [
+      "Misterio"
+    ],
+    "added_at": "2026-04-12T20:59:43.231Z"
   }
 ]

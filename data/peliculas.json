@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "titulo": "Batman",
+    "año": 2022,
+    "genero": "Accion",
+    "sinopsis": "El justiciero de Gotham enfrenta una conspiracion que pone a la ciudad al borde del caos.",
+    "imagen": "assets/img/poster-placeholder.svg",
+    "iframe": "https://example.com/embed/batman",
+    "destacada": true
+  },
+  {
+    "id": 2,
+    "titulo": "Dune: Parte Dos",
+    "año": 2024,
+    "genero": "Ciencia Ficcion",
+    "sinopsis": "Paul Atreides se une a los fremen para luchar por Arrakis y su destino.",
+    "imagen": "assets/img/poster-placeholder.svg",
+    "iframe": "https://example.com/embed/dune-parte-dos",
+    "destacada": true
+  },
+  {
+    "id": 3,
+    "titulo": "Oppenheimer",
+    "año": 2023,
+    "genero": "Drama",
+    "sinopsis": "La historia del hombre que lidero el desarrollo de la bomba atomica y sus consecuencias.",
+    "imagen": "assets/img/poster-placeholder.svg",
+    "iframe": "https://example.com/embed/oppenheimer",
+    "destacada": true
+  },
+  {
+    "id": 4,
+    "titulo": "Godzilla x Kong",
+    "año": 2024,
+    "genero": "Accion",
+    "sinopsis": "Dos titanes vuelven a cruzar sus caminos mientras una amenaza gigante emerge del subsuelo.",
+    "imagen": "assets/img/poster-placeholder.svg",
+    "iframe": "https://example.com/embed/godzilla-x-kong",
+    "destacada": true
+  },
+  {
+    "id": 5,
+    "titulo": "Inside Out 2",
+    "año": 2024,
+    "genero": "Animacion",
+    "sinopsis": "Las emociones de Riley enfrentan nuevos retos en una etapa llena de cambios.",
+    "imagen": "assets/img/poster-placeholder.svg",
+    "iframe": "https://example.com/embed/inside-out-2",
+    "destacada": false
+  },
+  {
+    "id": 6,
+    "titulo": "Deadpool y Wolverine",
+    "año": 2024,
+    "genero": "Accion",
+    "sinopsis": "Dos antiheroes muy distintos se ven obligados a trabajar juntos en una mision imposible.",
+    "imagen": "assets/img/poster-placeholder.svg",
+    "iframe": "https://example.com/embed/deadpool-y-wolverine",
+    "destacada": false
+  },
+  {
+    "id": 7,
+    "titulo": "La Casa del Eco",
+    "año": 2025,
+    "genero": "Terror",
+    "sinopsis": "Una familia descubre que la casa donde vive repite sonidos que no deberian existir.",
+    "imagen": "assets/img/poster-placeholder.svg",
+    "iframe": "https://example.com/embed/la-casa-del-eco",
+    "destacada": true
+  },
+  {
+    "id": 8,
+    "titulo": "Risas en Fuga",
+    "año": 2023,
+    "genero": "Comedia",
+    "sinopsis": "Dos amigos terminan escapando de un malentendido que crece mas de lo esperado.",
+    "imagen": "assets/img/poster-placeholder.svg",
+    "iframe": "https://example.com/embed/risas-en-fuga",
+    "destacada": false
+  },
+  {
+    "id": 9,
+    "titulo": "Codigo Sombra",
+    "año": 2024,
+    "genero": "Thriller",
+    "sinopsis": "Un analista descubre una secuencia oculta dentro de transmisiones que parecen inofensivas.",
+    "imagen": "assets/img/poster-placeholder.svg",
+    "iframe": "https://example.com/embed/codigo-sombra",
+    "destacada": false
+  },
+  {
+    "id": 10,
+    "titulo": "Velocidad Limite",
+    "año": 2023,
+    "genero": "Accion",
+    "sinopsis": "Una piloto retirada vuelve a las calles para resolver una deuda que amenaza a su familia.",
+    "imagen": "assets/img/poster-placeholder.svg",
+    "iframe": "https://example.com/embed/velocidad-limite",
+    "destacada": false
+  },
+  {
+    "id": 11,
+    "titulo": "Plan Perfecto",
+    "año": 2025,
+    "genero": "Suspenso",
+    "sinopsis": "Un atraco planificado al detalle empieza a desmoronarse cuando nadie sigue el guion.",
+    "imagen": "assets/img/poster-placeholder.svg",
+    "iframe": "https://example.com/embed/plan-perfecto",
+    "destacada": false
+  },
+  {
+    "id": 12,
+    "titulo": "Destino Final",
+    "año": 2024,
+    "genero": "Drama",
+    "sinopsis": "Una familia intenta recomponerse mientras enfrenta decisiones que cambian su futuro.",
+    "imagen": "assets/img/poster-placeholder.svg",
+    "iframe": "https://example.com/embed/destino-final",
+    "destacada": false
+  }
+]

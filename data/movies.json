@@ -1,0 +1,82 @@
+[
+  {
+    "id": "noche-de-accion",
+    "title": "Noche de Accion",
+    "poster": "assets/img/poster-placeholder.svg",
+    "year": 2025,
+    "genre": "Accion",
+    "synopsis": "Un equipo improvisado debe cruzar una ciudad tomada para rescatar el unico archivo capaz de detener una conspiracion.",
+    "streamUrl": "https://example.com/embed/noche-de-accion",
+    "featured": true
+  },
+  {
+    "id": "orbita-final",
+    "title": "Orbita Final",
+    "poster": "assets/img/poster-placeholder.svg",
+    "year": 2024,
+    "genre": "Ciencia Ficcion",
+    "synopsis": "Una piloto queda atrapada en una estacion espacial y descubre que la mision real nunca fue regresar a la Tierra.",
+    "streamUrl": "https://example.com/embed/orbita-final",
+    "featured": true
+  },
+  {
+    "id": "risas-en-fuga",
+    "title": "Risas en Fuga",
+    "poster": "assets/img/poster-placeholder.svg",
+    "year": 2023,
+    "genre": "Comedia",
+    "synopsis": "Dos amigos confunden una despedida tranquila con una persecucion internacional llena de errores absurdos.",
+    "streamUrl": "https://example.com/embed/risas-en-fuga",
+    "featured": true
+  },
+  {
+    "id": "la-casa-del-eco",
+    "title": "La Casa del Eco",
+    "poster": "assets/img/poster-placeholder.svg",
+    "year": 2025,
+    "genre": "Terror",
+    "synopsis": "Una familia se muda a una casa donde cada sonido repetido revela un secreto que nunca debio despertar.",
+    "streamUrl": "https://example.com/embed/la-casa-del-eco",
+    "featured": true
+  },
+  {
+    "id": "corazon-de-neon",
+    "title": "Corazon de Neon",
+    "poster": "assets/img/poster-placeholder.svg",
+    "year": 2022,
+    "genre": "Drama",
+    "synopsis": "Una cantante callejera intenta reconstruir su vida mientras una ciudad brillante le exige elegir entre fama y familia.",
+    "streamUrl": "https://example.com/embed/corazon-de-neon",
+    "featured": false
+  },
+  {
+    "id": "reino-perdido",
+    "title": "Reino Perdido",
+    "poster": "assets/img/poster-placeholder.svg",
+    "year": 2026,
+    "genre": "Fantasia",
+    "synopsis": "Una joven heredera encuentra un mapa vivo que la guia hacia un reino borrado de todos los libros.",
+    "streamUrl": "https://example.com/embed/reino-perdido",
+    "featured": false
+  },
+  {
+    "id": "codigo-sombra",
+    "title": "Codigo Sombra",
+    "poster": "assets/img/poster-placeholder.svg",
+    "year": 2024,
+    "genre": "Thriller",
+    "synopsis": "Un analista descubre una senal oculta en transmisiones antiguas y se convierte en el siguiente objetivo.",
+    "streamUrl": "https://example.com/embed/codigo-sombra",
+    "featured": false
+  },
+  {
+    "id": "velocidad-limite",
+    "title": "Velocidad Limite",
+    "poster": "assets/img/poster-placeholder.svg",
+    "year": 2023,
+    "genre": "Accion",
+    "synopsis": "Una corredora retirada vuelve al volante para saldar una deuda y proteger a su hermano menor.",
+    "streamUrl": "https://example.com/embed/velocidad-limite",
+    "featured": false
+  }
+]

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="900" viewBox="0 0 600 900" role="img" aria-label="Poster pendiente">
+  <rect width="600" height="900" fill="#141821"/>
+  <rect x="36" y="36" width="528" height="828" rx="18" fill="none" stroke="#303846" stroke-width="8"/>
+  <circle cx="300" cy="352" r="86" fill="#e50914"/>
+  <path d="M274 302v100l84-50z" fill="#fff"/>
+  <text x="300" y="520" fill="#f4f7fb" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="700" text-anchor="middle">UltraPelis</text>
+  <text x="300" y="578" fill="#a8b0bf" font-family="Arial, Helvetica, sans-serif" font-size="26" text-anchor="middle">Poster pendiente</text>
+</svg>

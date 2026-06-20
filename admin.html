@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin | UltraPelis</title>
+    <meta name="description" content="Panel de administracion de UltraPelis conectado a Supabase." />
+    <meta name="supabase-url" content="https://zmmwuwkzpjgsatpbxivh.supabase.co" />
+    <meta name="supabase-anon-key" content="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptbXd1d2t6cGpnc2F0cGJ4aXZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4MTY4MzEsImV4cCI6MjA5NzM5MjgzMX0.knZ7wJ6YSm1-_BwlaQMV7GhS0O_Pn1cxuEIC1r6QeIE" />
+    <link rel="icon" href="img/incono.png" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="admin-page">
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="UltraPelis inicio">
+        <img class="brand-logo" src="img/logo-tipo.png" alt="UltraPelis" />
+      </a>
+
+      <nav class="site-nav" aria-label="Navegacion principal">
+        <a href="index.html">Inicio</a>
+        <a href="index.html#catalogo">Peliculas</a>
+        <a href="index.html#generos">Generos</a>
+        <a href="index.html#contacto">Contacto</a>
+      </nav>
+
+      <a class="search-button" href="index.html">Volver</a>
+    </header>
+
+    <main class="app-shell admin-shell">
+      <section class="admin-hero">
+        <p class="hero-kicker">Panel UltraPelis</p>
+        <h1>Administracion de peliculas</h1>
+        <p class="hero-copy">
+          Crea, edita, elimina y sincroniza el catalogo directo con Supabase.
+        </p>
+      </section>
+
+      <section class="admin-grid">
+        <div class="admin-card auth-card">
+          <div class="section-header">
+            <div>
+              <p class="section-label">Acceso</p>
+              <h2>Iniciar sesion</h2>
+            </div>
+            <p class="catalog-status" id="auth-status">Desconectado</p>
+          </div>
+
+          <form id="login-form" class="admin-form">
+            <label class="field">
+              <span>Correo</span>
+              <input id="login-email" type="email" placeholder="admin@tudominio.com" />
+            </label>
+            <label class="field">
+              <span>Contraseña</span>
+              <input id="login-password" type="password" placeholder="Tu contraseña" />
+            </label>
+            <div class="form-actions">
+              <button class="primary-button" type="submit">Entrar</button>
+              <button class="secondary-button" id="logout-button" type="button" hidden>Salir</button>
+            </div>
+          </form>
+          <p class="admin-note">Usa un usuario de Supabase Auth con permisos de administrador.</p>
+        </div>
+
+        <div class="admin-card form-card">
+          <div class="section-header">
+            <div>
+              <p class="section-label">Formulario</p>
+              <h2 id="form-title">Agregar pelicula</h2>
+            </div>
+            <p class="catalog-status" id="form-status">Listo</p>
+          </div>
+
+          <form id="movie-form" class="admin-form">
+            <input type="hidden" id="movie-id" />
+            <div class="field-grid">
+              <label class="field">
+                <span>Titulo</span>
+                <input id="titulo" type="text" required />
+              </label>
+              <label class="field">
+                <span>Año</span>
+                <input id="anio" type="number" min="1888" required />
+              </label>
+              <label class="field">
+                <span>Genero</span>
+                <input id="genero" type="text" required />
+              </label>
+              <label class="field">
+                <span>Imagen</span>
+                <input id="imagen" type="url" placeholder="https://..." required />
+              </label>
+            </div>
+            <label class="field">
+              <span>Sinopsis</span>
+              <textarea id="sinopsis" rows="5" required></textarea>
+            </label>
+            <label class="field">
+              <span>Iframe</span>
+              <input id="iframe" type="url" placeholder="https://..." required />
+            </label>
+            <div class="form-actions">
+              <button class="primary-button" type="submit">Guardar</button>
+              <button class="secondary-button" id="cancel-edit" type="button" hidden>Cancelar</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="admin-card list-card">
+          <div class="section-header">
+            <div>
+              <p class="section-label">Catalogo</p>
+              <h2>Peliculas en Supabase</h2>
+            </div>
+            <p class="catalog-status" id="movie-count">0 peliculas</p>
+          </div>
+
+          <div class="toolbar">
+            <input id="admin-search" type="search" placeholder="Buscar por titulo..." />
+            <button class="secondary-button" id="refresh-button" type="button">Actualizar</button>
+          </div>
+
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Titulo</th>
+                  <th>Año</th>
+                  <th>Genero</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="movies-table"></tbody>
+            </table>
+          </div>
+          <p class="empty-state" id="admin-empty" hidden>No hay peliculas para mostrar.</p>
+        </div>
+      </section>
+    </main>
+
+    <script src="admin.js" type="module"></script>
+  </body>
+</html>

@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ver pelicula | UltraPelis</title>
+    <meta name="description" content="Reproduce peliculas de UltraPelis desde una sola pagina dinamica." />
+    <meta name="supabase-url" content="https://zmmwuwkzpjgsatpbxivh.supabase.co" />
+    <meta name="supabase-anon-key" content="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptbXd1d2t6cGpnc2F0cGJ4aXZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4MTY4MzEsImV4cCI6MjA5NzM5MjgzMX0.knZ7wJ6YSm1-_BwlaQMV7GhS0O_Pn1cxuEIC1r6QeIE" />
+    <link rel="icon" href="img/incono.png" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="UltraPelis inicio">
+        <img class="brand-logo" src="img/logo-tipo.png" alt="UltraPelis" />
+      </a>
+
+      <nav class="site-nav" aria-label="Navegacion principal">
+        <a href="index.html">Inicio</a>
+        <a href="index.html#catalogo">Peliculas</a>
+        <a href="index.html#generos">Generos</a>
+        <a href="index.html#contacto">Contacto</a>
+      </nav>
+
+      <a class="search-button" href="index.html#catalogo">Volver</a>
+    </header>
+
+    <main class="app-shell movie-page">
+      <section class="movie-shell" id="movie-root" aria-live="polite">
+        <article class="movie-detail">
+          <div class="movie-detail-media">
+            <img id="movie-poster" class="movie-poster" src="assets/img/poster-placeholder.svg" alt="" />
+          </div>
+
+          <div class="movie-detail-content">
+            <p class="section-label" id="movie-genre-label">Pelicula</p>
+            <h1 id="movie-title">Cargando pelicula...</h1>
+            <ul class="movie-meta-list" aria-label="Datos de la pelicula">
+              <li><span>Año</span><strong id="movie-year">-</strong></li>
+              <li><span>Genero</span><strong id="movie-genre">-</strong></li>
+            </ul>
+            <p id="movie-synopsis" class="movie-synopsis-detail">
+              Espera un momento mientras cargamos la informacion.
+            </p>
+
+            <div class="movie-actions">
+              <a class="primary-button" href="#player">Reproducir</a>
+              <a class="secondary-button" href="index.html">Volver al inicio</a>
+            </div>
+          </div>
+        </article>
+
+        <section class="player-section" id="player" aria-labelledby="player-title">
+          <div class="section-header">
+            <div>
+              <p class="section-label">Reproductor</p>
+              <h2 id="player-title">Ver pelicula</h2>
+            </div>
+          </div>
+          <div class="player-frame">
+            <iframe
+              id="movie-iframe"
+              title="Reproductor de pelicula"
+              loading="lazy"
+              referrerpolicy="no-referrer"
+              allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </section>
+
+        <section class="related-section" aria-labelledby="related-title">
+          <div class="section-header">
+            <div>
+              <p class="section-label">Relacionadas</p>
+              <h2 id="related-title">Peliculas del mismo genero</h2>
+            </div>
+          </div>
+          <div class="related-grid" id="related-grid"></div>
+        </section>
+
+        <section class="movie-error" id="movie-error" hidden>
+          <h1>Pelicula no encontrada</h1>
+          <p>No pudimos encontrar una pelicula con ese ID.</p>
+          <a class="primary-button" href="index.html">Volver al inicio</a>
+        </section>
+      </section>
+    </main>
+
+    <script src="movie.js" type="module"></script>
+  </body>
+</html>

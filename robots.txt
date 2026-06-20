@@ -1,6 +1,0 @@
-User-agent: *
-Allow: /
-
-# Sitemap principal
-Sitemap: https://ultrapelis.netlify.app/sitemap.xml
-Sitemap: https://ultrapelis.netlify.app/sitemap-video.xml

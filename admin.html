@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin | UltraPelis</title>
-    <meta name="description" content="Panel de administracion de UltraPelis conectado a Supabase y TMDb." />
+    <meta name="description" content="Panel de administración de UltraPelis conectado a Supabase y TMDb." />
     <meta name="supabase-url" content="https://zmmwuwkzpjgsatpbxivh.supabase.co" />
     <meta name="supabase-anon-key" content="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptbXd1d2t6cGpnc2F0cGJ4aXZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4MTY4MzEsImV4cCI6MjA5NzM5MjgzMX0.knZ7wJ6YSm1-_BwlaQMV7GhS0O_Pn1cxuEIC1r6QeIE" />
     <meta name="tmdb-api-key" content="b24af203b14e23f8c91844baae37cfab" />
@@ -18,12 +18,18 @@
         <img class="brand-logo" src="img/logo-tipo.png" alt="UltraPelis" />
       </a>
 
-      <nav class="site-nav" aria-label="Navegacion principal">
+      <nav class="site-nav" aria-label="Navegación principal">
         <a href="index.html">Inicio</a>
-        <a href="index.html#catalogo">Peliculas</a>
-        <a href="index.html#generos">Generos</a>
+        <a href="peliculas.html">Películas</a>
+        <a href="index.html#generos">Géneros</a>
         <a href="index.html#contacto">Contacto</a>
       </nav>
+
+      <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Abrir menú">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
 
       <a class="search-button" href="index.html">Volver</a>
     </header>
@@ -31,9 +37,9 @@
     <main class="app-shell admin-shell">
       <section class="admin-hero">
         <p class="hero-kicker">Panel UltraPelis</p>
-        <h1>Administracion de peliculas</h1>
+        <h1>Administración de películas</h1>
         <p class="hero-copy">
-          Busca peliculas por TMDb ID y gestiona el catalogo directo con Supabase.
+          Busca películas por TMDb ID y gestiona el catálogo directo con Supabase.
         </p>
       </section>
 
@@ -43,7 +49,7 @@
           <div class="section-header">
             <div>
               <p class="section-label">Acceso</p>
-              <h2>Iniciar sesion</h2>
+              <h2>Iniciar sesión</h2>
             </div>
             <p class="catalog-status" id="auth-status">Desconectado</p>
           </div>
@@ -62,15 +68,15 @@
               <button class="secondary-button" id="logout-button" type="button" hidden>Salir</button>
             </div>
           </form>
-          <p class="admin-note">Solo administradores con credenciales validas pueden acceder.</p>
+          <p class="admin-note">Solo administradores con credenciales válidas pueden acceder.</p>
         </div>
 
         <!-- TMDb Search Card -->
         <div class="admin-tmdb-card" id="tmdb-search-card" hidden>
           <div class="section-header">
             <div>
-              <p class="section-label">Busqueda TMDb</p>
-              <h2>Obtener pelicula por ID</h2>
+              <p class="section-label">Búsqueda TMDb</p>
+              <h2>Obtener película por ID</h2>
             </div>
             <p class="catalog-status" id="tmdb-status">Escribe un TMDb ID</p>
           </div>
@@ -92,7 +98,7 @@
             </div>
             <div class="tmdb-info-grid">
               <div class="tmdb-info-item">
-                <span>Titulo</span>
+                <span>Título</span>
                 <strong id="tmdb-titulo">-</strong>
               </div>
               <div class="tmdb-info-item">
@@ -100,15 +106,15 @@
                 <strong id="tmdb-anio">-</strong>
               </div>
               <div class="tmdb-info-item">
-                <span>Generos</span>
+                <span>Géneros</span>
                 <ul id="tmdb-generos-list"></ul>
               </div>
               <div class="tmdb-info-item">
-                <span>Duracion</span>
+                <span>Duración</span>
                 <strong id="tmdb-duracion">-</strong>
               </div>
               <div class="tmdb-info-item">
-                <span>Clasificacion</span>
+                <span>Clasificación</span>
                 <strong id="tmdb-clasificacion">-</strong>
               </div>
               <div class="tmdb-info-item">
@@ -129,7 +135,7 @@
           <div class="section-header">
             <div>
               <p class="section-label">Formulario</p>
-              <h2 id="form-title">Agregar pelicula</h2>
+              <h2 id="form-title">Agregar película</h2>
             </div>
             <p class="catalog-status" id="form-status">Listo</p>
           </div>
@@ -140,7 +146,7 @@
 
             <div class="field-grid">
               <label class="field">
-                <span>Titulo</span>
+                <span>Título</span>
                 <input id="titulo" type="text" />
               </label>
               <label class="field">
@@ -150,22 +156,22 @@
             </div>
 
             <label class="field">
-              <span>Genero principal</span>
+              <span>Género principal</span>
               <input id="genero" type="text" />
             </label>
 
             <label class="field">
-              <span>Generos (separados por coma)</span>
+              <span>Géneros (separados por coma)</span>
               <input id="generos" type="text" placeholder="Accion, Drama, Comedia..." />
             </label>
 
             <div class="field-grid">
               <label class="field">
-                <span>Duracion (minutos)</span>
+                <span>Duración (minutos)</span>
                 <input id="duracion" type="number" min="1" />
               </label>
               <label class="field">
-                <span>Clasificacion</span>
+                <span>Clasificación</span>
                 <input id="clasificacion" type="text" placeholder="PG-13, R, etc..." />
               </label>
             </div>
@@ -190,23 +196,16 @@
               <textarea id="sinopsis" rows="5"></textarea>
             </label>
 
-            <div class="servers-grid">
-              <label class="field">
-                <span>Servidor 1 (Iframe)</span>
-                <input id="servidor_1" type="url" placeholder="https://..." />
-              </label>
-              <label class="field">
-                <span>Servidor 2 (Iframe)</span>
-                <input id="servidor_2" type="url" placeholder="https://..." />
-              </label>
-              <label class="field">
-                <span>Servidor 3 (Iframe)</span>
-                <input id="servidor_3" type="url" placeholder="https://..." />
-              </label>
-              <label class="field">
-                <span>Servidor 4 (Iframe)</span>
-                <input id="servidor_4" type="url" placeholder="https://..." />
-              </label>
+            <div class="servers-section">
+              <div class="servers-header">
+                <h3>Servidores de reproducción</h3>
+                <button class="secondary-button" id="add-server" type="button">
+                  + Agregar servidor
+                </button>
+              </div>
+              <div class="servers-list" id="servers-list">
+                <p class="no-servers">No hay servidores agregados.</p>
+              </div>
             </div>
 
             <div class="form-actions">
@@ -220,14 +219,14 @@
         <div class="admin-card list-card">
           <div class="section-header">
             <div>
-              <p class="section-label">Catalogo</p>
-              <h2>Peliculas en Supabase</h2>
+              <p class="section-label">Catálogo</p>
+              <h2>Películas en Supabase</h2>
             </div>
-            <p class="catalog-status" id="movie-count">0 peliculas</p>
+            <p class="catalog-status" id="movie-count">0 películas</p>
           </div>
 
           <div class="toolbar">
-            <input id="admin-search" type="search" placeholder="Buscar por titulo..." />
+            <input id="admin-search" type="search" placeholder="Buscar por título..." />
             <button class="secondary-button" id="refresh-button" type="button">Actualizar</button>
           </div>
 
@@ -235,19 +234,102 @@
             <table class="admin-table">
               <thead>
                 <tr>
-                  <th>Titulo</th>
+                  <th>Título</th>
                   <th>Año</th>
-                  <th>Genero</th>
+                  <th>Género</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
               <tbody id="movies-table"></tbody>
             </table>
           </div>
-          <p class="empty-state" id="admin-empty" hidden>No hay peliculas para mostrar.</p>
+          <p class="empty-state" id="admin-empty" hidden>No hay películas para mostrar.</p>
         </div>
       </section>
     </main>
+
+    <!-- Server Modal -->
+    <div class="modal" id="server-modal" hidden>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="modal-title">Agregar servidor</h3>
+          <button class="icon-button" id="close-modal" type="button">×</button>
+        </div>
+        <form id="server-form" class="admin-form">
+          <input type="hidden" id="server-id" />
+          
+          <label class="field">
+            <span>Nombre del servidor</span>
+            <input id="server-nombre" type="text" placeholder="Ej: StreamWish, Filemoon..." required />
+          </label>
+
+          <label class="field">
+            <span>URL del iframe</span>
+            <input id="server-url" type="url" placeholder="https://..." required />
+          </label>
+
+          <div class="field-grid">
+            <label class="field">
+              <span>Idioma de audio</span>
+              <select id="server-idioma">
+                <option value="es">Español Latino</option>
+                <option value="es-CO">Español Castellano</option>
+                <option value="en">Inglés</option>
+                <option value="ja">Japonés</option>
+                <option value="other">Otro</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Calidad</span>
+              <select id="server-calidad">
+                <option value="720p">720p HD</option>
+                <option value="1080p">1080p Full HD</option>
+                <option value="4k">4K Ultra HD</option>
+                <option value="480p">480p SD</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="field">
+            <label class="checkbox-label">
+              <input id="server-subtitulos" type="checkbox" />
+              <span>¿Tiene subtítulos?</span>
+            </label>
+            
+            <div id="subtitulo-options" hidden>
+              <label class="field">
+                <span>Idioma de subtítulos</span>
+                <select id="server-idioma-subtitulos">
+                  <option value="es">Español</option>
+                  <option value="en">Inglés</option>
+                  <option value="other">Otro</option>
+                </select>
+              </label>
+            </div>
+          </div>
+
+          <div class="field-grid">
+            <label class="field">
+              <span>Estado</span>
+              <select id="server-estado">
+                <option value="activo">Activo</option>
+                <option value="caido">Caído</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Orden (prioridad)</span>
+              <input id="server-orden" type="number" min="1" value="1" />
+            </label>
+          </div>
+
+          <div class="form-actions">
+            <button class="primary-button" type="submit">Guardar servidor</button>
+          </div>
+        </form>
+      </div>
+    </div>
 
     <script src="admin.js" type="module"></script>
   </body>

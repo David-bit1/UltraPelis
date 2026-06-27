@@ -21,7 +21,12 @@ const elements = {
   ratingItem: document.querySelector("#movie-rating-item"),
   releaseDate: document.querySelector("#movie-release-date"),
   releaseItem: document.querySelector("#movie-release-item"),
-  serverTabs: document.querySelector("#server-tabs"),
+  serverSelect: document.querySelector("#server-select"),
+};
+
+const state = {
+  servers: [],
+  movieId: null,
 };
 
 function escapeHtml(value) {
@@ -41,6 +46,17 @@ function getMovieId() {
   const params = new URLSearchParams(window.location.search);
   const id = Number(params.get("id"));
   return Number.isFinite(id) && id > 0 ? id : null;
+}
+
+function getLanguageLabel(code) {
+  const labels = {
+    'es': 'Español Latino',
+    'es-CO': 'Español Castellano',
+    'en': 'Inglés',
+    'ja': 'Japonés',
+    'other': 'Otro'
+  };
+  return labels[code] || code;
 }
 
 function renderError(message) {
@@ -65,32 +81,40 @@ function relatedCard(movie) {
   `;
 }
 
-function renderServerTabs(movie) {
-  const servers = [
-    movie.servidor_1,
-    movie.servidor_2,
-    movie.servidor_3,
-    movie.servidor_4,
-  ].filter(Boolean);
-
-  if (servers.length <= 1) {
-    elements.serverTabs.innerHTML = "";
+function renderServerOptions() {
+  const activeServers = state.servers.filter(s => s.estado === 'activo');
+  
+  if (activeServers.length === 0) {
+    elements.serverSelect.innerHTML = '<option value="">Sin servidores activos</option>';
     return;
   }
 
-  elements.serverTabs.innerHTML = servers.map((server, index) => `
-    <button class="secondary-button server-tab" type="button" data-server="${index + 1}" ${index === 0 ? 'data-active="true"' : ''}>
-      Servidor ${index + 1}
-    </button>
-  `).join("");
+  elements.serverSelect.innerHTML = activeServers.map((server, index) => {
+    const subtitleInfo = server.subtitulos 
+      ? ` | Sub: ${getLanguageLabel(server.idioma_subtitulos)}` 
+      : '';
+    return `
+      <option value="${server.url}" ${index === 0 ? 'selected' : ''}>
+        ${server.nombre} - ${getLanguageLabel(server.idioma_audio)} - ${server.calidad}${subtitleInfo}
+      </option>
+    `;
+  }).join("");
 
-  const tabs = elements.serverTabs.querySelectorAll(".server-tab");
-  tabs.forEach((tab, idx) => {
-    tab.addEventListener("click", () => {
-      elements.iframe.src = servers[idx];
-      tabs.forEach(t => t.removeAttribute("data-active"));
-      tab.setAttribute("data-active", "true");
-    });
+  // Set initial iframe
+  if (activeServers.length > 0) {
+    elements.iframe.src = activeServers[0].url;
+    elements.iframe.title = `Reproductor - ${activeServers[0].nombre}`;
+  }
+}
+
+function bindServerChange() {
+  elements.serverSelect.addEventListener("change", () => {
+    const url = elements.serverSelect.value;
+    if (url) {
+      elements.iframe.src = url;
+      const selectedText = elements.serverSelect.options[elements.serverSelect.selectedIndex].text;
+      elements.iframe.title = `Reproductor - ${selectedText}`;
+    }
   });
 }
 
@@ -102,14 +126,14 @@ function bindMenuToggle() {
       menuToggle.classList.toggle("is-active");
       siteNav.classList.toggle("is-open");
     });
-  }
 
-  window.addEventListener("scroll", () => {
-    const header = document.querySelector(".site-header");
-    if (header) {
-      header.classList.toggle("scrolled", window.scrollY > 10);
-    }
-  });
+    window.addEventListener("scroll", () => {
+      const header = document.querySelector(".site-header");
+      if (header) {
+        header.classList.toggle("scrolled", window.scrollY > 10);
+      }
+    });
+  }
 }
 
 async function loadMovie() {
@@ -119,22 +143,33 @@ async function loadMovie() {
     return;
   }
 
-  const { data, error } = await supabase
+  state.movieId = movieId;
+
+  // Load movie data
+  const { data: movie, error } = await supabase
     .from("peliculas")
     .select("*")
     .eq("id", movieId)
     .maybeSingle();
 
-  if (error) {
-    throw error;
-  }
+  if (error) throw error;
 
-  if (!data) {
+  if (!movie) {
     renderError("No existe una película con ese identificador.");
     return;
   }
 
-  const movie = data;
+  // Load servers
+  const { data: servers, error: serversError } = await supabase
+    .from("servidores")
+    .select("*")
+    .eq("pelicula_id", movieId)
+    .order("orden", { ascending: true });
+
+  if (serversError) throw serversError;
+  state.servers = servers ?? [];
+
+  // Render movie data
   document.title = `${movie.titulo} | UltraPelis`;
   elements.poster.src = posterUrl(movie);
   elements.poster.alt = `Portada de ${movie.titulo}`;
@@ -155,16 +190,12 @@ async function loadMovie() {
   if (movie.duracion) {
     elements.duration.textContent = `${movie.duracion} min`;
     elements.durationItem.hidden = false;
-  } else {
-    elements.durationItem.hidden = true;
   }
 
   // Rating
   if (movie.clasificacion) {
     elements.rating.textContent = movie.clasificacion;
     elements.ratingItem.hidden = false;
-  } else {
-    elements.ratingItem.hidden = true;
   }
 
   // Release date
@@ -175,24 +206,13 @@ async function loadMovie() {
       year: "numeric",
     });
     elements.releaseItem.hidden = false;
-  } else {
-    elements.releaseItem.hidden = true;
   }
 
-  // Multiple servers
-  const servers = [
-    movie.servidor_1,
-    movie.servidor_2,
-    movie.servidor_3,
-    movie.servidor_4,
-  ].filter(Boolean);
+  // Render servers
+  renderServerOptions();
+  bindServerChange();
 
-  const firstServer = servers[0] || movie.iframe || "";
-  elements.iframe.src = firstServer;
-  elements.iframe.title = `Reproductor de ${movie.titulo}`;
-  
-  renderServerTabs(movie);
-
+  // Load related movies
   const { data: relatedMovies, error: relatedError } = await supabase
     .from("peliculas")
     .select("*")
@@ -201,9 +221,7 @@ async function loadMovie() {
     .order("created_at", { ascending: false })
     .limit(6);
 
-  if (relatedError) {
-    throw relatedError;
-  }
+  if (relatedError) throw relatedError;
 
   if (!relatedMovies.length) {
     elements.relatedGrid.innerHTML = '<p class="empty-state">No hay películas relacionadas todavía.</p>';

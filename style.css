@@ -526,6 +526,35 @@ main {
   color: white;
 }
 
+/* Server Selector in Movie Page */
+.server-selector-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.server-selector-label {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.server-select {
+  background: rgba(6, 11, 18, 0.92);
+  border: 1px solid rgba(86, 171, 255, 0.16);
+  border-radius: var(--radius-md);
+  color: var(--text);
+  padding: 8px 12px;
+  font: inherit;
+  cursor: pointer;
+  min-width: 200px;
+  outline: 0;
+}
+
+.server-select:focus {
+  border-color: rgba(103, 239, 255, 0.56);
+  box-shadow: 0 0 0 4px rgba(24, 217, 255, 0.12);
+}
+
 /* Header Scroll Effect */
 .site-header.scrolled {
   background: linear-gradient(180deg, rgba(8, 12, 20, 0.95), rgba(8, 12, 20, 0.85));

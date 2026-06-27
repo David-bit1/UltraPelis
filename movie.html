@@ -16,7 +16,7 @@
         <img class="brand-logo" src="img/logo-tipo.png" alt="UltraPelis" />
       </a>
 
-      <nav class="site-nav" aria-label="Navegacion principal">
+      <nav class="site-nav" aria-label="Navegación principal">
         <a href="index.html">Inicio</a>
         <a href="peliculas.html">Películas</a>
         <a href="index.html#generos">Géneros</a>
@@ -73,7 +73,12 @@
               <p class="section-label">Reproductor</p>
               <h2 id="player-title">Ver película</h2>
             </div>
-            <div class="server-tabs" id="server-tabs"></div>
+            <div class="server-selector-container">
+              <label class="server-selector-label" for="server-select">Seleccionar servidor:</label>
+              <select id="server-select" class="server-select">
+                <option value="">Cargando servidores...</option>
+              </select>
+            </div>
           </div>
           <div class="player-frame">
             <iframe

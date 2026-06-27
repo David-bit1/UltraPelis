@@ -639,6 +639,11 @@ async function init() {
     await bootstrapAuth();
     await refreshMovies();
     await initRealtime();
+    
+    // Debug
+    console.log("addServerBtn:", elements.addServerBtn);
+    console.log("closeModal:", elements.closeModal);
+    console.log("serverForm:", elements.serverForm);
   } catch (error) {
     console.error(error);
     setStatus("No se pudo conectar con Supabase.", "error");

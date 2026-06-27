@@ -134,24 +134,24 @@
             <p class="catalog-status" id="form-status">Listo</p>
           </div>
 
-          <form id="movie-form" class="admin-form">
+          <form id="movie-form" class="admin-form" novalidate>
             <input type="hidden" id="movie-id" />
             <input type="hidden" id="tmdb-id-hidden" />
 
             <div class="field-grid">
               <label class="field">
                 <span>Titulo</span>
-                <input id="titulo" type="text" required />
+                <input id="titulo" type="text" />
               </label>
               <label class="field">
                 <span>Año</span>
-                <input id="anio" type="number" min="1888" required />
+                <input id="anio" type="number" min="1888" />
               </label>
             </div>
 
             <label class="field">
               <span>Genero principal</span>
-              <input id="genero" type="text" required />
+              <input id="genero" type="text" />
             </label>
 
             <label class="field">
@@ -177,7 +177,7 @@
 
             <label class="field">
               <span>Póster (URL)</span>
-              <input id="imagen" type="url" placeholder="https://..." required />
+              <input id="imagen" type="url" placeholder="https://..." />
             </label>
 
             <label class="field">
@@ -187,13 +187,13 @@
 
             <label class="field">
               <span>Sinopsis</span>
-              <textarea id="sinopsis" rows="5" required></textarea>
+              <textarea id="sinopsis" rows="5"></textarea>
             </label>
 
             <div class="servers-grid">
               <label class="field">
                 <span>Servidor 1 (Iframe)</span>
-                <input id="servidor_1" type="url" placeholder="https://..." required />
+                <input id="servidor_1" type="url" placeholder="https://..." />
               </label>
               <label class="field">
                 <span>Servidor 2 (Iframe)</span>

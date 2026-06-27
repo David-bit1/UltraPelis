@@ -17,11 +17,17 @@
       </a>
 
       <nav class="site-nav" aria-label="Navegacion principal">
-        <a href="#inicio">Inicio</a>
-        <a href="#catalogo">Peliculas</a>
-        <a href="#generos">Generos</a>
+        <a href="#inicio" class="is-active">Inicio</a>
+        <a href="peliculas.html">Películas</a>
+        <a href="#generos">Géneros</a>
         <a href="#contacto">Contacto</a>
       </nav>
+
+      <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Abrir menú">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
 
       <button class="search-button" id="open-search" type="button" aria-label="Buscar peliculas">
         Buscar
@@ -93,42 +99,29 @@
         <div class="section-header">
           <div>
             <p class="section-label">Estrenos</p>
-            <h2>Peliculas recien agregadas</h2>
+            <h2>Películas recién agregadas</h2>
           </div>
+          <a class="secondary-button" href="peliculas.html">Ver todas</a>
         </div>
 
         <div class="grid movies-grid" id="new-releases-grid"></div>
       </section>
 
-      <section class="section-block" id="catalogo">
-        <div class="section-header">
-          <div>
-            <p class="section-label">Catalogo</p>
-            <h2>Todas las peliculas</h2>
-          </div>
-          <p class="result-count" id="result-count"></p>
-        </div>
-
-        <div class="grid movies-grid" id="movies-grid"></div>
-        <button class="load-more-button" id="load-more" type="button" hidden>Cargar más</button>
-        <p class="empty-state" id="empty-state" hidden>No hay resultados con esa busqueda o genero.</p>
-      </section>
-
       <section class="section-block" id="generos">
         <div class="section-header">
           <div>
-            <p class="section-label">Generos</p>
-            <h2>Explora por categoria</h2>
+            <p class="section-label">Géneros</p>
+            <h2>Explora por categoría</h2>
           </div>
         </div>
 
-        <div class="genre-grid genre-grid--static">
-          <a class="genre-card" href="#catalogo">Accion</a>
-          <a class="genre-card" href="#catalogo">Terror</a>
-          <a class="genre-card" href="#catalogo">Comedia</a>
-          <a class="genre-card" href="#catalogo">Drama</a>
-          <a class="genre-card" href="#catalogo">Thriller</a>
-          <a class="genre-card" href="#catalogo">Ciencia ficcion</a>
+        <div class="genre-grid genre-grid--static" id="genre-grid">
+          <div class="skeleton-loader"></div>
+          <div class="skeleton-loader"></div>
+          <div class="skeleton-loader"></div>
+          <div class="skeleton-loader"></div>
+          <div class="skeleton-loader"></div>
+          <div class="skeleton-loader"></div>
         </div>
       </section>
     </main>

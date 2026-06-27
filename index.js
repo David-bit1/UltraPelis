@@ -1,43 +1,26 @@
 import { createSupabaseBrowserClient } from "./supabase.js";
 
 const supabase = createSupabaseBrowserClient();
-const PAGE_SIZE = 24;
 
 const elements = {
   catalogStatus: document.querySelector("#catalog-status"),
-  emptyState: document.querySelector("#empty-state"),
   featuredCarousel: document.querySelector("#featured-carousel"),
   featuredNext: document.querySelector("#featured-next"),
   featuredPrev: document.querySelector("#featured-prev"),
-  genreFilters: document.querySelector("#genre-filters"),
+  genreGrid: document.querySelector("#genre-grid"),
   heroMeta: document.querySelector("#hero-meta"),
   heroPoster: document.querySelector("#hero-poster"),
   heroTitle: document.querySelector("#hero-title"),
-  loadMore: document.querySelector("#load-more"),
-  moviesGrid: document.querySelector("#movies-grid"),
   newReleasesGrid: document.querySelector("#new-releases-grid"),
   openSearch: document.querySelector("#open-search"),
-  resultCount: document.querySelector("#result-count"),
-  searchForm: document.querySelector("#search-form"),
   searchInput: document.querySelector("#search-input"),
 };
 
 const state = {
-  catalogo: [],
-  consulta: "",
-  generoActivo: "Todos",
-  page: 1,
-  total: 0,
-  hasMore: false,
+  featured: [],
+  newReleases: [],
   latestGenres: [],
 };
-
-function normalizeText(value) {
-  return String(value)
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
-}
 
 function escapeHtml(value) {
   return String(value)
@@ -69,49 +52,17 @@ function createMovieCard(movie, { featured = false } = {}) {
           <p class="movie-genre">${escapeHtml(movie.genero)}</p>
           <h3>${escapeHtml(movie.titulo)}</h3>
           <p class="movie-meta">${escapeHtml(movie["año"])}${duracion}</p>
-          <p class="movie-synopsis">${escapeHtml(movie.sinopsis)}</p>
         </div>
       </a>
     </article>
   `;
 }
 
-async function queryMovies({ count = false, offset = 0, limit = PAGE_SIZE } = {}) {
-  let query = supabase.from("peliculas").select("*", count ? { count: "exact" } : undefined);
-
-  if (state.generoActivo !== "Todos") {
-    query = query.eq("genero", state.generoActivo);
-  }
-
-  if (state.consulta) {
-    query = query.ilike("titulo", `%${state.consulta}%`);
-  }
-
-  const { data, error, count: totalCount } = await query
-    .order("created_at", { ascending: false })
-    .range(offset, offset + limit - 1);
-
-  if (error) {
-    throw error;
-  }
-
-  return {
-    data: data ?? [],
-    total: totalCount ?? 0,
-  };
-}
-
 async function loadGenres() {
   const { data, error } = await supabase.from("peliculas").select("genero");
   if (error) throw error;
 
-  const uniqueGenres = ["Todos", ...new Set((data ?? []).map((item) => item.genero).filter(Boolean))];
-  uniqueGenres.sort((left, right) => {
-    if (left === "Todos") return -1;
-    if (right === "Todos") return 1;
-    return left.localeCompare(right, "es");
-  });
-
+  const uniqueGenres = [...new Set((data ?? []).map((item) => item.genero).filter(Boolean))];
   state.latestGenres = uniqueGenres;
 }
 
@@ -141,118 +92,73 @@ async function loadHighlights() {
 }
 
 function renderGenres() {
-  elements.genreFilters.innerHTML = state.latestGenres
-    .map(
-      (genre) => `
-        <button class="genre-button${genre === state.generoActivo ? " is-active" : ""}" type="button" data-genre="${escapeHtml(genre)}">
-          ${escapeHtml(genre)}
-        </button>
-      `,
-    )
+  if (!elements.genreGrid) return;
+  elements.genreGrid.innerHTML = state.latestGenres
+    .map((genre) => `
+      <a class="genre-card" href="peliculas.html?genre=${encodeURIComponent(genre)}">${escapeHtml(genre)}</a>
+    `)
     .join("");
 }
 
-function renderCatalog() {
-  elements.moviesGrid.innerHTML = state.catalogo.map((movie) => createMovieCard(movie)).join("");
-  elements.resultCount.textContent = `${Math.min(state.page * PAGE_SIZE, state.total || state.catalogo.length)} de ${state.total} películas`;
-  elements.emptyState.hidden = state.catalogo.length > 0;
-  elements.loadMore.hidden = !state.hasMore;
-  elements.catalogStatus.textContent = state.total ? `${state.total} películas encontradas` : "Sin resultados";
-}
-
-async function loadCatalog({ reset = false } = {}) {
-  if (reset) {
-    state.page = 1;
-    state.catalogo = [];
-  }
-
-  const offset = (state.page - 1) * PAGE_SIZE;
-  const { data, total } = await queryMovies({ count: true, offset, limit: PAGE_SIZE });
-
-  if (reset) {
-    state.catalogo = data;
-  } else {
-    state.catalogo = [...state.catalogo, ...data];
-  }
-
-  state.total = total;
-  state.hasMore = offset + data.length < total;
-}
-
-async function refreshAll({ resetCatalog = true } = {}) {
-  elements.catalogStatus.textContent = "Cargando...";
-  await loadGenres();
-  await loadHighlights();
-  await loadCatalog({ reset: resetCatalog });
-  renderGenres();
-  renderCatalog();
-}
-
 function bindEvents() {
-  elements.searchForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    state.consulta = elements.searchInput.value.trim().toLowerCase();
-    await refreshAll({ resetCatalog: true });
-    document.querySelector("#catalogo").scrollIntoView({ behavior: "smooth", block: "start" });
+  // Menu toggle
+  const menuToggle = document.querySelector("#menu-toggle");
+  const siteNav = document.querySelector(".site-nav");
+  if (menuToggle && siteNav) {
+    menuToggle.addEventListener("click", () => {
+      menuToggle.classList.toggle("is-active");
+      siteNav.classList.toggle("is-open");
+    });
+  }
+
+  // Header scroll effect
+  window.addEventListener("scroll", () => {
+    const header = document.querySelector(".site-header");
+    if (header) {
+      header.classList.toggle("scrolled", window.scrollY > 10);
+    }
   });
 
-  let typingTimer = null;
-  elements.searchInput.addEventListener("input", () => {
-    clearTimeout(typingTimer);
-    typingTimer = window.setTimeout(async () => {
-      state.consulta = elements.searchInput.value.trim().toLowerCase();
-      await refreshAll({ resetCatalog: true });
-    }, 200);
-  });
+  // Search redirect
+  if (elements.searchInput) {
+    elements.searchInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const query = elements.searchInput.value.trim();
+        if (query) {
+          window.location.href = `peliculas.html?search=${encodeURIComponent(query)}`;
+        }
+      }
+    });
+  }
 
-  elements.genreFilters.addEventListener("click", async (event) => {
-    const button = event.target.closest("[data-genre]");
-    if (!button) return;
-    state.generoActivo = button.dataset.genre;
-    await refreshAll({ resetCatalog: true });
-  });
-
-  elements.loadMore.addEventListener("click", async () => {
-    if (!state.hasMore) return;
-    state.page += 1;
-    const offset = (state.page - 1) * PAGE_SIZE;
-    const { data, total } = await queryMovies({ count: true, offset, limit: PAGE_SIZE });
-    state.total = total;
-    state.catalogo = [...state.catalogo, ...data];
-    state.hasMore = offset + data.length < total;
-    renderCatalog();
-  });
-
-  elements.openSearch.addEventListener("click", () => {
-    elements.searchInput.focus();
-    document.querySelector(".catalog-tools").scrollIntoView({ behavior: "smooth", block: "start" });
-  });
-
+  // Featured carousel navigation
   const scrollFeatured = (direction) => {
-    const distance = elements.featuredCarousel.clientWidth * 0.85;
-    elements.featuredCarousel.scrollBy({ left: direction * distance, behavior: "smooth" });
+    const distance = elements.featuredCarousel?.clientWidth * 0.85;
+    if (distance) {
+      elements.featuredCarousel.scrollBy({ left: direction * distance, behavior: "smooth" });
+    }
   };
 
-  elements.featuredPrev.addEventListener("click", () => scrollFeatured(-1));
-  elements.featuredNext.addEventListener("click", () => scrollFeatured(1));
+  elements.featuredPrev?.addEventListener("click", () => scrollFeatured(-1));
+  elements.featuredNext?.addEventListener("click", () => scrollFeatured(1));
+
+  // Open search scroll
+  elements.openSearch?.addEventListener("click", () => {
+    document.querySelector(".catalog-tools")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
 }
 
 async function init() {
   try {
     bindEvents();
-    await refreshAll({ resetCatalog: true });
-
-    supabase
-      .channel("peliculas-public")
-      .on("postgres_changes", { event: "*", schema: "public", table: "peliculas" }, async () => {
-        await refreshAll({ resetCatalog: true });
-      })
-      .subscribe();
+    elements.catalogStatus.textContent = "Cargando...";
+    await loadGenres();
+    await loadHighlights();
+    renderGenres();
   } catch (error) {
     console.error(error);
-    elements.catalogStatus.textContent = "No se pudo cargar el catálogo desde Supabase.";
-    elements.emptyState.hidden = false;
-    elements.emptyState.textContent = "Revisa la conexión con Supabase y vuelve a intentar.";
+    elements.catalogStatus.textContent = "No se pudo cargar desde Supabase.";
   }
 }
 

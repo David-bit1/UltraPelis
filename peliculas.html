@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Películas | UltraPelis</title>
+    <meta name="description" content="Explora todas las películas de UltraPelis con filtros avanzados y búsqueda." />
+    <meta name="supabase-url" content="https://zmmwuwkzpjgsatpbxivh.supabase.co" />
+    <meta name="supabase-anon-key" content="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptbXd1d2t6cGpnc2F0cGJ4aXZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4MTY4MzEsImV4cCI6MjA5NzM5MjgzMX0.knZ7wJ6YSm1-_BwlaQMV7GhS0O_Pn1cxuEIC1r6QeIE" />
+    <link rel="icon" href="img/incono.png" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="peliculas.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="UltraPelis inicio">
+        <img class="brand-logo" src="img/logo-tipo.png" alt="UltraPelis" />
+      </a>
+
+      <nav class="site-nav" aria-label="Navegacion principal">
+        <a href="index.html">Inicio</a>
+        <a href="peliculas.html" class="is-active">Películas</a>
+        <a href="index.html#generos">Géneros</a>
+        <a href="index.html#contacto">Contacto</a>
+      </nav>
+
+      <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Abrir menú">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <a class="search-button" href="index.html">Volver</a>
+    </header>
+
+    <main class="app-shell">
+      <section class="catalog-page">
+        <div class="catalog-header">
+          <div class="catalog-title-section">
+            <p class="section-label">Catálogo</p>
+            <h1>Explora películas</h1>
+          </div>
+          <p class="result-count" id="result-count">0 películas</p>
+        </div>
+
+        <div class="filters-bar">
+          <div class="search-filter">
+            <form class="search-form" id="search-form">
+              <input id="search-input" type="search" placeholder="Buscar por título..." autocomplete="off" />
+              <button type="submit">Buscar</button>
+            </form>
+          </div>
+
+          <div class="filter-controls">
+            <select id="sort-select" class="filter-select">
+              <option value="recent">Más recientes</option>
+              <option value="popular">Más populares</option>
+              <option value="rating">Mejor puntuadas</option>
+              <option value="title">A-Z</option>
+            </select>
+
+            <select id="genre-filter" class="filter-select">
+              <option value="all">Todos los géneros</option>
+            </select>
+
+            <select id="year-filter" class="filter-select">
+              <option value="all">Cualquier año</option>
+            </select>
+
+            <button class="secondary-button" id="clear-filters" type="button">Limpiar filtros</button>
+          </div>
+        </div>
+
+        <div class="movies-grid" id="movies-grid">
+          <div class="skeleton-loader"></div>
+          <div class="skeleton-loader"></div>
+          <div class="skeleton-loader"></div>
+          <div class="skeleton-loader"></div>
+          <div class="skeleton-loader"></div>
+          <div class="skeleton-loader"></div>
+        </div>
+
+        <button class="load-more-button" id="load-more" type="button" hidden>Cargar más</button>
+        
+        <p class="empty-state" id="empty-state">
+          <span class="empty-icon">🎬</span>
+          <span class="empty-text">No hay películas que mostrar</span>
+          <button class="secondary-button" id="reset-search" type="button">Ver todas</button>
+        </p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <img class="footer-logo" src="img/logo-tipo.png" alt="UltraPelis" />
+        <p>Películas online con un estilo limpio, rápido y responsivo.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#">Instagram</a>
+        <a href="#">Facebook</a>
+        <a href="#">X</a>
+      </div>
+      <p class="copyright">© 2026 UltraPelis. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="peliculas.js" type="module"></script>
+  </body>
+</html>

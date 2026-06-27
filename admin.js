@@ -432,6 +432,11 @@ async function openServerModal(serverId = null) {
 
   state.editingServerId = serverId;
   
+  // Ensure modal elements are not disabled
+  document.querySelectorAll("#server-modal input, #server-modal button, #server-modal select, #server-modal textarea").forEach(el => {
+    el.disabled = false;
+  });
+  
   if (serverId) {
     const server = state.servers.find(s => s.id === serverId);
     if (server) {

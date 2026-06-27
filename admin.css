@@ -242,6 +242,10 @@
   backdrop-filter: blur(10px);
 }
 
+.modal[hidden] {
+  display: none;
+}
+
 .modal-content {
   background: linear-gradient(180deg, rgba(16, 28, 48, 0.95), rgba(10, 18, 32, 0.95));
   border: 1px solid rgba(86, 171, 255, 0.2);
@@ -251,6 +255,14 @@
   width: 90%;
   max-height: 90vh;
   overflow-y: auto;
+}
+
+.modal-content button,
+.modal-content input,
+.modal-content select,
+.modal-content textarea {
+  pointer-events: auto;
+  opacity: 1;
 }
 
 .modal-header {

@@ -555,6 +555,20 @@ main {
   box-shadow: 0 0 0 4px rgba(24, 217, 255, 0.12);
 }
 
+/* Server Modal Overrides */
+.modal button,
+.modal input,
+.modal select,
+.modal textarea {
+  pointer-events: auto !important;
+  opacity: 1 !important;
+}
+
+.modal button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
 /* Header Scroll Effect */
 .site-header.scrolled {
   background: linear-gradient(180deg, rgba(8, 12, 20, 0.95), rgba(8, 12, 20, 0.85));

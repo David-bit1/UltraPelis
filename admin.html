@@ -196,26 +196,28 @@
               <textarea id="sinopsis" rows="5"></textarea>
             </label>
 
-            <div class="servers-section">
-              <div class="servers-header">
-                <h3>Servidores de reproducción</h3>
-                <button class="secondary-button" id="add-server" type="button">
-                  + Agregar servidor
-                </button>
-              </div>
-              <div class="servers-list" id="servers-list">
-                <p class="no-servers">No hay servidores agregados.</p>
-              </div>
-            </div>
+<div class="servers-section">
+               <div class="servers-header">
+                 <h3>Servidores de reproducción</h3>
+               </div>
+               <div class="servers-list" id="servers-list">
+                 <p class="no-servers">No hay servidores agregados.</p>
+               </div>
+             </div>
 
-            <div class="form-actions">
-              <button class="primary-button" type="submit">Guardar</button>
-              <button class="secondary-button" id="cancel-edit" type="button" hidden>Cancelar</button>
-            </div>
-          </form>
-        </div>
+             <div class="form-actions">
+               <button class="primary-button" type="submit">Guardar</button>
+               <button class="secondary-button" id="cancel-edit" type="button" hidden>Cancelar</button>
+             </div>
+           </form>
+         </div>
+         
+         <!-- Add Server Button - outside form to avoid disabled inheritance -->
+         <button class="secondary-button" id="add-server" type="button" style="position: fixed; bottom: 20px; right: 20px; z-index: 100;">
+           + Agregar servidor
+         </button>
 
-        <!-- Movies List Card -->
+         <!-- Movies List Card -->
         <div class="admin-card list-card">
           <div class="section-header">
             <div>

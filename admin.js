@@ -474,6 +474,7 @@ function closeServerModal() {
 }
 
 async function saveServer(event) {
+  console.log("saveServer called", event);
   event.preventDefault();
 
   const serverData = {

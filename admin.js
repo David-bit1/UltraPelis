@@ -596,9 +596,22 @@ function bindForm() {
   elements.refreshButton.addEventListener("click", refreshMovies);
   elements.fetchTmdbBtn.addEventListener("click", handleTmdbFetch);
   
-  elements.addServerBtn.addEventListener("click", () => openServerModal());
-  elements.closeModal.addEventListener("click", closeServerModal);
-  elements.serverForm.addEventListener("submit", saveServer);
+  // Server modal buttons
+  if (elements.addServerBtn) {
+    elements.addServerBtn.addEventListener("click", () => {
+      console.log("Add server clicked");
+      openServerModal();
+    });
+  }
+  if (elements.closeModal) {
+    elements.closeModal.addEventListener("click", closeServerModal);
+  }
+  if (elements.serverForm) {
+    elements.serverForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      saveServer();
+    });
+  }
   
   elements.serverSubtitulos.addEventListener("change", () => {
     elements.subtituloOptions.hidden = !elements.serverSubtitulos.checked;

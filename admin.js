@@ -386,22 +386,26 @@ async function saveMovie(event) {
 }
 
 async function saveServers(peliculaId) {
-  for (const server of state.servers) {
-    const serverPayload = {
-      ...server,
-      pelicula_id: peliculaId
-    };
-    
-    if (server.id && server.id < 0) {
-      const { error } = await supabase.from("servidores").insert({
-        ...serverPayload,
-        id: undefined
-      });
-      if (error) console.error("Error saving server:", error);
-    } else if (server.id > 0) {
-      const { error } = await supabase.from("servidores").update(serverPayload).eq("id", server.id);
-      if (error) console.error("Error updating server:", error);
+  try {
+    for (const server of state.servers) {
+      const serverPayload = {
+        ...server,
+        pelicula_id: peliculaId
+      };
+      
+      if (server.id && server.id < 0) {
+        const { error } = await supabase.from("servidores").insert({
+          ...serverPayload,
+          id: undefined
+        });
+        if (error) console.error("Error saving server:", error);
+      } else if (server.id > 0) {
+        const { error } = await supabase.from("servidores").update(serverPayload).eq("id", server.id);
+        if (error) console.error("Error updating server:", error);
+      }
     }
+  } catch (err) {
+    console.warn("servidores table may not exist, servers saved to state only");
   }
 }
 

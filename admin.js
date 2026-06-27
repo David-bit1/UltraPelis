@@ -104,7 +104,6 @@ function setTmdbLoading(loading) {
 
 function movieRow(movie) {
   const canEdit = Boolean(state.session);
-  const serverCount = movie.server_count || 0;
   return `
     <tr>
       <td>
@@ -125,8 +124,7 @@ function movieRow(movie) {
 
 async function loadMovies() {
   const query = supabase.from("peliculas").select(`
-    id, titulo, "año", genero, sinopsis,
-    (select count(*) from servidores where pelicula_id = peliculas.id) as server_count
+    id, titulo, imagen, backdrop, "año", genero, sinopsis, duracion, clasificacion, fecha_estreno, tmdb_id, generos, destacada, created_at
   `).order("created_at", { ascending: false });
 
   if (state.search) {

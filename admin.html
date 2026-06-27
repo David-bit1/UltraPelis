@@ -104,10 +104,6 @@
                 <strong id="tmdb-anio">-</strong>
               </div>
               <div class="tmdb-info-item">
-                <span>Géneros</span>
-                <ul id="tmdb-generos-list"></ul>
-              </div>
-              <div class="tmdb-info-item">
                 <span>Duración</span>
                 <strong id="tmdb-duracion">-</strong>
               </div>
@@ -193,13 +189,24 @@
               <textarea id="sinopsis" rows="5"></textarea>
             </label>
 
-            <div class="servers-section">
-              <div class="servers-header">
-                <h3>Servidores de reproducción</h3>
-              </div>
-              <div class="servers-list" id="servers-list">
-                <p class="no-servers">No hay servidores agregados.</p>
-              </div>
+            <div class="servers-inline">
+              <h4>Servidores (URLs de iframe)</h4>
+              <label class="field">
+                <span>Servidor 1</span>
+                <input id="iframe" type="url" placeholder="https://..." />
+              </label>
+              <label class="field">
+                <span>Servidor 2</span>
+                <input id="servidor-2" type="url" placeholder="https://..." />
+              </label>
+              <label class="field">
+                <span>Servidor 3</span>
+                <input id="servidor-3" type="url" placeholder="https://..." />
+              </label>
+              <label class="field">
+                <span>Servidor 4</span>
+                <input id="servidor-4" type="url" placeholder="https://..." />
+              </label>
             </div>
 
             <div class="form-actions">
@@ -240,93 +247,6 @@
         </div>
       </section>
     </main>
-
-    <button class="secondary-button" id="add-server" type="button" style="position: fixed; bottom: 20px; right: 20px; z-index: 100;">
-      + Agregar servidor
-    </button>
-
-    <div class="modal" id="server-modal" hidden>
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 id="modal-title">Agregar servidor</h3>
-          <button class="icon-button" id="close-modal" type="button">×</button>
-        </div>
-        <form id="server-form" class="admin-form">
-          <input type="hidden" id="server-id" />
-          
-          <label class="field">
-            <span>Nombre del servidor</span>
-            <input id="server-nombre" type="text" placeholder="Ej: StreamWish, Filemoon..." required />
-          </label>
-
-          <label class="field">
-            <span>URL del iframe</span>
-            <input id="server-url" type="url" placeholder="https://..." required />
-          </label>
-
-          <div class="field-grid">
-            <label class="field">
-              <span>Idioma de audio</span>
-              <select id="server-idioma">
-                <option value="es">Español Latino</option>
-                <option value="es-CO">Español Castellano</option>
-                <option value="en">Inglés</option>
-                <option value="ja">Japonés</option>
-                <option value="other">Otro</option>
-              </select>
-            </label>
-
-            <label class="field">
-              <span>Calidad</span>
-              <select id="server-calidad">
-                <option value="720p">720p HD</option>
-                <option value="1080p">1080p Full HD</option>
-                <option value="4k">4K Ultra HD</option>
-                <option value="480p">480p SD</option>
-              </select>
-            </label>
-          </div>
-
-          <div class="field">
-            <label class="checkbox-label">
-              <input id="server-subtitulos" type="checkbox" />
-              <span>¿Tiene subtítulos?</span>
-            </label>
-            
-            <div id="subtitulo-options" hidden>
-              <label class="field">
-                <span>Idioma de subtítulos</span>
-                <select id="server-idioma-subtitulos">
-                  <option value="es">Español</option>
-                  <option value="en">Inglés</option>
-                  <option value="other">Otro</option>
-                </select>
-              </label>
-            </div>
-          </div>
-
-          <div class="field-grid">
-            <label class="field">
-              <span>Estado</span>
-              <select id="server-estado">
-                <option value="activo">Activo</option>
-                <option value="caido">Caído</option>
-              </select>
-            </label>
-
-            <label class="field">
-              <span>Orden (prioridad)</span>
-              <input id="server-orden" type="number" min="1" value="1" />
-            </label>
-          </div>
-
-          <div class="form-actions">
-            <button class="primary-button" id="server-submit-btn" type="submit">Guardar servidor</button>
-            <button class="secondary-button" id="close-modal-btn" type="button">Cancelar</button>
-          </div>
-        </form>
-      </div>
-    </div>
 
     <script src="admin.js" type="module"></script>
   </body>

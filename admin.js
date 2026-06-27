@@ -344,7 +344,6 @@ function updateAuthUI() {
 }
 
 async function saveMovie(event) {
-  event.preventDefault();
 
   const payload = {
     tmdb_id: elements.tmdbIdHidden.value ? Number(elements.tmdbIdHidden.value) : null,
@@ -473,8 +472,6 @@ function closeServerModal() {
 }
 
 async function saveServer(event) {
-  console.log("saveServer called", event);
-  event.preventDefault();
 
   const serverData = {
     nombre: elements.serverNombre.value.trim(),
@@ -581,7 +578,6 @@ async function bootstrapAuth() {
 
 function bindAuth() {
   elements.loginForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
     try {
       setStatus("Iniciando sesión...");
       await signIn(elements.loginEmail.value.trim(), elements.loginPassword.value);
@@ -618,7 +614,7 @@ function bindForm() {
   if (elements.serverForm) {
     elements.serverForm.addEventListener("submit", (e) => {
       e.preventDefault();
-      saveServer();
+      saveServer(e);
     });
   }
   

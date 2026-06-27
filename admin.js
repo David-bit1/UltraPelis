@@ -328,8 +328,8 @@ async function saveMovie(event) {
     servidor_4: elements.servidor_4.value.trim() || null,
   };
 
-  if (!payload.titulo || !payload["año"] || !payload.genero || !payload.sinopsis || !payload.imagen) {
-    setStatus("Completa todos los campos obligatorios.", "error");
+  if (!payload.titulo || !payload["año"] || !payload.genero || !payload.sinopsis || !payload.imagen || !firstServer) {
+    setStatus("Completa todos los campos obligatorios, incluyendo al menos un servidor iframe.", "error");
     return;
   }
 

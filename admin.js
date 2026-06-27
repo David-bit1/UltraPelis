@@ -329,8 +329,15 @@ function updateAuthUI() {
   elements.authStatus.dataset.kind = signedIn ? "success" : "info";
   elements.logoutButton.hidden = !signedIn;
   elements.tmdbSearchCard.hidden = !signedIn;
+  elements.addServerBtn.disabled = !signedIn;
   
-  elements.movieForm.querySelectorAll("input, textarea, button, select").forEach((field) => {
+  // Disable movie form fields only (not modal or add-server)
+  document.querySelectorAll("#movie-form input, #movie-form textarea, #movie-form select").forEach((field) => {
+    field.disabled = !signedIn;
+  });
+  
+  // Disable submit and cancel buttons but not add-server
+  document.querySelectorAll("#movie-form .form-actions button").forEach((field) => {
     field.disabled = !signedIn;
   });
 }
@@ -415,7 +422,14 @@ async function deleteMovie(id) {
   await refreshMovies();
 }
 
-function openServerModal(serverId = null) {
+async function openServerModal(serverId = null) {
+  // Check if editing a movie (have movie-id)
+  const editingId = elements.movieId.value;
+  if (!editingId && !state.session) {
+    setStatus("Inicia sesión para agregar servidores.", "error");
+    return;
+  }
+
   state.editingServerId = serverId;
   
   if (serverId) {

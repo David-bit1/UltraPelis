@@ -434,9 +434,12 @@ async function openServerModal(serverId = null) {
 
   state.editingServerId = serverId;
   
-  // Ensure modal elements are not disabled
-  document.querySelectorAll("#server-modal input, #server-modal button, #server-modal select, #server-modal textarea").forEach(el => {
+  // Ensure modal elements are not disabled - kill ALL disabled states
+  const modalElements = document.querySelectorAll("#server-modal input, #server-modal button, #server-modal select, #server-modal textarea, #server-modal");
+  modalElements.forEach(el => {
     el.disabled = false;
+    el.style.pointerEvents = "auto";
+    el.style.opacity = "1";
   });
   
   if (serverId) {
@@ -459,10 +462,14 @@ async function openServerModal(serverId = null) {
   }
   
   elements.serverModal.hidden = false;
+  
+  // Force modal to be interactive
+  elements.serverModal.style.display = "flex";
 }
 
 function closeServerModal() {
   elements.serverModal.hidden = true;
+  elements.serverModal.style.display = "none";
   state.editingServerId = null;
 }
 

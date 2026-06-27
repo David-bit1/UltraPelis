@@ -238,8 +238,9 @@
   display: flex !important;
   align-items: center;
   justify-content: center;
-  z-index: 2000;
+  z-index: 2000 !important;
   backdrop-filter: blur(10px);
+  pointer-events: auto !important;
 }
 
 .modal[hidden] {
@@ -255,7 +256,8 @@
   width: 90%;
   max-height: 90vh;
   overflow-y: auto;
-  pointer-events: all !important;
+  pointer-events: auto !important;
+  z-index: 2001 !important;
 }
 
 /* Force enable all buttons in modal */

@@ -662,8 +662,8 @@ async function init() {
     console.log("closeModal:", elements.closeModal);
     console.log("serverForm:", elements.serverForm);
   } catch (error) {
-    console.error(error);
-    setStatus("No se pudo conectar con Supabase.", "error");
+    console.error("Init error:", error);
+    setStatus(`Error de conexión: ${error.message}`, "error");
   }
 }
 

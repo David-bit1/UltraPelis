@@ -217,6 +217,43 @@
            + Agregar servidor
          </button>
 
+<script>
+          document.addEventListener('DOMContentLoaded', () => {
+            const addBtn = document.getElementById('add-server');
+            const modal = document.getElementById('server-modal');
+            const closeModal = document.getElementById('close-modal');
+            const serverForm = document.getElementById('server-form');
+            
+            if (addBtn) {
+              addBtn.onclick = () => {
+                console.log('Add server button clicked');
+                modal.hidden = false;
+                modal.style.display = 'flex';
+                modal.querySelectorAll('*').forEach(el => {
+                  el.style.pointerEvents = 'auto';
+                  el.disabled = false;
+                });
+              };
+            }
+            
+            if (closeModal) {
+              closeModal.onclick = () => {
+                console.log('Close modal clicked');
+                modal.hidden = true;
+              };
+            }
+            
+            if (serverForm) {
+              serverForm.onsubmit = (e) => {
+                e.preventDefault();
+                console.log('Server form submitted');
+                import('./admin.js').then(m => m.saveServer()).catch(console.error);
+                modal.hidden = true;
+              };
+            }
+          });
+          </script>
+
          <!-- Movies List Card -->
         <div class="admin-card list-card">
           <div class="section-header">

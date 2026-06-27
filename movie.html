@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ver pelicula | UltraPelis</title>
-    <meta name="description" content="Reproduce peliculas de UltraPelis desde una sola pagina dinamica." />
+    <title>Ver película | UltraPelis</title>
+    <meta name="description" content="Reproduce películas de UltraPelis desde una sola página dinámica." />
     <meta name="supabase-url" content="https://zmmwuwkzpjgsatpbxivh.supabase.co" />
     <meta name="supabase-anon-key" content="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptbXd1d2t6cGpnc2F0cGJ4aXZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4MTY4MzEsImV4cCI6MjA5NzM5MjgzMX0.knZ7wJ6YSm1-_BwlaQMV7GhS0O_Pn1cxuEIC1r6QeIE" />
     <link rel="icon" href="img/incono.png" />
@@ -18,34 +18,46 @@
 
       <nav class="site-nav" aria-label="Navegacion principal">
         <a href="index.html">Inicio</a>
-        <a href="index.html#catalogo">Peliculas</a>
-        <a href="index.html#generos">Generos</a>
+        <a href="peliculas.html">Películas</a>
+        <a href="index.html#generos">Géneros</a>
         <a href="index.html#contacto">Contacto</a>
       </nav>
 
-      <a class="search-button" href="index.html#catalogo">Volver</a>
+      <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Abrir menú">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <a class="search-button" href="peliculas.html">Buscar</a>
     </header>
 
     <main class="app-shell movie-page">
       <section class="movie-shell" id="movie-root" aria-live="polite">
-        <article class="movie-detail">
+        <article class="movie-detail" id="movie-detail">
           <div class="movie-detail-media">
+            <div class="movie-backdrop" id="movie-backdrop-container" hidden>
+              <img id="movie-backdrop" class="movie-backdrop-image" src="" alt="" />
+            </div>
             <img id="movie-poster" class="movie-poster" src="assets/img/poster-placeholder.svg" alt="" />
           </div>
 
           <div class="movie-detail-content">
-            <p class="section-label" id="movie-genre-label">Pelicula</p>
-            <h1 id="movie-title">Cargando pelicula...</h1>
-            <ul class="movie-meta-list" aria-label="Datos de la pelicula">
+            <div class="movie-header-section">
+              <p class="section-label" id="movie-genre-label">Película</p>
+              <h1 id="movie-title">Cargando película...</h1>
+            </div>
+            
+            <ul class="movie-meta-list" aria-label="Datos de la película" id="movie-meta-list">
               <li><span>Año</span><strong id="movie-year">-</strong></li>
-              <li><span>Genero</span><strong id="movie-genre">-</strong></li>
-              <li id="movie-duration-item" hidden><span>Duracion</span><strong id="movie-duration">-</strong></li>
-              <li id="movie-rating-item" hidden><span>Clasificacion</span><strong id="movie-rating">-</strong></li>
+              <li><span>Género</span><strong id="movie-genre">-</strong></li>
+              <li id="movie-duration-item" hidden><span>Duración</span><strong id="movie-duration">-</strong></li>
+              <li id="movie-rating-item" hidden><span>Clasificación</span><strong id="movie-rating">-</strong></li>
               <li id="movie-release-item" hidden><span>Estreno</span><strong id="movie-release-date">-</strong></li>
-              <li id="movie-genres-item" hidden><span>Generos</span><strong id="movie-genres">-</strong></li>
             </ul>
+
             <p id="movie-synopsis" class="movie-synopsis-detail">
-              Espera un momento mientras cargamos la informacion.
+              Espera un momento mientras cargamos la información.
             </p>
 
             <div class="movie-actions">
@@ -59,14 +71,14 @@
           <div class="section-header">
             <div>
               <p class="section-label">Reproductor</p>
-              <h2 id="player-title">Ver pelicula</h2>
+              <h2 id="player-title">Ver película</h2>
             </div>
             <div class="server-tabs" id="server-tabs"></div>
           </div>
           <div class="player-frame">
             <iframe
               id="movie-iframe"
-              title="Reproductor de pelicula"
+              title="Reproductor de película"
               loading="lazy"
               referrerpolicy="no-referrer"
               allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
@@ -79,15 +91,15 @@
           <div class="section-header">
             <div>
               <p class="section-label">Relacionadas</p>
-              <h2 id="related-title">Peliculas del mismo genero</h2>
+              <h2 id="related-title">Películas del mismo género</h2>
             </div>
           </div>
           <div class="related-grid" id="related-grid"></div>
         </section>
 
         <section class="movie-error" id="movie-error" hidden>
-          <h1>Pelicula no encontrada</h1>
-          <p>No pudimos encontrar una pelicula con ese ID.</p>
+          <h1>Película no encontrada</h1>
+          <p>No pudimos encontrar una película con ese ID.</p>
           <a class="primary-button" href="index.html">Volver al inicio</a>
         </section>
       </section>

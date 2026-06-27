@@ -6,21 +6,21 @@ const elements = {
   error: document.querySelector("#movie-error"),
   genre: document.querySelector("#movie-genre"),
   genreLabel: document.querySelector("#movie-genre-label"),
-  genreDurationItem: document.querySelector("#movie-duration-item"),
-  genreRatingItem: document.querySelector("#movie-rating-item"),
-  genreReleaseItem: document.querySelector("#movie-release-item"),
-  genreGenresItem: document.querySelector("#movie-genres-item"),
   iframe: document.querySelector("#movie-iframe"),
   poster: document.querySelector("#movie-poster"),
+  backdropContainer: document.querySelector("#movie-backdrop-container"),
+  backdropImage: document.querySelector("#movie-backdrop"),
   relatedGrid: document.querySelector("#related-grid"),
   root: document.querySelector("#movie-root"),
   synopsis: document.querySelector("#movie-synopsis"),
   title: document.querySelector("#movie-title"),
   year: document.querySelector("#movie-year"),
   duration: document.querySelector("#movie-duration"),
+  durationItem: document.querySelector("#movie-duration-item"),
   rating: document.querySelector("#movie-rating"),
+  ratingItem: document.querySelector("#movie-rating-item"),
   releaseDate: document.querySelector("#movie-release-date"),
-  genres: document.querySelector("#movie-genres"),
+  releaseItem: document.querySelector("#movie-release-item"),
   serverTabs: document.querySelector("#server-tabs"),
 };
 
@@ -46,9 +46,9 @@ function getMovieId() {
 function renderError(message) {
   elements.root.hidden = true;
   elements.error.hidden = false;
-  elements.error.querySelector("h1").textContent = "Pelicula no encontrada";
+  elements.error.querySelector("h1").textContent = "Película no encontrada";
   elements.error.querySelector("p").textContent = message;
-  document.title = "Pelicula no encontrada | UltraPelis";
+  document.title = "Película no encontrada | UltraPelis";
 }
 
 function relatedCard(movie) {
@@ -84,7 +84,6 @@ function renderServerTabs(movie) {
     </button>
   `).join("");
 
-  // Bind server tab clicks
   const tabs = elements.serverTabs.querySelectorAll(".server-tab");
   tabs.forEach((tab, idx) => {
     tab.addEventListener("click", () => {
@@ -92,6 +91,24 @@ function renderServerTabs(movie) {
       tabs.forEach(t => t.removeAttribute("data-active"));
       tab.setAttribute("data-active", "true");
     });
+  });
+}
+
+function bindMenuToggle() {
+  const menuToggle = document.querySelector("#menu-toggle");
+  const siteNav = document.querySelector(".site-nav");
+  if (menuToggle && siteNav) {
+    menuToggle.addEventListener("click", () => {
+      menuToggle.classList.toggle("is-active");
+      siteNav.classList.toggle("is-open");
+    });
+  }
+
+  window.addEventListener("scroll", () => {
+    const header = document.querySelector(".site-header");
+    if (header) {
+      header.classList.toggle("scrolled", window.scrollY > 10);
+    }
   });
 }
 
@@ -127,20 +144,27 @@ async function loadMovie() {
   elements.genreLabel.textContent = movie.genero;
   elements.synopsis.textContent = movie.sinopsis;
 
+  // Backdrop
+  if (movie.backdrop) {
+    elements.backdropImage.src = movie.backdrop;
+    elements.backdropImage.alt = `Backdrop de ${movie.titulo}`;
+    elements.backdropContainer.hidden = false;
+  }
+
   // Duration
   if (movie.duracion) {
     elements.duration.textContent = `${movie.duracion} min`;
-    elements.genreDurationItem.hidden = false;
+    elements.durationItem.hidden = false;
   } else {
-    elements.genreDurationItem.hidden = true;
+    elements.durationItem.hidden = true;
   }
 
   // Rating
   if (movie.clasificacion) {
     elements.rating.textContent = movie.clasificacion;
-    elements.genreRatingItem.hidden = false;
+    elements.ratingItem.hidden = false;
   } else {
-    elements.genreRatingItem.hidden = true;
+    elements.ratingItem.hidden = true;
   }
 
   // Release date
@@ -150,17 +174,9 @@ async function loadMovie() {
       month: "long",
       year: "numeric",
     });
-    elements.genreReleaseItem.hidden = false;
+    elements.releaseItem.hidden = false;
   } else {
-    elements.genreReleaseItem.hidden = true;
-  }
-
-  // All genres
-  if (movie.generos) {
-    elements.genres.textContent = movie.generos;
-    elements.genreGenresItem.hidden = false;
-  } else {
-    elements.genreGenresItem.hidden = true;
+    elements.releaseItem.hidden = true;
   }
 
   // Multiple servers
@@ -198,6 +214,7 @@ async function loadMovie() {
 
 async function init() {
   try {
+    bindMenuToggle();
     await loadMovie();
   } catch (error) {
     console.error(error);

@@ -159,15 +159,38 @@ async function loadMovie() {
     return;
   }
 
-  // Load servers
-  const { data: servers, error: serversError } = await supabase
+
+  // Load servers from separate table or inline fields
+  let servers = [];
+  
+  // Try loading from servidores table first
+  const { data: servidoresData, error: serversError } = await supabase
     .from("servidores")
     .select("*")
     .eq("pelicula_id", movieId)
     .order("orden", { ascending: true });
-
-  if (serversError) throw serversError;
-  state.servers = servers ?? [];
+  
+  if (!serversError && servidoresData?.length > 0) {
+    servers = servidoresData;
+  } else {
+    // Fallback: use inline iframe fields
+    const inlineServers = [];
+    if (movie.iframe) {
+      inlineServers.push({ id: 1, nombre: "Servidor 1", url: movie.iframe, idioma_audio: "es", calidad: "720p", estado: "activo" });
+    }
+    if (movie.servidor_2) {
+      inlineServers.push({ id: 2, nombre: "Servidor 2", url: movie.servidor_2, idioma_audio: "es", calidad: "720p", estado: "activo" });
+    }
+    if (movie.servidor_3) {
+      inlineServers.push({ id: 3, nombre: "Servidor 3", url: movie.servidor_3, idioma_audio: "es", calidad: "720p", estado: "activo" });
+    }
+    if (movie.servidor_4) {
+      inlineServers.push({ id: 4, nombre: "Servidor 4", url: movie.servidor_4, idioma_audio: "es", calidad: "720p", estado: "activo" });
+    }
+    servers = inlineServers;
+  }
+  
+  state.servers = servers;
 
   // Render movie data
   document.title = `${movie.titulo} | UltraPelis`;

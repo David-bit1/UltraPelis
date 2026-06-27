@@ -52,10 +52,18 @@ const elements = {
   tmdbFechaEstreno: document.querySelector("#tmdb-fecha-estreno"),
   serversList: document.querySelector("#servers-list"),
   addServerBtn: document.querySelector("#add-server"),
-  iframeInput: document.querySelector("#iframe"),
-  servidor2Input: document.querySelector("#servidor-2"),
-  servidor3Input: document.querySelector("#servidor-3"),
-  servidor4Input: document.querySelector("#servidor-4"),
+  serverModal: document.querySelector("#server-modal"),
+  serverForm: document.querySelector("#server-form"),
+  closeModal: document.querySelector("#close-modal"),
+  serverNombre: document.querySelector("#server-nombre"),
+  serverUrl: document.querySelector("#server-url"),
+  serverIdioma: document.querySelector("#server-idioma"),
+  serverSubtitulos: document.querySelector("#server-subtitulos"),
+  serverIdiomaSubtitulos: document.querySelector("#server-idioma-subtitulos"),
+  serverCalidad: document.querySelector("#server-calidad"),
+  serverEstado: document.querySelector("#server-estado"),
+  serverOrden: document.querySelector("#server-orden"),
+  subtituloOptions: document.querySelector("#subtitulo-options"),
 };
 
 const state = {
@@ -63,6 +71,8 @@ const state = {
   session: null,
   search: "",
   tmdbLoading: false,
+  servers: [],
+  editingServerId: null,
 };
 
 function escapeHtml(value) {
@@ -93,13 +103,15 @@ function setTmdbLoading(loading) {
 }
 
 function movieRow(movie) {
+  const canEdit = Boolean(state.session);
+  const serverCount = movie.server_count || 0;
   return `
     <tr>
       <td>
         <strong>${escapeHtml(movie.titulo)}</strong>
         <span>${escapeHtml(movie.sinopsis)}</span>
       </td>
-      <td>${escapeHtml(movie.año)}</td>
+      <td>${escapeHtml(movie["año"])}</td>
       <td>${escapeHtml(movie.genero)}</td>
       <td>
         <div class="row-actions">
@@ -112,9 +124,10 @@ function movieRow(movie) {
 }
 
 async function loadMovies() {
-  const query = supabase.from("peliculas").select(
-    "id, titulo, año, genero, sinopsis, imagen, iframe, servidor_2, servidor_3, servidor_4, backdrop, duracion, clasificacion, fecha_estreno, tmdb_id, generos, destacada, created_at"
-  ).order("created_at", { ascending: false });
+  const query = supabase.from("peliculas").select(`
+    id, titulo, "año", genero, sinopsis,
+    (select count(*) from servidores where pelicula_id = peliculas.id) as server_count
+  `).order("created_at", { ascending: false });
 
   if (state.search) {
     query.ilike("titulo", `%${state.search}%`);
@@ -141,13 +154,62 @@ function clearForm() {
   elements.cancelEdit.hidden = true;
   elements.tmdbPreviews.hidden = true;
   elements.tmdbSearchCard.hidden = !state.session;
+  state.servers = [];
+  renderServers();
+}
+
+async function loadServers(peliculaId) {
+  const { data, error } = await supabase
+    .from("servidores")
+    .select("*")
+    .eq("pelicula_id", peliculaId)
+    .order("orden", { ascending: true });
+  
+  if (error) throw error;
+  state.servers = data ?? [];
+  renderServers();
+}
+
+function renderServers() {
+  if (state.servers.length === 0) {
+    elements.serversList.innerHTML = '<p class="no-servers">No hay servidores agregados. Haz clic en "Agregar servidor" para crear uno.</p>';
+    return;
+  }
+
+  elements.serversList.innerHTML = state.servers.map((server) => `
+    <div class="server-card" data-id="${server.id}">
+      <div class="server-info">
+        <strong>${escapeHtml(server.nombre)}</strong>
+        <div class="server-meta">
+          <span>🎧 ${getLanguageLabel(server.idioma_audio)}</span>
+          <span>📺 ${server.calidad}</span>
+          <span class="${server.estado === 'activo' ? 'status-ok' : 'status-error'}">● ${server.estado}</span>
+        </div>
+      </div>
+      <div class="server-actions">
+        <button class="secondary-button" type="button" data-action="edit-server" data-id="${server.id}">Editar</button>
+        <button class="danger-button" type="button" data-action="delete-server" data-id="${server.id}">×</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function getLanguageLabel(code) {
+  const labels = {
+    'es': 'Español Latino',
+    'es-CO': 'Español Castellano',
+    'en': 'English',
+    'ja': 'Japanese',
+    'other': 'Other'
+  };
+  return labels[code] || code;
 }
 
 async function fillForm(movie) {
   elements.movieId.value = movie.id;
   elements.tmdbIdHidden.value = movie.tmdb_id ?? "";
   elements.titulo.value = movie.titulo ?? "";
-  elements.anio.value = movie.año ?? "";
+  elements.anio.value = movie["año"] ?? "";
   elements.genero.value = movie.genero ?? "";
   elements.generos.value = movie.generos ?? "";
   elements.sinopsis.value = movie.sinopsis ?? "";
@@ -156,12 +218,10 @@ async function fillForm(movie) {
   elements.duracion.value = movie.duracion ?? "";
   elements.clasificacion.value = movie.clasificacion ?? "";
   elements.fecha_estreno.value = movie.fecha_estreno ?? "";
-  elements.iframeInput.value = movie.iframe ?? "";
-  elements.servidor2Input.value = movie.servidor_2 ?? "";
-  elements.servidor3Input.value = movie.servidor_3 ?? "";
-  elements.servidor4Input.value = movie.servidor_4 ?? "";
   elements.formTitle.textContent = `Editando #${movie.id}`;
   elements.cancelEdit.hidden = false;
+  
+  await loadServers(movie.id);
 }
 
 async function refreshMovies() {
@@ -270,19 +330,17 @@ function updateAuthUI() {
   elements.logoutButton.hidden = !signedIn;
   elements.tmdbSearchCard.hidden = !signedIn;
   
-  // Enable add-server button when signed in
-  if (elements.addServerBtn) {
-    elements.addServerBtn.disabled = !signedIn;
-  }
+  // Enable add-server button always when signed in
+  elements.addServerBtn.disabled = !signedIn;
   
-  // Disable movie form fields when not signed in
+  // Disable movie form fields except add-server
   document.querySelectorAll("#movie-form input, #movie-form textarea, #movie-form select").forEach((field) => {
     field.disabled = !signedIn;
   });
   
-  // Disable submit and cancel buttons when not signed in
+  // Disable submit and cancel buttons but not add-server
   document.querySelectorAll("#movie-form .form-actions button").forEach((field) => {
-    if (field.id !== "add-server") field.disabled = !signedIn;
+    field.disabled = !signedIn;
   });
 }
 
@@ -292,7 +350,7 @@ async function saveMovie(event) {
   const payload = {
     tmdb_id: elements.tmdbIdHidden.value ? Number(elements.tmdbIdHidden.value) : null,
     titulo: elements.titulo.value.trim(),
-    año: Number(elements.anio.value),
+    "año": Number(elements.anio.value),
     genero: elements.genero.value.trim(),
     generos: elements.generos.value.trim(),
     sinopsis: elements.sinopsis.value.trim(),
@@ -301,13 +359,9 @@ async function saveMovie(event) {
     duracion: elements.duracion.value ? Number(elements.duracion.value) : null,
     clasificacion: elements.clasificacion.value.trim(),
     fecha_estreno: elements.fecha_estreno.value || null,
-    iframe: elements.iframeInput?.value?.trim() || null,
-    servidor_2: elements.servidor2Input?.value?.trim() || null,
-    servidor_3: elements.servidor3Input?.value?.trim() || null,
-    servidor_4: elements.servidor4Input?.value?.trim() || null,
   };
 
-  if (!payload.titulo || !payload.año || !payload.genero || !payload.sinopsis || !payload.imagen) {
+  if (!payload.titulo || !payload["año"] || !payload.genero || !payload.sinopsis || !payload.imagen) {
     setStatus("Completa todos los campos obligatorios.", "error");
     return;
   }
@@ -319,15 +373,38 @@ async function saveMovie(event) {
     ? supabase.from("peliculas").update(payload).eq("id", editingId)
     : supabase.from("peliculas").insert(payload);
 
-  const { error } = await request;
+  const { error, data } = await request;
   if (error) {
     setStatus(`Error: ${error.message}`, "error");
     return;
   }
 
+  const peliculaId = editingId || data[0].id;
+  await saveServers(peliculaId);
+  
   setStatus(editingId ? "Película actualizada." : "Película creada.", "success");
   clearForm();
   await refreshMovies();
+}
+
+async function saveServers(peliculaId) {
+  for (const server of state.servers) {
+    const serverPayload = {
+      ...server,
+      pelicula_id: peliculaId
+    };
+    
+    if (server.id && server.id < 0) {
+      const { error } = await supabase.from("servidores").insert({
+        ...serverPayload,
+        id: undefined
+      });
+      if (error) console.error("Error saving server:", error);
+    } else if (server.id > 0) {
+      const { error } = await supabase.from("servidores").update(serverPayload).eq("id", server.id);
+      if (error) console.error("Error updating server:", error);
+    }
+  }
 }
 
 async function deleteMovie(id) {
@@ -347,6 +424,103 @@ async function deleteMovie(id) {
   await refreshMovies();
 }
 
+async function openServerModal(serverId = null) {
+  // Check if editing a movie (have movie-id)
+  const editingId = elements.movieId.value;
+  if (!editingId && !state.session) {
+    setStatus("Inicia sesión para agregar servidores.", "error");
+    return;
+  }
+
+  state.editingServerId = serverId;
+  
+  // Ensure modal elements are not disabled - kill ALL disabled states
+  const modalElements = document.querySelectorAll("#server-modal input, #server-modal button, #server-modal select, #server-modal textarea, #server-modal");
+  modalElements.forEach(el => {
+    el.disabled = false;
+    el.style.pointerEvents = "auto";
+    el.style.opacity = "1";
+  });
+  
+  if (serverId) {
+    const server = state.servers.find(s => s.id === serverId);
+    if (server) {
+      elements.serverNombre.value = server.nombre || "";
+      elements.serverUrl.value = server.url || "";
+      elements.serverIdioma.value = server.idioma_audio || "es";
+      elements.serverSubtitulos.checked = server.subtitulos || false;
+      elements.serverIdiomaSubtitulos.value = server.idioma_subtitulos || "es";
+      elements.serverCalidad.value = server.calidad || "720p";
+      elements.serverEstado.value = server.estado || "activo";
+      elements.serverOrden.value = server.orden || 1;
+      
+      elements.subtituloOptions.hidden = !server.subtitulos;
+    }
+  } else {
+    elements.serverForm.reset();
+    elements.subtituloOptions.hidden = true;
+  }
+  
+  elements.serverModal.hidden = false;
+  
+  // Force modal to be interactive
+  elements.serverModal.style.display = "flex";
+}
+
+function closeServerModal() {
+  elements.serverModal.hidden = true;
+  elements.serverModal.style.display = "none";
+  state.editingServerId = null;
+}
+
+async function saveServer(event) {
+  console.log("saveServer called", event);
+  event.preventDefault();
+
+  const serverData = {
+    nombre: elements.serverNombre.value.trim(),
+    url: elements.serverUrl.value.trim(),
+    idioma_audio: elements.serverIdioma.value,
+    subtitulos: elements.serverSubtitulos.checked,
+    idioma_subtitulos: elements.serverSubtitulos.checked ? elements.serverIdiomaSubtitulos.value : null,
+    calidad: elements.serverCalidad.value,
+    estado: elements.serverEstado.value,
+    orden: Number(elements.serverOrden.value) || 1,
+  };
+
+  if (state.editingServerId && state.editingServerId > 0) {
+    const server = state.servers.find(s => s.id === state.editingServerId);
+    if (server) {
+      Object.assign(server, serverData);
+    }
+  } else {
+    serverData.id = -(state.servers.length + 1); // Temporary negative ID
+    state.servers.push(serverData);
+  }
+
+  closeServerModal();
+  renderServers();
+}
+
+async function deleteServer(serverId) {
+  const server = state.servers.find(s => s.id === serverId);
+  if (!server) return;
+
+  const confirmed = window.confirm(`¿Eliminar servidor "${server.nombre}"?`);
+  if (!confirmed) return;
+
+  if (serverId > 0) {
+    const { error } = await supabase.from("servidores").delete().eq("id", serverId);
+    if (error) {
+      setStatus(`Error: ${error.message}`, "error");
+      return;
+    }
+  }
+
+  state.servers = state.servers.filter(s => s.id !== serverId);
+  renderServers();
+}
+
 function bindTableActions() {
   elements.moviesTable.addEventListener("click", async (event) => {
     const button = event.target.closest("button[data-action]");
@@ -363,6 +537,23 @@ function bindTableActions() {
 
     if (button.dataset.action === "delete") {
       await deleteMovie(id);
+    }
+  });
+}
+
+function bindServersActions() {
+  elements.serversList.addEventListener("click", (event) => {
+    const button = event.target.closest("button[data-action]");
+    if (!button) return;
+
+    const serverId = Number(button.dataset.id);
+    
+    if (button.dataset.action === "edit-server") {
+      openServerModal(serverId);
+    }
+    
+    if (button.dataset.action === "delete-server") {
+      deleteServer(serverId);
     }
   });
 }
@@ -414,6 +605,36 @@ function bindForm() {
   elements.cancelEdit.addEventListener("click", clearForm);
   elements.refreshButton.addEventListener("click", refreshMovies);
   elements.fetchTmdbBtn.addEventListener("click", handleTmdbFetch);
+  
+  // Server modal buttons
+  if (elements.addServerBtn) {
+    elements.addServerBtn.addEventListener("click", () => {
+      console.log("Add server clicked");
+      openServerModal();
+    });
+  }
+  if (elements.closeModal) {
+    elements.closeModal.addEventListener("click", closeServerModal);
+  }
+  if (elements.serverForm) {
+    elements.serverForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      saveServer();
+    });
+  }
+  
+  elements.serverSubtitulos.addEventListener("change", () => {
+    elements.subtituloOptions.hidden = !elements.serverSubtitulos.checked;
+  });
+  
+  // Close modal on backdrop click
+  if (elements.serverModal) {
+    elements.serverModal.addEventListener("click", (e) => {
+      if (e.target === elements.serverModal) {
+        closeServerModal();
+      }
+    });
+  }
 }
 
 async function initRealtime() {
@@ -431,9 +652,15 @@ async function init() {
     bindForm();
     bindSearch();
     bindTableActions();
+    bindServersActions();
     await bootstrapAuth();
     await refreshMovies();
     await initRealtime();
+    
+    // Debug
+    console.log("addServerBtn:", elements.addServerBtn);
+    console.log("closeModal:", elements.closeModal);
+    console.log("serverForm:", elements.serverForm);
   } catch (error) {
     console.error("Init error:", error);
     setStatus(`Error de conexión: ${error.message}`, "error");

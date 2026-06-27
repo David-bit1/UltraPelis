@@ -44,7 +44,6 @@
       </section>
 
       <section class="admin-grid">
-        <!-- Auth Card -->
         <div class="admin-card auth-card">
           <div class="section-header">
             <div>
@@ -71,7 +70,6 @@
           <p class="admin-note">Solo administradores con credenciales válidas pueden acceder.</p>
         </div>
 
-        <!-- TMDb Search Card -->
         <div class="admin-tmdb-card" id="tmdb-search-card" hidden>
           <div class="section-header">
             <div>
@@ -130,7 +128,6 @@
           </div>
         </div>
 
-        <!-- Movie Form Card -->
         <div class="admin-card form-card">
           <div class="section-header">
             <div>
@@ -196,65 +193,22 @@
               <textarea id="sinopsis" rows="5"></textarea>
             </label>
 
-<div class="servers-section">
-               <div class="servers-header">
-                 <h3>Servidores de reproducción</h3>
-               </div>
-               <div class="servers-list" id="servers-list">
-                 <p class="no-servers">No hay servidores agregados.</p>
-               </div>
-             </div>
+            <div class="servers-section">
+              <div class="servers-header">
+                <h3>Servidores de reproducción</h3>
+              </div>
+              <div class="servers-list" id="servers-list">
+                <p class="no-servers">No hay servidores agregados.</p>
+              </div>
+            </div>
 
-             <div class="form-actions">
-               <button class="primary-button" type="submit">Guardar</button>
-               <button class="secondary-button" id="cancel-edit" type="button" hidden>Cancelar</button>
-             </div>
-           </form>
-         </div>
-         
-         <!-- Add Server Button - outside form to avoid disabled inheritance -->
-         <button class="secondary-button" id="add-server" type="button" style="position: fixed; bottom: 20px; right: 20px; z-index: 100;">
-           + Agregar servidor
-         </button>
+            <div class="form-actions">
+              <button class="primary-button" type="submit">Guardar</button>
+              <button class="secondary-button" id="cancel-edit" type="button" hidden>Cancelar</button>
+            </div>
+          </form>
+        </div>
 
-<script>
-          document.addEventListener('DOMContentLoaded', () => {
-            const addBtn = document.getElementById('add-server');
-            const modal = document.getElementById('server-modal');
-            const closeModal = document.getElementById('close-modal');
-            const serverForm = document.getElementById('server-form');
-            
-            if (addBtn) {
-              addBtn.onclick = () => {
-                console.log('Add server button clicked');
-                modal.hidden = false;
-                modal.style.display = 'flex';
-                modal.querySelectorAll('*').forEach(el => {
-                  el.style.pointerEvents = 'auto';
-                  el.disabled = false;
-                });
-              };
-            }
-            
-            if (closeModal) {
-              closeModal.onclick = () => {
-                console.log('Close modal clicked');
-                modal.hidden = true;
-              };
-            }
-            
-            if (serverForm) {
-              serverForm.onsubmit = (e) => {
-                e.preventDefault();
-                console.log('Server form submitted');
-                import('./admin.js').then(m => m.saveServer()).catch(console.error);
-                modal.hidden = true;
-              };
-            }
-          });
-          </script>
-
-         <!-- Movies List Card -->
         <div class="admin-card list-card">
           <div class="section-header">
             <div>
@@ -287,7 +241,10 @@
       </section>
     </main>
 
-    <!-- Server Modal -->
+    <button class="secondary-button" id="add-server" type="button" style="position: fixed; bottom: 20px; right: 20px; z-index: 100;">
+      + Agregar servidor
+    </button>
+
     <div class="modal" id="server-modal" hidden>
       <div class="modal-content">
         <div class="modal-header">
@@ -364,7 +321,8 @@
           </div>
 
           <div class="form-actions">
-            <button class="primary-button" type="submit">Guardar servidor</button>
+            <button class="primary-button" id="server-submit-btn" type="submit">Guardar servidor</button>
+            <button class="secondary-button" id="close-modal-btn" type="button">Cancelar</button>
           </div>
         </form>
       </div>

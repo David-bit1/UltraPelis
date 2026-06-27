@@ -345,7 +345,6 @@ function updateAuthUI() {
 }
 
 async function saveMovie(event) {
-  event.preventDefault();
 
   const payload = {
     tmdb_id: elements.tmdbIdHidden.value ? Number(elements.tmdbIdHidden.value) : null,
@@ -474,8 +473,6 @@ function closeServerModal() {
 }
 
 async function saveServer(event) {
-  console.log("saveServer called", event);
-  event.preventDefault();
 
   const serverData = {
     nombre: elements.serverNombre.value.trim(),
@@ -582,7 +579,6 @@ async function bootstrapAuth() {
 
 function bindAuth() {
   elements.loginForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
     try {
       setStatus("Iniciando sesión...");
       await signIn(elements.loginEmail.value.trim(), elements.loginPassword.value);
@@ -608,18 +604,19 @@ function bindForm() {
   
   // Server modal buttons
   if (elements.addServerBtn) {
-    elements.addServerBtn.addEventListener("click", () => {
-      console.log("Add server clicked");
-      openServerModal();
-    });
+    elements.addServerBtn.addEventListener("click", () => openServerModal());
   }
   if (elements.closeModal) {
     elements.closeModal.addEventListener("click", closeServerModal);
   }
+  const closeBtn = document.querySelector("#close-modal-btn");
+  if (closeBtn) {
+    closeBtn.addEventListener("click", closeServerModal);
+  }
   if (elements.serverForm) {
     elements.serverForm.addEventListener("submit", (e) => {
       e.preventDefault();
-      saveServer();
+      saveServer(e);
     });
   }
   
@@ -636,7 +633,6 @@ function bindForm() {
     });
   }
 }
-
 async function initRealtime() {
   supabase
     .channel("peliculas-admin")

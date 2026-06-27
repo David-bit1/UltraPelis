@@ -260,16 +260,19 @@
   z-index: 2001 !important;
 }
 
-/* Force enable all buttons in modal */
-.modal button {
+/* Force enable all buttons in modal - must come AFTER all other selectors */
+#server-modal button,
+#server-modal button:hover,
+#server-modal button:focus {
   pointer-events: auto !important;
   opacity: 1 !important;
   cursor: pointer !important;
+  disabled: false !important;
 }
 
-.modal input,
-.modal select,
-.modal textarea {
+#server-modal input,
+#server-modal select,
+#server-modal textarea {
   pointer-events: auto !important;
   opacity: 1 !important;
   background: rgba(6, 11, 18, 0.92) !important;

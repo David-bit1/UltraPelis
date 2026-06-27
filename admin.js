@@ -625,6 +625,15 @@ function bindForm() {
   elements.serverSubtitulos.addEventListener("change", () => {
     elements.subtituloOptions.hidden = !elements.serverSubtitulos.checked;
   });
+  
+  // Close modal on backdrop click
+  if (elements.serverModal) {
+    elements.serverModal.addEventListener("click", (e) => {
+      if (e.target === elements.serverModal) {
+        closeServerModal();
+      }
+    });
+  }
 }
 
 async function initRealtime() {

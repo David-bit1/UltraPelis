@@ -169,6 +169,20 @@
   font-size: 1.1rem;
 }
 
+/* Action Buttons */
+.load-more-button,
+.secondary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 22px;
+  border-radius: 999px;
+  font-weight: 700;
+  transition: transform 160ms ease, background-color 160ms ease;
+  cursor: pointer;
+}
+
 /* Menu Toggle (Hamburger) */
 .menu-toggle {
   display: none;

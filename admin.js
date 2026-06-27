@@ -104,14 +104,14 @@ function setTmdbLoading(loading) {
 
 function movieRow(movie) {
   const canEdit = Boolean(state.session);
-  const serverCount = movie.server_count || 0;
+  const serverCount = 0; // No longer using separate servidores table count
   return `
     <tr>
       <td>
         <strong>${escapeHtml(movie.titulo)}</strong>
         <span>${escapeHtml(movie.sinopsis)}</span>
       </td>
-      <td>${escapeHtml(movie["año"])}</td>
+      <td>${escapeHtml(movie.año)}</td>
       <td>${escapeHtml(movie.genero)}</td>
       <td>
         <div class="row-actions">
@@ -124,10 +124,9 @@ function movieRow(movie) {
 }
 
 async function loadMovies() {
-  const query = supabase.from("peliculas").select(`
-    id, titulo, "año", genero, sinopsis,
-    (select count(*) from servidores where pelicula_id = peliculas.id) as server_count
-  `).order("created_at", { ascending: false });
+  const query = supabase.from("peliculas").select(
+    "id, titulo, año, genero, sinopsis, imagen, backdrop, duracion, clasificacion, fecha_estreno, tmdb_id, generos, destacada, created_at, iframe"
+  ).order("created_at", { ascending: false });
 
   if (state.search) {
     query.ilike("titulo", `%${state.search}%`);
@@ -209,7 +208,7 @@ async function fillForm(movie) {
   elements.movieId.value = movie.id;
   elements.tmdbIdHidden.value = movie.tmdb_id ?? "";
   elements.titulo.value = movie.titulo ?? "";
-  elements.anio.value = movie["año"] ?? "";
+  elements.anio.value = movie.año ?? "";
   elements.genero.value = movie.genero ?? "";
   elements.generos.value = movie.generos ?? "";
   elements.sinopsis.value = movie.sinopsis ?? "";

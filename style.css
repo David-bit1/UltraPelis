@@ -469,6 +469,37 @@ main {
   overflow: hidden;
 }
 
+.movie-runtime {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* Server tabs in movie detail */
+.server-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 0;
+}
+
+.server-tab[data-active="true"] {
+  background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+  color: white;
+}
+
+.movie-runtime {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* Server tabs */
+.server-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 0;
+}
+
 .search-form--wide {
   max-width: none;
   width: 100%;

@@ -4,11 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin | UltraPelis</title>
-    <meta name="description" content="Panel de administracion de UltraPelis conectado a Supabase." />
+    <meta name="description" content="Panel de administracion de UltraPelis conectado a Supabase y TMDb." />
     <meta name="supabase-url" content="https://zmmwuwkzpjgsatpbxivh.supabase.co" />
     <meta name="supabase-anon-key" content="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptbXd1d2t6cGpnc2F0cGJ4aXZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4MTY4MzEsImV4cCI6MjA5NzM5MjgzMX0.knZ7wJ6YSm1-_BwlaQMV7GhS0O_Pn1cxuEIC1r6QeIE" />
+    <meta name="tmdb-api-key" content="b24af203b14e23f8c91844baae37cfab" />
     <link rel="icon" href="img/incono.png" />
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="admin.css" />
   </head>
   <body class="admin-page">
     <header class="site-header">
@@ -31,11 +33,12 @@
         <p class="hero-kicker">Panel UltraPelis</p>
         <h1>Administracion de peliculas</h1>
         <p class="hero-copy">
-          Crea, edita, elimina y sincroniza el catalogo directo con Supabase.
+          Busca peliculas por TMDb ID y gestiona el catalogo directo con Supabase.
         </p>
       </section>
 
       <section class="admin-grid">
+        <!-- Auth Card -->
         <div class="admin-card auth-card">
           <div class="section-header">
             <div>
@@ -59,9 +62,69 @@
               <button class="secondary-button" id="logout-button" type="button" hidden>Salir</button>
             </div>
           </form>
-          <p class="admin-note">Usa un usuario de Supabase Auth con permisos de administrador.</p>
+          <p class="admin-note">Solo administradores con credenciales validas pueden acceder.</p>
         </div>
 
+        <!-- TMDb Search Card -->
+        <div class="admin-tmdb-card" id="tmdb-search-card" hidden>
+          <div class="section-header">
+            <div>
+              <p class="section-label">Busqueda TMDb</p>
+              <h2>Obtener pelicula por ID</h2>
+            </div>
+            <p class="catalog-status" id="tmdb-status">Escribe un TMDb ID</p>
+          </div>
+
+          <div class="tmdb-search-section">
+            <label class="field">
+              <span>TMDb ID</span>
+              <input id="tmdb-id" type="number" min="1" placeholder="Ej: 550 (Fight Club)" />
+            </label>
+            <button class="tmdb-fetch-btn" id="fetch-tmdb-btn" type="button">
+              <span id="fetch-btn-text">Buscar en TMDb</span>
+            </button>
+          </div>
+
+          <div class="tmdb-previews" id="tmdb-previews" hidden>
+            <div class="tmdb-poster-preview">
+              <img id="tmdb-poster-img" src="" alt="" hidden />
+              <div class="tmdb-placeholder" id="tmdb-poster-placeholder">Poster</div>
+            </div>
+            <div class="tmdb-info-grid">
+              <div class="tmdb-info-item">
+                <span>Titulo</span>
+                <strong id="tmdb-titulo">-</strong>
+              </div>
+              <div class="tmdb-info-item">
+                <span>Año</span>
+                <strong id="tmdb-anio">-</strong>
+              </div>
+              <div class="tmdb-info-item">
+                <span>Generos</span>
+                <ul id="tmdb-generos-list"></ul>
+              </div>
+              <div class="tmdb-info-item">
+                <span>Duracion</span>
+                <strong id="tmdb-duracion">-</strong>
+              </div>
+              <div class="tmdb-info-item">
+                <span>Clasificacion</span>
+                <strong id="tmdb-clasificacion">-</strong>
+              </div>
+              <div class="tmdb-info-item">
+                <span>Fecha de estreno</span>
+                <strong id="tmdb-fecha-estreno">-</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="tmdb-backdrop-preview" id="tmdb-backdrop-preview" hidden style="margin-top: 20px;">
+            <img id="tmdb-backdrop-img" src="" alt="" hidden />
+            <div class="tmdb-placeholder" id="tmdb-backdrop-placeholder">Backdrop</div>
+          </div>
+        </div>
+
+        <!-- Movie Form Card -->
         <div class="admin-card form-card">
           <div class="section-header">
             <div>
@@ -73,6 +136,8 @@
 
           <form id="movie-form" class="admin-form">
             <input type="hidden" id="movie-id" />
+            <input type="hidden" id="tmdb-id-hidden" />
+
             <div class="field-grid">
               <label class="field">
                 <span>Titulo</span>
@@ -82,23 +147,68 @@
                 <span>Año</span>
                 <input id="anio" type="number" min="1888" required />
               </label>
+            </div>
+
+            <label class="field">
+              <span>Genero principal</span>
+              <input id="genero" type="text" required />
+            </label>
+
+            <label class="field">
+              <span>Generos (separados por coma)</span>
+              <input id="generos" type="text" placeholder="Accion, Drama, Comedia..." />
+            </label>
+
+            <div class="field-grid">
               <label class="field">
-                <span>Genero</span>
-                <input id="genero" type="text" required />
+                <span>Duracion (minutos)</span>
+                <input id="duracion" type="number" min="1" />
               </label>
               <label class="field">
-                <span>Imagen</span>
-                <input id="imagen" type="url" placeholder="https://..." required />
+                <span>Clasificacion</span>
+                <input id="clasificacion" type="text" placeholder="PG-13, R, etc..." />
               </label>
             </div>
+
+            <label class="field">
+              <span>Fecha de estreno</span>
+              <input id="fecha_estreno" type="date" />
+            </label>
+
+            <label class="field">
+              <span>Póster (URL)</span>
+              <input id="imagen" type="url" placeholder="https://..." required />
+            </label>
+
+            <label class="field">
+              <span>Imagen de fondo (backdrop URL)</span>
+              <input id="backdrop" type="url" placeholder="https://..." />
+            </label>
+
             <label class="field">
               <span>Sinopsis</span>
               <textarea id="sinopsis" rows="5" required></textarea>
             </label>
-            <label class="field">
-              <span>Iframe</span>
-              <input id="iframe" type="url" placeholder="https://..." required />
-            </label>
+
+            <div class="servers-grid">
+              <label class="field">
+                <span>Servidor 1 (Iframe)</span>
+                <input id="servidor_1" type="url" placeholder="https://..." />
+              </label>
+              <label class="field">
+                <span>Servidor 2 (Iframe)</span>
+                <input id="servidor_2" type="url" placeholder="https://..." />
+              </label>
+              <label class="field">
+                <span>Servidor 3 (Iframe)</span>
+                <input id="servidor_3" type="url" placeholder="https://..." />
+              </label>
+              <label class="field">
+                <span>Servidor 4 (Iframe)</span>
+                <input id="servidor_4" type="url" placeholder="https://..." />
+              </label>
+            </div>
+
             <div class="form-actions">
               <button class="primary-button" type="submit">Guardar</button>
               <button class="secondary-button" id="cancel-edit" type="button" hidden>Cancelar</button>
@@ -106,6 +216,7 @@
           </form>
         </div>
 
+        <!-- Movies List Card -->
         <div class="admin-card list-card">
           <div class="section-header">
             <div>

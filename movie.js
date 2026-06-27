@@ -6,6 +6,10 @@ const elements = {
   error: document.querySelector("#movie-error"),
   genre: document.querySelector("#movie-genre"),
   genreLabel: document.querySelector("#movie-genre-label"),
+  genreDurationItem: document.querySelector("#movie-duration-item"),
+  genreRatingItem: document.querySelector("#movie-rating-item"),
+  genreReleaseItem: document.querySelector("#movie-release-item"),
+  genreGenresItem: document.querySelector("#movie-genres-item"),
   iframe: document.querySelector("#movie-iframe"),
   poster: document.querySelector("#movie-poster"),
   relatedGrid: document.querySelector("#related-grid"),
@@ -13,6 +17,11 @@ const elements = {
   synopsis: document.querySelector("#movie-synopsis"),
   title: document.querySelector("#movie-title"),
   year: document.querySelector("#movie-year"),
+  duration: document.querySelector("#movie-duration"),
+  rating: document.querySelector("#movie-rating"),
+  releaseDate: document.querySelector("#movie-release-date"),
+  genres: document.querySelector("#movie-genres"),
+  serverTabs: document.querySelector("#server-tabs"),
 };
 
 function escapeHtml(value) {
@@ -56,6 +65,36 @@ function relatedCard(movie) {
   `;
 }
 
+function renderServerTabs(movie) {
+  const servers = [
+    movie.servidor_1,
+    movie.servidor_2,
+    movie.servidor_3,
+    movie.servidor_4,
+  ].filter(Boolean);
+
+  if (servers.length <= 1) {
+    elements.serverTabs.innerHTML = "";
+    return;
+  }
+
+  elements.serverTabs.innerHTML = servers.map((server, index) => `
+    <button class="secondary-button server-tab" type="button" data-server="${index + 1}" ${index === 0 ? 'data-active="true"' : ''}>
+      Servidor ${index + 1}
+    </button>
+  `).join("");
+
+  // Bind server tab clicks
+  const tabs = elements.serverTabs.querySelectorAll(".server-tab");
+  tabs.forEach((tab, idx) => {
+    tab.addEventListener("click", () => {
+      elements.iframe.src = servers[idx];
+      tabs.forEach(t => t.removeAttribute("data-active"));
+      tab.setAttribute("data-active", "true");
+    });
+  });
+}
+
 async function loadMovie() {
   const movieId = getMovieId();
   if (!movieId) {
@@ -87,8 +126,56 @@ async function loadMovie() {
   elements.genre.textContent = movie.genero;
   elements.genreLabel.textContent = movie.genero;
   elements.synopsis.textContent = movie.sinopsis;
-  elements.iframe.src = movie.iframe;
+
+  // Duration
+  if (movie.duracion) {
+    elements.duration.textContent = `${movie.duracion} min`;
+    elements.genreDurationItem.hidden = false;
+  } else {
+    elements.genreDurationItem.hidden = true;
+  }
+
+  // Rating
+  if (movie.clasificacion) {
+    elements.rating.textContent = movie.clasificacion;
+    elements.genreRatingItem.hidden = false;
+  } else {
+    elements.genreRatingItem.hidden = true;
+  }
+
+  // Release date
+  if (movie.fecha_estreno) {
+    elements.releaseDate.textContent = new Date(movie.fecha_estreno).toLocaleDateString("es-ES", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+    elements.genreReleaseItem.hidden = false;
+  } else {
+    elements.genreReleaseItem.hidden = true;
+  }
+
+  // All genres
+  if (movie.generos) {
+    elements.genres.textContent = movie.generos;
+    elements.genreGenresItem.hidden = false;
+  } else {
+    elements.genreGenresItem.hidden = true;
+  }
+
+  // Multiple servers
+  const servers = [
+    movie.servidor_1,
+    movie.servidor_2,
+    movie.servidor_3,
+    movie.servidor_4,
+  ].filter(Boolean);
+
+  const firstServer = servers[0] || movie.iframe || "";
+  elements.iframe.src = firstServer;
   elements.iframe.title = `Reproductor de ${movie.titulo}`;
+  
+  renderServerTabs(movie);
 
   const { data: relatedMovies, error: relatedError } = await supabase
     .from("peliculas")

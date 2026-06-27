@@ -2,6 +2,11 @@ import { createSupabaseBrowserClient } from "./supabase.js";
 
 const supabase = createSupabaseBrowserClient();
 
+// Get TMDb API key from meta tag
+const getTmdbApiKey = () => {
+  return document.querySelector('meta[name="tmdb-api-key"]')?.content || "";
+};
+
 const elements = {
   adminEmpty: document.querySelector("#admin-empty"),
   adminSearch: document.querySelector("#admin-search"),
@@ -9,7 +14,6 @@ const elements = {
   cancelEdit: document.querySelector("#cancel-edit"),
   formStatus: document.querySelector("#form-status"),
   formTitle: document.querySelector("#form-title"),
-  iframe: document.querySelector("#iframe"),
   loginEmail: document.querySelector("#login-email"),
   loginForm: document.querySelector("#login-form"),
   loginPassword: document.querySelector("#login-password"),
@@ -23,13 +27,41 @@ const elements = {
   titulo: document.querySelector("#titulo"),
   anio: document.querySelector("#anio"),
   genero: document.querySelector("#genero"),
+  generos: document.querySelector("#generos"),
   imagen: document.querySelector("#imagen"),
+  backdrop: document.querySelector("#backdrop"),
+  duracion: document.querySelector("#duracion"),
+  clasificacion: document.querySelector("#clasificacion"),
+  fecha_estreno: document.querySelector("#fecha_estreno"),
+  servidor_1: document.querySelector("#servidor_1"),
+  servidor_2: document.querySelector("#servidor_2"),
+  servidor_3: document.querySelector("#servidor_3"),
+  servidor_4: document.querySelector("#servidor_4"),
+  tmdbId: document.querySelector("#tmdb-id"),
+  tmdbIdHidden: document.querySelector("#tmdb-id-hidden"),
+  fetchTmdbBtn: document.querySelector("#fetch-tmdb-btn"),
+  fetchBtnText: document.querySelector("#fetch-btn-text"),
+  tmdbStatus: document.querySelector("#tmdb-status"),
+  tmdbSearchCard: document.querySelector("#tmdb-search-card"),
+  tmdbPreviews: document.querySelector("#tmdb-previews"),
+  tmdbPosterImg: document.querySelector("#tmdb-poster-img"),
+  tmdbPosterPlaceholder: document.querySelector("#tmdb-poster-placeholder"),
+  tmdbBackdropPreview: document.querySelector("#tmdb-backdrop-preview"),
+  tmdbBackdropImg: document.querySelector("#tmdb-backdrop-img"),
+  tmdbBackdropPlaceholder: document.querySelector("#tmdb-backdrop-placeholder"),
+  tmdbTitulo: document.querySelector("#tmdb-titulo"),
+  tmdbAnio: document.querySelector("#tmdb-anio"),
+  tmdbGenerosList: document.querySelector("#tmdb-generos-list"),
+  tmdbDuracion: document.querySelector("#tmdb-duracion"),
+  tmdbClasificacion: document.querySelector("#tmdb-clasificacion"),
+  tmdbFechaEstreno: document.querySelector("#tmdb-fecha-estreno"),
 };
 
 const state = {
   movies: [],
   session: null,
   search: "",
+  tmdbLoading: false,
 };
 
 function escapeHtml(value) {
@@ -46,8 +78,22 @@ function setStatus(message, kind = "info") {
   elements.formStatus.dataset.kind = kind;
 }
 
+function setTmdbStatus(message, kind = "info") {
+  elements.tmdbStatus.textContent = message;
+  elements.tmdbStatus.dataset.kind = kind;
+}
+
+function setTmdbLoading(loading) {
+  state.tmdbLoading = loading;
+  elements.fetchTmdbBtn.disabled = loading;
+  elements.fetchBtnText.innerHTML = loading 
+    ? '<span class="tmdb-loading"></span>' 
+    : 'Buscar en TMDb';
+}
+
 function movieRow(movie) {
   const canEdit = Boolean(state.session);
+  const generos = movie.generos ? movie.generos.split(",").map(g => g.trim()).join(", ") : "";
   return `
     <tr>
       <td>
@@ -55,7 +101,7 @@ function movieRow(movie) {
         <span>${escapeHtml(movie.sinopsis)}</span>
       </td>
       <td>${escapeHtml(movie["año"])}</td>
-      <td>${escapeHtml(movie.genero)}</td>
+      <td>${escapeHtml(movie.genero)}${generos ? `<br><small>${escapeHtml(generos)}</small>` : ''}</td>
       <td>
         <div class="row-actions">
           <button class="secondary-button" type="button" data-action="edit" data-id="${movie.id}" ${canEdit ? "" : "disabled"}>Editar</button>
@@ -87,19 +133,32 @@ function renderMovies() {
 
 function clearForm() {
   elements.movieId.value = "";
+  elements.tmdbIdHidden.value = "";
+  elements.tmdbId.value = "";
   elements.movieForm.reset();
   elements.formTitle.textContent = "Agregar película";
   elements.cancelEdit.hidden = true;
+  elements.tmdbPreviews.hidden = true;
+  elements.tmdbSearchCard.hidden = true;
 }
 
 function fillForm(movie) {
   elements.movieId.value = movie.id;
+  elements.tmdbIdHidden.value = movie.tmdb_id ?? "";
   elements.titulo.value = movie.titulo ?? "";
   elements.anio.value = movie["año"] ?? "";
   elements.genero.value = movie.genero ?? "";
+  elements.generos.value = movie.generos ?? "";
   elements.sinopsis.value = movie.sinopsis ?? "";
   elements.imagen.value = movie.imagen ?? "";
-  elements.iframe.value = movie.iframe ?? "";
+  elements.backdrop.value = movie.backdrop ?? "";
+  elements.duracion.value = movie.duracion ?? "";
+  elements.clasificacion.value = movie.clasificacion ?? "";
+  elements.fecha_estreno.value = movie.fecha_estreno ?? "";
+  elements.servidor_1.value = movie.servidor_1 ?? "";
+  elements.servidor_2.value = movie.servidor_2 ?? "";
+  elements.servidor_3.value = movie.servidor_3 ?? "";
+  elements.servidor_4.value = movie.servidor_4 ?? "";
   elements.formTitle.textContent = `Editando #${movie.id}`;
   elements.cancelEdit.hidden = false;
 }
@@ -107,6 +166,109 @@ function fillForm(movie) {
 async function refreshMovies() {
   await loadMovies();
   renderMovies();
+}
+
+// TMDb API functions - using v3 API with api_key parameter
+async function fetchFromTmdb(movieId) {
+  const apiKey = getTmdbApiKey();
+  if (!apiKey || apiKey === "TU_API_KEY_AQUI") {
+    throw new Error("Configura tu API Key de TMDb en la meta tag tmdb-api-key");
+  }
+
+  const response = await fetch(
+    `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=es-ES&append_to_response=release_dates`,
+    {
+      headers: {
+        "accept": "application/json"
+      }
+    }
+  );
+
+  if (!response.ok) {
+    if (response.status === 404) {
+      throw new Error("Película no encontrada en TMDb");
+    }
+    if (response.status === 401) {
+      throw new Error("API Key de TMDb inválida");
+    }
+    throw new Error(`Error TMDb: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+function updateTmdbPreviews(data) {
+  // Poster preview
+  const posterPath = data.poster_path;
+  if (posterPath) {
+    const posterUrl = `https://image.tmdb.org/t/p/w500${posterPath}`;
+    elements.tmdbPosterImg.src = posterUrl;
+    elements.tmdbPosterImg.alt = `Poster de ${data.title}`;
+    elements.tmdbPosterImg.hidden = false;
+    elements.tmdbPosterPlaceholder.hidden = true;
+    elements.imagen.value = posterUrl;
+  } else {
+    elements.tmdbPosterImg.hidden = true;
+    elements.tmdbPosterPlaceholder.hidden = false;
+  }
+
+  // Backdrop preview
+  const backdropPath = data.backdrop_path;
+  if (backdropPath) {
+    const backdropUrl = `https://image.tmdb.org/t/p/w1280${backdropPath}`;
+    elements.tmdbBackdropImg.src = backdropUrl;
+    elements.tmdbBackdropImg.alt = `Backdrop de ${data.title}`;
+    elements.tmdbBackdropImg.hidden = false;
+    elements.tmdbBackdropPlaceholder.hidden = true;
+    elements.backdrop.value = backdropUrl;
+    elements.tmdbBackdropPreview.hidden = false;
+  } else {
+    elements.tmdbBackdropPreview.hidden = true;
+  }
+
+  // Fill form fields
+  elements.titulo.value = data.title || "";
+  elements.anio.value = data.release_date ? new Date(data.release_date).getFullYear() : "";
+  elements.sinopsis.value = data.overview || "";
+  elements.duracion.value = data.runtime || "";
+  elements.fecha_estreno.value = data.release_date || "";
+
+  // Genres
+  const genreNames = data.genres?.map(g => g.name).join(", ") || "";
+  elements.genero.value = data.genres?.[0]?.name || "";
+  elements.generos.value = genreNames;
+
+  // Rating (MPAA)
+  const usRelease = data.release_dates?.results?.find(r => r.iso_3166_1 === "US");
+  const certification = usRelease?.release_dates?.[0]?.certification || "";
+  elements.clasificacion.value = certification;
+
+  elements.tmdbIdHidden.value = data.id;
+  elements.tmdbPreviews.hidden = false;
+}
+
+async function handleTmdbFetch() {
+  const tmdbId = elements.tmdbId.value.trim();
+  
+  if (!tmdbId) {
+    setTmdbStatus("Escribe un TMDb ID", "error");
+    return;
+  }
+
+  setTmdbLoading(true);
+  setTmdbStatus("Buscando...", "loading");
+
+  try {
+    const data = await fetchFromTmdb(tmdbId);
+    updateTmdbPreviews(data);
+    setTmdbStatus("Datos cargados", "success");
+    elements.tmdbSearchCard.hidden = false;
+  } catch (error) {
+    setTmdbStatus(error.message, "error");
+    elements.tmdbPreviews.hidden = true;
+  } finally {
+    setTmdbLoading(false);
+  }
 }
 
 async function signIn(email, password) {
@@ -124,6 +286,11 @@ function updateAuthUI() {
   elements.authStatus.textContent = signedIn ? `Conectado como ${state.session.user.email}` : "Desconectado";
   elements.authStatus.dataset.kind = signedIn ? "success" : "info";
   elements.logoutButton.hidden = !signedIn;
+  
+  // Show TMDb search card when logged in
+  elements.tmdbSearchCard.hidden = !signedIn;
+  
+  // Disable all form fields when not logged in
   elements.movieForm.querySelectorAll("input, textarea, button").forEach((field) => {
     if (field.id === "cancel-edit") {
       field.disabled = !signedIn;
@@ -136,17 +303,33 @@ function updateAuthUI() {
 async function saveMovie(event) {
   event.preventDefault();
 
+  // Get first available server
+  const firstServer = elements.servidor_1.value.trim() || 
+                    elements.servidor_2.value.trim() ||
+                    elements.servidor_3.value.trim() ||
+                    elements.servidor_4.value.trim();
+
   const payload = {
+    tmdb_id: elements.tmdbIdHidden.value ? Number(elements.tmdbIdHidden.value) : null,
     titulo: elements.titulo.value.trim(),
     "año": Number(elements.anio.value),
     genero: elements.genero.value.trim(),
+    generos: elements.generos.value.trim(),
     sinopsis: elements.sinopsis.value.trim(),
     imagen: elements.imagen.value.trim(),
-    iframe: elements.iframe.value.trim(),
+    backdrop: elements.backdrop.value.trim(),
+    duracion: elements.duracion.value ? Number(elements.duracion.value) : null,
+    clasificacion: elements.clasificacion.value.trim(),
+    fecha_estreno: elements.fecha_estreno.value || null,
+    iframe: firstServer,
+    servidor_1: elements.servidor_1.value.trim() || null,
+    servidor_2: elements.servidor_2.value.trim() || null,
+    servidor_3: elements.servidor_3.value.trim() || null,
+    servidor_4: elements.servidor_4.value.trim() || null,
   };
 
-  if (!payload.titulo || !payload["año"] || !payload.genero || !payload.sinopsis || !payload.imagen || !payload.iframe) {
-    setStatus("Completa todos los campos.", "error");
+  if (!payload.titulo || !payload["año"] || !payload.genero || !payload.sinopsis || !payload.imagen) {
+    setStatus("Completa todos los campos obligatorios.", "error");
     return;
   }
 
@@ -251,6 +434,7 @@ function bindForm() {
   elements.movieForm.addEventListener("submit", saveMovie);
   elements.cancelEdit.addEventListener("click", clearForm);
   elements.refreshButton.addEventListener("click", refreshMovies);
+  elements.fetchTmdbBtn.addEventListener("click", handleTmdbFetch);
 }
 
 async function initRealtime() {

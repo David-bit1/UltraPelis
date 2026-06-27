@@ -57,6 +57,7 @@ function movieUrl(movie) {
 }
 
 function createMovieCard(movie, { featured = false } = {}) {
+  const duracion = movie.duracion ? `<br><span class="movie-runtime">${movie.duracion} min</span>` : "";
   return `
     <article class="movie-card${featured ? " featured-card" : ""}">
       <a href="${movieUrl(movie)}" aria-label="Ver ${escapeHtml(movie.titulo)}">
@@ -67,7 +68,7 @@ function createMovieCard(movie, { featured = false } = {}) {
         <div class="movie-card-body">
           <p class="movie-genre">${escapeHtml(movie.genero)}</p>
           <h3>${escapeHtml(movie.titulo)}</h3>
-          <p class="movie-meta">${escapeHtml(movie["año"])}</p>
+          <p class="movie-meta">${escapeHtml(movie["año"])}${duracion}</p>
           <p class="movie-synopsis">${escapeHtml(movie.sinopsis)}</p>
         </div>
       </a>

@@ -235,7 +235,7 @@
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.7);
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: center;
   z-index: 2000;
@@ -243,7 +243,7 @@
 }
 
 .modal[hidden] {
-  display: none;
+  display: none !important;
 }
 
 .modal-content {
@@ -255,14 +255,22 @@
   width: 90%;
   max-height: 90vh;
   overflow-y: auto;
+  pointer-events: all !important;
 }
 
-.modal-content button,
-.modal-content input,
-.modal-content select,
-.modal-content textarea {
-  pointer-events: auto;
-  opacity: 1;
+/* Force enable all buttons in modal */
+.modal button {
+  pointer-events: auto !important;
+  opacity: 1 !important;
+  cursor: pointer !important;
+}
+
+.modal input,
+.modal select,
+.modal textarea {
+  pointer-events: auto !important;
+  opacity: 1 !important;
+  background: rgba(6, 11, 18, 0.92) !important;
 }
 
 .modal-header {

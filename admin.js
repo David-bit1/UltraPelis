@@ -329,9 +329,11 @@ function updateAuthUI() {
   elements.authStatus.dataset.kind = signedIn ? "success" : "info";
   elements.logoutButton.hidden = !signedIn;
   elements.tmdbSearchCard.hidden = !signedIn;
+  
+  // Enable add-server button always when signed in
   elements.addServerBtn.disabled = !signedIn;
   
-  // Disable movie form fields only (not modal or add-server)
+  // Disable movie form fields except add-server
   document.querySelectorAll("#movie-form input, #movie-form textarea, #movie-form select").forEach((field) => {
     field.disabled = !signedIn;
   });

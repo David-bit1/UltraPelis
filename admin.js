@@ -372,12 +372,14 @@ async function saveMovie(event) {
     : supabase.from("peliculas").insert(payload);
 
   const { error, data } = await request;
+  console.log("saveMovie response: error=", error, "data=", data?.[0]);
   if (error) {
     setStatus(`Error: ${error.message}`, "error");
     return;
   }
 
   const peliculaId = editingId || data[0].id;
+  console.log("saveMovie: peliculaId=", peliculaId, "state.servers.length=", state.servers.length);
   await saveServers(peliculaId);
   
   setStatus(editingId ? "Película actualizada." : "Película creada.", "success");

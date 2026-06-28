@@ -387,6 +387,7 @@ async function saveMovie(event) {
 
 async function saveServers(peliculaId) {
   try {
+    console.log("saveServers called for peliculaId:", peliculaId, "servers:", state.servers);
     for (const server of state.servers) {
       const serverPayload = {
         ...server,

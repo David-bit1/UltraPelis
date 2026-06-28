@@ -125,7 +125,7 @@ function movieRow(movie) {
 
 async function loadMovies() {
   const query = supabase.from("peliculas").select(
-    "id, titulo, año, genero, sinopsis, imagen, backdrop, duracion, clasificacion, fecha_estreno, tmdb_id, generos, destacada, created_at, iframe"
+    "id, titulo, \"año\", genero, sinopsis, imagen, backdrop, duracion, clasificacion, fecha_estreno, tmdb_id, generos, destacada, created_at, iframe"
   ).order("created_at", { ascending: false });
 
   if (state.search) {
@@ -386,27 +386,41 @@ async function saveMovie(event) {
 }
 
 async function saveServers(peliculaId) {
+  console.log("saveServers: peliculaId=", peliculaId, "servers:", state.servers.length);
+  if (!state.servers || state.servers.length === 0) {
+    console.log("saveServers: No servers to save");
+    return;
+  }
   try {
-    console.log("saveServers called for peliculaId:", peliculaId, "servers:", state.servers);
     for (const server of state.servers) {
       const serverPayload = {
-        ...server,
+        nombre: server.nombre,
+        url: server.url,
+        idioma_audio: server.idioma_audio,
+        subtitulos: server.subtitulos,
+        idioma_subtitulos: server.idioma_subtitulos,
+        calidad: server.calidad,
+        estado: server.estado,
+        orden: server.orden,
         pelicula_id: peliculaId
       };
       
       if (server.id && server.id < 0) {
-        const { error } = await supabase.from("servidores").insert({
-          ...serverPayload,
-          id: undefined
-        });
-        if (error) console.error("Error saving server:", error);
+        console.log("saveServers: Inserting server", server.nombre);
+        const { error } = await supabase.from("servidores").insert(serverPayload);
+        if (error) {
+          console.error("saveServers: Insert error:", error.message);
+          throw error;
+        }
       } else if (server.id > 0) {
+        console.log("saveServers: Updating server", server.id);
         const { error } = await supabase.from("servidores").update(serverPayload).eq("id", server.id);
-        if (error) console.error("Error updating server:", error);
+        if (error) console.error("saveServers: Update error:", error.message);
       }
     }
   } catch (err) {
-    console.warn("servidores table may not exist, servers saved to state only");
+    console.error("saveServers: Fatal error:", err.message);
+    setStatus(`Error guardando servidores: ${err.message}`, "error");
   }
 }
 

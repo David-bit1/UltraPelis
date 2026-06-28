@@ -101,6 +101,7 @@ button {
 .menu-toggle {
   display: none;
   flex-direction: column;
+  align-items: flex-start;
   gap: 6px;
   background: transparent;
   border: 0;
@@ -939,6 +940,7 @@ main {
 .movie-detail-content {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   justify-content: center;
   padding: 8px 4px;
 }
@@ -1166,6 +1168,7 @@ main {
     background: linear-gradient(180deg, rgba(16, 24, 40, 0.98), rgba(10, 18, 32, 0.98));
     backdrop-filter: blur(20px);
     flex-direction: column;
+  align-items: flex-start;
     padding: 16px;
     gap: 8px;
     transform: translateY(-100%);
@@ -1261,6 +1264,7 @@ main {
 
   .hero-actions {
     flex-direction: column;
+  align-items: flex-start;
   }
 
   .primary-button,
@@ -1270,6 +1274,7 @@ main {
 
   .search-form--wide {
     flex-direction: column;
+  align-items: flex-start;
   }
 
   .movies-grid {
@@ -1294,6 +1299,7 @@ main {
 
   .movie-actions {
     flex-direction: column;
+  align-items: flex-start;
   }
 
   .movie-actions .primary-button,
@@ -1360,8 +1366,10 @@ main {
 }
 
 .server-buttons-container {
+  align-items: flex-start;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 8px;
 }
 
@@ -1403,7 +1411,8 @@ main {
   .hero h1 { font-size: 1.4rem !important; }
   .section-header h2 { font-size: 1.2rem !important; }
   .brand-logo { max-width: 120px !important; }
-  .movie-meta-list { flex-direction: column; }
+  .movie-meta-list { flex-direction: column;
+  align-items: flex-start; }
   .server-btn { min-width: 140px; padding: 10px 12px; }
 }
 
@@ -1454,6 +1463,7 @@ main {
 }
 /* SERVIDORES HORIZONTALES EN MOVIL */
 @media (max-width: 480px) {
+  .server-buttons-container { align-items: stretch; }
   .servers-container {
     flex-wrap: nowrap;
     overflow-x: auto;
@@ -1474,6 +1484,7 @@ main {
 
 /* PELICULAS 2 COLUMNAS CON SCROLL HORIZONTAL */
 @media (max-width: 480px) {
+  .server-buttons-container { align-items: stretch; }
   .movies-grid {
     grid-template-columns: repeat(2, 1fr) !important;
   }

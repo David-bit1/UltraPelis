@@ -1665,3 +1665,54 @@ main {
   display: block;
   margin-bottom: 8px;
 }
+
+/* ===== SERVER SELECTOR - Modern Card Component ===== */
+.servers-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.server-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: rgba(24, 217, 255, 0.05);
+  border: 1px solid rgba(86, 171, 255, 0.12);
+  border-radius: var(--radius-md);
+  color: var(--text);
+  cursor: pointer;
+  padding: 12px 14px;
+  min-width: 160px;
+  transition: all 200ms ease;
+}
+
+.server-btn::before {
+  content: "🎬";
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 14px;
+  opacity: 0.4;
+}
+
+.server-btn:hover {
+  background: rgba(24, 217, 255, 0.12);
+  border-color: rgba(103, 239, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(24, 217, 255, 0.15);
+}
+
+.server-btn.active {
+  background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+  color: white;
+}
+
+.server-name { font-weight: 700; font-size: 0.95rem; }
+.server-meta { font-size: 0.8rem; color: var(--muted); }
+.subtitle-badge { background: rgba(255, 255, 255, 0.1); border-radius: 999px; padding: 2px 6px; font-size: 0.72rem; }
+
+@media (max-width: 768px) {
+  .servers-container { flex-wrap: nowrap; overflow-x: auto; }
+  .server-btn { min-width: 140px; padding: 10px 12px; font-size: 0.8rem; }
+}

@@ -1395,3 +1395,32 @@ main {
 .subtitulo-options {
   margin-top: 12px;
 }
+
+/* Ad Containers */
+.native-ad-container,
+.social-banner-ad {
+  background: rgba(12, 19, 31, 0.76);
+  border: 1px solid rgba(86, 171, 255, 0.12);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin: 18px 0;
+}
+
+.ad-label {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.social-banner-ad {
+  min-height: 120px;
+}
+
+#social-banner-content,
+#native-ad-content {
+  min-height: 80px;
+}

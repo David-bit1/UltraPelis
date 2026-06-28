@@ -380,3 +380,37 @@
 .tmdb-backdrop-preview:focus-within {
   box-shadow: 0 0 0 4px rgba(24, 217, 255, 0.2);
 }
+/* SERVIDORES EN MOVIL - HORIZONTALES */
+@media (max-width: 768px) {
+  .servers-grid {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    gap: 12px !important;
+    padding-bottom: 8px !important;
+  }
+  
+  .server-block {
+    min-width: 220px !important;
+    flex-shrink: 0 !important;
+  }
+  
+  .servers-section {
+    overflow-x: auto !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .servers-grid {
+    gap: 8px !important;
+  }
+  
+  .server-block {
+    min-width: 200px !important;
+    padding: 12px !important;
+  }
+  
+  .server-block h4 {
+    font-size: 1rem !important;
+  }
+}

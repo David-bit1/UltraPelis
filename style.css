@@ -1452,3 +1452,69 @@ main {
   :root { --max-width: 1600px; }
   .movies-grid { grid-template-columns: repeat(8, 1fr) !important; }
 }
+/* SERVIDORES HORIZONTALES EN MOVIL */
+@media (max-width: 480px) {
+  .servers-container {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    gap: 8px;
+  }
+  
+  .server-btn {
+    min-width: 140px;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+  
+  .server-meta {
+    font-size: 0.75rem;
+  }
+}
+
+/* PELICULAS 2 COLUMNAS CON SCROLL HORIZONTAL */
+@media (max-width: 480px) {
+  .movies-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .movies-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* CARRUSEL HORIZONTAL EN MOVIL */
+@media (max-width: 768px) {
+  .carousel {
+    grid-auto-columns: 70% !important;
+    gap: 12px !important;
+  }
+}
+
+/* Películas en 2 filas móvil */
+@media (max-width: 576px) {
+  .movies-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+  }
+}
+/* MOVIE PAGE - 2 COLUMNAS EN MOVIL */
+@media (max-width: 768px) {
+  .related-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .related-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .related-grid {
+    grid-template-columns: 1fr !important;
+  }
+}

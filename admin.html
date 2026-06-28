@@ -193,13 +193,218 @@
               <textarea id="sinopsis" rows="5"></textarea>
             </label>
 
-            <div class="servers-section">
+            <div class="servers-section" id="servers-container">
               <div class="servers-header">
                 <h3>Servidores de reproducción</h3>
-                <button class="secondary-button" id="add-server" type="button">+ Agregar servidor</button>
               </div>
-              <div class="servers-list" id="servers-list">
-                <p class="no-servers">No hay servidores agregados.</p>
+              <div class="servers-grid">
+                <!-- Servidor 1 -->
+                <div class="server-block" data-server="1">
+                  <h4>Servidor 1</h4>
+                  <div class="field-grid">
+                    <label class="field">
+                      <span>Nombre</span>
+                      <input id="servidor1_nombre" type="text" placeholder="Ej: StreamWish..." />
+                    </label>
+                    <label class="field">
+                      <span>URL iframe</span>
+                      <input id="servidor1_iframe" type="url" placeholder="https://..." />
+                    </label>
+                  </div>
+                  <div class="field-grid">
+                    <label class="field">
+                      <span>Idioma</span>
+                      <select id="servidor1_idioma">
+                        <option value="es">Español Latino</option>
+                        <option value="es-CO">Español Castellano</option>
+                        <option value="en">Inglés</option>
+                        <option value="ja">Japonés</option>
+                        <option value="other">Otro</option>
+                      </select>
+                    </label>
+                    <label class="field">
+                      <span>Calidad</span>
+                      <select id="servidor1_calidad">
+                        <option value="720p">720p HD</option>
+                        <option value="1080p">1080p Full HD</option>
+                        <option value="4k">4K Ultra HD</option>
+                        <option value="480p">480p SD</option>
+                      </select>
+                    </label>
+                  </div>
+                  <label class="checkbox-label">
+                    <input id="servidor1_subtitulos" type="checkbox" />
+                    <span>¿Tiene subtítulos?</span>
+                  </label>
+                  <div class="subtitulo-options" hidden>
+                    <label class="field">
+                      <span>Idioma subtítulos</span>
+                      <select id="servidor1_idioma_sub">
+                        <option value="es">Español</option>
+                        <option value="en">Inglés</option>
+                        <option value="other">Otro</option>
+                      </select>
+                    </label>
+                  </div>
+                  <button class="secondary-button" id="edit-server-1" type="button">Editar</button>
+                  <button class="danger-button" id="clear-server-1" type="button" hidden>×</button>
+                </div>
+
+                <!-- Servidor 2 -->
+                <div class="server-block" data-server="2">
+                  <h4>Servidor 2</h4>
+                  <div class="field-grid">
+                    <label class="field">
+                      <span>Nombre</span>
+                      <input id="servidor2_nombre" type="text" placeholder="Ej: StreamWish..." />
+                    </label>
+                    <label class="field">
+                      <span>URL iframe</span>
+                      <input id="servidor2_iframe" type="url" placeholder="https://..." />
+                    </label>
+                  </div>
+                  <div class="field-grid">
+                    <label class="field">
+                      <span>Idioma</span>
+                      <select id="servidor2_idioma">
+                        <option value="es">Español Latino</option>
+                        <option value="es-CO">Español Castellano</option>
+                        <option value="en">Inglés</option>
+                        <option value="ja">Japonés</option>
+                        <option value="other">Otro</option>
+                      </select>
+                    </label>
+                    <label class="field">
+                      <span>Calidad</span>
+                      <select id="servidor2_calidad">
+                        <option value="720p">720p HD</option>
+                        <option value="1080p">1080p Full HD</option>
+                        <option value="4k">4K Ultra HD</option>
+                        <option value="480p">480p SD</option>
+                      </select>
+                    </label>
+                  </div>
+                  <label class="checkbox-label">
+                    <input id="servidor2_subtitulos" type="checkbox" />
+                    <span>¿Tiene subtítulos?</span>
+                  </label>
+                  <div class="subtitulo-options" hidden>
+                    <label class="field">
+                      <span>Idioma subtítulos</span>
+                      <select id="servidor2_idioma_sub">
+                        <option value="es">Español</option>
+                        <option value="en">Inglés</option>
+                        <option value="other">Otro</option>
+                      </select>
+                    </label>
+                  </div>
+                  <button class="secondary-button" id="edit-server-2" type="button">Editar</button>
+                  <button class="danger-button" id="clear-server-2" type="button" hidden>×</button>
+                </div>
+
+                <!-- Servidor 3 -->
+                <div class="server-block" data-server="3">
+                  <h4>Servidor 3</h4>
+                  <div class="field-grid">
+                    <label class="field">
+                      <span>Nombre</span>
+                      <input id="servidor3_nombre" type="text" placeholder="Ej: StreamWish..." />
+                    </label>
+                    <label class="field">
+                      <span>URL iframe</span>
+                      <input id="servidor3_iframe" type="url" placeholder="https://..." />
+                    </label>
+                  </div>
+                  <div class="field-grid">
+                    <label class="field">
+                      <span>Idioma</span>
+                      <select id="servidor3_idioma">
+                        <option value="es">Español Latino</option>
+                        <option value="es-CO">Español Castellano</option>
+                        <option value="en">Inglés</option>
+                        <option value="ja">Japonés</option>
+                        <option value="other">Otro</option>
+                      </select>
+                    </label>
+                    <label class="field">
+                      <span>Calidad</span>
+                      <select id="servidor3_calidad">
+                        <option value="720p">720p HD</option>
+                        <option value="1080p">1080p Full HD</option>
+                        <option value="4k">4K Ultra HD</option>
+                        <option value="480p">480p SD</option>
+                      </select>
+                    </label>
+                  </div>
+                  <label class="checkbox-label">
+                    <input id="servidor3_subtitulos" type="checkbox" />
+                    <span>¿Tiene subtítulos?</span>
+                  </label>
+                  <div class="subtitulo-options" hidden>
+                    <label class="field">
+                      <span>Idioma subtítulos</span>
+                      <select id="servidor3_idioma_sub">
+                        <option value="es">Español</option>
+                        <option value="en">Inglés</option>
+                        <option value="other">Otro</option>
+                      </select>
+                    </label>
+                  </div>
+                  <button class="secondary-button" id="edit-server-3" type="button">Editar</button>
+                  <button class="danger-button" id="clear-server-3" type="button" hidden>×</button>
+                </div>
+
+                <!-- Servidor 4 -->
+                <div class="server-block" data-server="4">
+                  <h4>Servidor 4</h4>
+                  <div class="field-grid">
+                    <label class="field">
+                      <span>Nombre</span>
+                      <input id="servidor4_nombre" type="text" placeholder="Ej: StreamWish..." />
+                    </label>
+                    <label class="field">
+                      <span>URL iframe</span>
+                      <input id="servidor4_iframe" type="url" placeholder="https://..." />
+                    </label>
+                  </div>
+                  <div class="field-grid">
+                    <label class="field">
+                      <span>Idioma</span>
+                      <select id="servidor4_idioma">
+                        <option value="es">Español Latino</option>
+                        <option value="es-CO">Español Castellano</option>
+                        <option value="en">Inglés</option>
+                        <option value="ja">Japonés</option>
+                        <option value="other">Otro</option>
+                      </select>
+                    </label>
+                    <label class="field">
+                      <span>Calidad</span>
+                      <select id="servidor4_calidad">
+                        <option value="720p">720p HD</option>
+                        <option value="1080p">1080p Full HD</option>
+                        <option value="4k">4K Ultra HD</option>
+                        <option value="480p">480p SD</option>
+                      </select>
+                    </label>
+                  </div>
+                  <label class="checkbox-label">
+                    <input id="servidor4_subtitulos" type="checkbox" />
+                    <span>¿Tiene subtítulos?</span>
+                  </label>
+                  <div class="subtitulo-options" hidden>
+                    <label class="field">
+                      <span>Idioma subtítulos</span>
+                      <select id="servidor4_idioma_sub">
+                        <option value="es">Español</option>
+                        <option value="en">Inglés</option>
+                        <option value="other">Otro</option>
+                      </select>
+                    </label>
+                  </div>
+                  <button class="secondary-button" id="edit-server-4" type="button">Editar</button>
+                  <button class="danger-button" id="clear-server-4" type="button" hidden>×</button>
+                </div>
               </div>
             </div>
 
@@ -245,12 +450,10 @@
     <div class="modal" id="server-modal" hidden>
       <div class="modal-content">
         <div class="modal-header">
-          <h3 id="modal-title">Agregar servidor</h3>
+          <h3>Agregar servidor</h3>
           <button class="icon-button" id="close-modal" type="button">×</button>
         </div>
         <form id="server-form" class="admin-form">
-          <input type="hidden" id="server-id" />
-          
           <label class="field">
             <span>Nombre del servidor</span>
             <input id="server-nombre" type="text" placeholder="Ej: StreamWish, Filemoon..." required />
@@ -284,36 +487,19 @@
             </label>
           </div>
 
-          <div class="field">
-            <label class="checkbox-label">
-              <input id="server-subtitulos" type="checkbox" />
-              <span>¿Tiene subtítulos?</span>
-            </label>
-            
-            <div id="subtitulo-options" hidden>
-              <label class="field">
-                <span>Idioma de subtítulos</span>
-                <select id="server-idioma-subtitulos">
-                  <option value="es">Español</option>
-                  <option value="en">Inglés</option>
-                  <option value="other">Otro</option>
-                </select>
-              </label>
-            </div>
-          </div>
+          <label class="checkbox-label">
+            <input id="server-subtitulos" type="checkbox" />
+            <span>¿Tiene subtítulos?</span>
+          </label>
 
-          <div class="field-grid">
+          <div id="subtitulo-options" hidden>
             <label class="field">
-              <span>Estado</span>
-              <select id="server-estado">
-                <option value="activo">Activo</option>
-                <option value="caido">Caído</option>
+              <span>Idioma de subtítulos</span>
+              <select id="server-idioma-subtitulos">
+                <option value="es">Español</option>
+                <option value="en">Inglés</option>
+                <option value="other">Otro</option>
               </select>
-            </label>
-
-            <label class="field">
-              <span>Orden (prioridad)</span>
-              <input id="server-orden" type="number" min="1" value="1" />
             </label>
           </div>
 

@@ -1305,3 +1305,93 @@ main {
     padding: 24px 18px;
   }
 }
+
+/* Server Buttons */
+.servers-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.server-btn {
+  background: rgba(24, 217, 255, 0.08);
+  border: 1px solid rgba(24, 217, 255, 0.14);
+  border-radius: 12px;
+  color: var(--text);
+  cursor: pointer;
+  padding: 12px 16px;
+  text-align: left;
+  transition: all 160ms ease;
+  min-width: 200px;
+}
+
+.server-btn:hover {
+  background: rgba(24, 217, 255, 0.12);
+  border-color: rgba(103, 239, 255, 0.3);
+}
+
+.server-btn.active {
+  background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+  border-color: transparent;
+  color: white;
+}
+
+.server-btn.active .server-meta {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.server-name {
+  font-weight: 700;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.server-meta {
+  color: var(--muted);
+  font-size: 0.84rem;
+  display: block;
+}
+
+.subtitle-badge {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+  padding: 2px 8px;
+  margin-left: 6px;
+}
+
+.server-buttons-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.server-selector-label {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* Admin Server Blocks */
+.servers-grid {
+  display: grid;
+  gap: 18px;
+  margin-top: 16px;
+}
+
+.server-block {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(86, 171, 255, 0.1);
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.server-block h4 {
+  margin: 0 0 14px;
+  font-family: var(--heading);
+  font-size: 1.1rem;
+  color: var(--accent);
+}
+
+.subtitulo-options {
+  margin-top: 12px;
+}

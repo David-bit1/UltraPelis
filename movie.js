@@ -21,12 +21,12 @@ const elements = {
   ratingItem: document.querySelector("#movie-rating-item"),
   releaseDate: document.querySelector("#movie-release-date"),
   releaseItem: document.querySelector("#movie-release-item"),
-  serverSelect: document.querySelector("#server-select"),
+  serversContainer: document.querySelector("#servers-container"),
 };
 
 const state = {
   servers: [],
-  movieId: null,
+  currentServer: null,
 };
 
 function escapeHtml(value) {
@@ -59,6 +59,78 @@ function getLanguageLabel(code) {
   return labels[code] || code;
 }
 
+function getServersFromMovie(movie) {
+  const servers = [];
+  for (let i = 1; i <= 4; i++) {
+    const nombre = movie[`servidor${i}_nombre`];
+    const iframe = movie[`servidor${i}_iframe`];
+    if (nombre && iframe) {
+      servers.push({
+        num: i,
+        nombre,
+        url: iframe,
+        idioma: movie[`servidor${i}_idioma`] || "es",
+        subtitulos: movie[`servidor${i}_subtitulos`] || false,
+        idioma_sub: movie[`servidor${i}_idioma_sub`] || null,
+        calidad: movie[`servidor${i}_calidad`] || "720p",
+      });
+    }
+  }
+  return servers;
+}
+
+function renderServerButtons() {
+  if (state.servers.length === 0) {
+    elements.serversContainer.innerHTML = '<p class="no-servers">No hay servidores disponibles.</p>';
+    return;
+  }
+
+  elements.serversContainer.innerHTML = state.servers.map((server, index) => {
+    const subtitleBadge = server.subtitulos 
+      ? `<span class="subtitle-badge">Sub: ${getLanguageLabel(server.idioma_sub)}</span>` 
+      : "";
+    const activeClass = index === 0 ? "active" : "";
+
+    return `
+      <button 
+        class="server-btn ${activeClass}" 
+        data-server="${server.num}"
+        data-url="${escapeHtml(server.url)}"
+        type="button"
+      >
+        <span class="server-name">${escapeHtml(server.nombre)}</span>
+        <span class="server-meta">${getLanguageLabel(server.idioma)} · ${server.calidad} ${subtitleBadge}
+        </span>
+      </button>
+    `;
+  }).join("");
+
+  // Cargar primer servidor por defecto
+  if (state.servers.length > 0) {
+    loadServer(state.servers[0]);
+  }
+
+  // Bind click handlers
+  elements.serversContainer.querySelectorAll(".server-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const serverNum = Number(btn.dataset.server);
+      const server = state.servers.find(s => s.num === serverNum);
+      if (server) loadServer(server);
+    });
+  });
+}
+
+function loadServer(server) {
+  elements.iframe.src = server.url;
+  elements.iframe.title = `Reproductor - ${server.nombre}`;
+  state.currentServer = server;
+
+  // Update active state
+  elements.serversContainer.querySelectorAll(".server-btn").forEach(btn => {
+    btn.classList.toggle("active", Number(btn.dataset.server) === server.num);
+  });
+}
+
 function renderError(message) {
   elements.root.hidden = true;
   elements.error.hidden = false;
@@ -79,43 +151,6 @@ function relatedCard(movie) {
       </a>
     </article>
   `;
-}
-
-function renderServerOptions() {
-  const activeServers = state.servers.filter(s => s.estado === 'activo');
-  
-  if (activeServers.length === 0) {
-    elements.serverSelect.innerHTML = '<option value="">Sin servidores activos</option>';
-    return;
-  }
-
-  elements.serverSelect.innerHTML = activeServers.map((server, index) => {
-    const subtitleInfo = server.subtitulos 
-      ? ` | Sub: ${getLanguageLabel(server.idioma_subtitulos)}` 
-      : '';
-    return `
-      <option value="${server.url}" ${index === 0 ? 'selected' : ''}>
-        ${server.nombre} - ${getLanguageLabel(server.idioma_audio)} - ${server.calidad}${subtitleInfo}
-      </option>
-    `;
-  }).join("");
-
-  // Set initial iframe
-  if (activeServers.length > 0) {
-    elements.iframe.src = activeServers[0].url;
-    elements.iframe.title = `Reproductor - ${activeServers[0].nombre}`;
-  }
-}
-
-function bindServerChange() {
-  elements.serverSelect.addEventListener("change", () => {
-    const url = elements.serverSelect.value;
-    if (url) {
-      elements.iframe.src = url;
-      const selectedText = elements.serverSelect.options[elements.serverSelect.selectedIndex].text;
-      elements.iframe.title = `Reproductor - ${selectedText}`;
-    }
-  });
 }
 
 function bindMenuToggle() {
@@ -143,12 +178,17 @@ async function loadMovie() {
     return;
   }
 
-  state.movieId = movieId;
-
-  // Load movie data
+  // Load movie data with servidor fields
   const { data: movie, error } = await supabase
     .from("peliculas")
-    .select("*")
+    .select(`
+      id, titulo, "año", genero, sinopsis, imagen, backdrop, duracion, clasificacion, 
+      fecha_estreno, tmdb_id,
+      servidor1_nombre, servidor1_iframe, servidor1_idioma, servidor1_subtitulos, servidor1_idioma_sub, servidor1_calidad,
+      servidor2_nombre, servidor2_iframe, servidor2_idioma, servidor2_subtitulos, servidor2_idioma_sub, servidor2_calidad,
+      servidor3_nombre, servidor3_iframe, servidor3_idioma, servidor3_subtitulos, servidor3_idioma_sub, servidor3_calidad,
+      servidor4_nombre, servidor4_iframe, servidor4_idioma, servidor4_subtitulos, servidor4_idioma_sub, servidor4_calidad
+    `)
     .eq("id", movieId)
     .maybeSingle();
 
@@ -159,38 +199,7 @@ async function loadMovie() {
     return;
   }
 
-
-  // Load servers from separate table or inline fields
-  let servers = [];
-  
-  // Try loading from servidores table first
-  const { data: servidoresData, error: serversError } = await supabase
-    .from("servidores")
-    .select("*")
-    .eq("pelicula_id", movieId)
-    .order("orden", { ascending: true });
-  
-  if (!serversError && servidoresData?.length > 0) {
-    servers = servidoresData;
-  } else {
-    // Fallback: use inline iframe fields
-    const inlineServers = [];
-    if (movie.iframe) {
-      inlineServers.push({ id: 1, nombre: "Servidor 1", url: movie.iframe, idioma_audio: "es", calidad: "720p", estado: "activo" });
-    }
-    if (movie.servidor_2) {
-      inlineServers.push({ id: 2, nombre: "Servidor 2", url: movie.servidor_2, idioma_audio: "es", calidad: "720p", estado: "activo" });
-    }
-    if (movie.servidor_3) {
-      inlineServers.push({ id: 3, nombre: "Servidor 3", url: movie.servidor_3, idioma_audio: "es", calidad: "720p", estado: "activo" });
-    }
-    if (movie.servidor_4) {
-      inlineServers.push({ id: 4, nombre: "Servidor 4", url: movie.servidor_4, idioma_audio: "es", calidad: "720p", estado: "activo" });
-    }
-    servers = inlineServers;
-  }
-  
-  state.servers = servers;
+  state.servers = getServersFromMovie(movie);
 
   // Render movie data
   document.title = `${movie.titulo} | UltraPelis`;
@@ -232,8 +241,7 @@ async function loadMovie() {
   }
 
   // Render servers
-  renderServerOptions();
-  bindServerChange();
+  renderServerButtons();
 
   // Load related movies
   const { data: relatedMovies, error: relatedError } = await supabase

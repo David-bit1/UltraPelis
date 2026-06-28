@@ -12,6 +12,8 @@ const elements = {
   heroPoster: document.querySelector("#hero-poster"),
   heroTitle: document.querySelector("#hero-title"),
   newReleasesGrid: document.querySelector("#new-releases-grid"),
+  releasesNext: document.querySelector("#releases-next"),
+  releasesPrev: document.querySelector("#releases-prev"),
   openSearch: document.querySelector("#open-search"),
   searchInput: document.querySelector("#search-input"),
 };
@@ -143,6 +145,17 @@ function bindEvents() {
   elements.featuredPrev?.addEventListener("click", () => scrollFeatured(-1));
   elements.featuredNext?.addEventListener("click", () => scrollFeatured(1));
 
+  
+  // Releases carousel navigation
+  const scrollReleases = (direction) => {
+    const distance = elements.newReleasesGrid?.clientWidth * 0.85;
+    if (distance) {
+      elements.newReleasesGrid.scrollBy({ left: direction * distance, behavior: "smooth" });
+    }
+  };
+
+  elements.releasesPrev?.addEventListener("click", () => scrollReleases(-1));
+  elements.releasesNext?.addEventListener("click", () => scrollReleases(1));
   // Open search scroll
   elements.openSearch?.addEventListener("click", () => {
     document.querySelector(".catalog-tools")?.scrollIntoView({ behavior: "smooth", block: "start" });

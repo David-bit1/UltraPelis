@@ -132,7 +132,7 @@ button {
 
 .brand-logo {
   display: block;
-  height: clamp(24px, 6vw, 32px);
+  height: clamp(24px, 6vw, 30px);
   object-fit: contain;
   width: auto;
   max-width: 210px;
@@ -1312,11 +1312,77 @@ main {
   }
 }
 
-/* Server Buttons */
+/* ===== SERVER SELECTOR - Modern Card Component ===== */
 .servers-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.server-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: rgba(24, 217, 255, 0.05);
+  border: 1px solid rgba(86, 171, 255, 0.12);
+  border-radius: var(--radius-md);
+  color: var(--text);
+  cursor: pointer;
+  padding: 10px 12px;
+  min-width: 140px;
+  transition: all 200ms ease;
+  position: relative;
+  text-align: left;
+}
+
+.server-btn::before {
+  content: "🎬";
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  font-size: 12px;
+  opacity: 0.3;
+}
+
+.server-btn:hover {
+  background: rgba(24, 217, 255, 0.12);
+  border-color: rgba(103, 239, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(24, 217, 255, 0.15);
+}
+
+.server-btn.active {
+  background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+  border-color: transparent;
+  color: white;
+  box-shadow: 0 4px 20px rgba(24, 217, 255, 0.3);
+}
+
+.server-btn.active .subtitle-badge {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.server-name {
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-bottom: 2px;
+}
+
+.server-meta {
+  font-size: 0.7rem;
+  color: var(--muted);
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.subtitle-badge {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  padding: 1px 6px;
+  font-size: 0.65rem;
+  font-weight: 600;
 }
 
 .server-btn {

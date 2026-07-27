@@ -82,6 +82,14 @@
               <div id="servers-container" class="servers-container"></div>
             </div>
           </div>
+
+          <div class="playback-note" id="playback-note">
+            <span class="playback-note-label">Modo de reproducción</span>
+            <p id="playback-mode">Selecciona un servidor.</p>
+            <a id="source-link" class="secondary-button playback-source-link" href="#" target="_blank" rel="noreferrer">
+              Abrir fuente en otra pestaña
+            </a>
+          </div>
           
           <!-- SPOT SOCIAL BANNER -->
           <div class="social-banner-ad" id="social-banner-ad" hidden>
@@ -98,6 +106,14 @@
               allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
               allowfullscreen
             ></iframe>
+            <video
+              id="movie-video"
+              class="movie-video"
+              controls
+              playsinline
+              preload="metadata"
+              hidden
+            ></video>
           </div>
         </section>
 

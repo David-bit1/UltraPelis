@@ -7,6 +7,9 @@ const elements = {
   genre: document.querySelector("#movie-genre"),
   genreLabel: document.querySelector("#movie-genre-label"),
   iframe: document.querySelector("#movie-iframe"),
+  video: document.querySelector("#movie-video"),
+  playbackMode: document.querySelector("#playback-mode"),
+  sourceLink: document.querySelector("#source-link"),
   poster: document.querySelector("#movie-poster"),
   backdropContainer: document.querySelector("#movie-backdrop-container"),
   backdropImage: document.querySelector("#movie-backdrop"),
@@ -59,6 +62,60 @@ function getLanguageLabel(code) {
   return labels[code] || code;
 }
 
+function isVideoUrl(url) {
+  return /\.(mp4|webm|ogg|m4v)(?:$|\?)/i.test(String(url || "").trim());
+}
+
+function isArchiveUrl(url) {
+  return /archive\.org/i.test(String(url || ""));
+}
+
+function getArchiveIdentifier(url) {
+  try {
+    const parsedUrl = new URL(url);
+    const pathParts = parsedUrl.pathname.split("/").filter(Boolean);
+    const detailsIndex = pathParts.indexOf("details");
+    const embedIndex = pathParts.indexOf("embed");
+    const downloadIndex = pathParts.indexOf("download");
+
+    if (detailsIndex >= 0 && pathParts[detailsIndex + 1]) {
+      return decodeURIComponent(pathParts[detailsIndex + 1]);
+    }
+
+    if (embedIndex >= 0 && pathParts[embedIndex + 1]) {
+      return decodeURIComponent(pathParts[embedIndex + 1]);
+    }
+
+    if (downloadIndex >= 0 && pathParts[downloadIndex + 1]) {
+      return decodeURIComponent(pathParts[downloadIndex + 1]);
+    }
+  } catch {
+    return null;
+  }
+
+  return null;
+}
+
+async function resolveArchiveVideoUrl(url) {
+  const identifier = getArchiveIdentifier(url);
+  if (!identifier) return null;
+
+  const response = await fetch(`https://archive.org/metadata/${encodeURIComponent(identifier)}`);
+  if (!response.ok) return null;
+
+  const data = await response.json();
+  const files = Array.isArray(data.files) ? data.files : [];
+  const preferredFile = files.find((file) => {
+    const name = String(file?.name || "").toLowerCase();
+    const format = String(file?.format || "").toLowerCase();
+    return name.endsWith(".mp4") || format.includes("mp4") || format.includes("h.264") || format.includes("webm");
+  });
+
+  if (!preferredFile?.name) return null;
+
+  return `https://archive.org/download/${encodeURIComponent(identifier)}/${encodeURIComponent(preferredFile.name)}`;
+}
+
 function getServersFromMovie(movie) {
   const servers = [];
   for (let i = 1; i <= 4; i++) {
@@ -76,6 +133,19 @@ function getServersFromMovie(movie) {
       });
     }
   }
+
+  if (servers.length === 0 && movie.iframe) {
+    servers.push({
+      num: 0,
+      nombre: "Reproductor principal",
+      url: movie.iframe,
+      idioma: "es",
+      subtitulos: false,
+      idioma_sub: null,
+      calidad: "720p",
+    });
+  }
+
   return servers;
 }
 
@@ -107,7 +177,7 @@ function renderServerButtons() {
 
   // Cargar primer servidor por defecto
   if (state.servers.length > 0) {
-    loadServer(state.servers[0]);
+    void loadServer(state.servers[0]);
   }
 
   // Bind click handlers
@@ -115,14 +185,50 @@ function renderServerButtons() {
     btn.addEventListener("click", () => {
       const serverNum = Number(btn.dataset.server);
       const server = state.servers.find(s => s.num === serverNum);
-      if (server) loadServer(server);
+      if (server) void loadServer(server);
     });
   });
 }
 
-function loadServer(server) {
-  elements.iframe.src = server.url;
-  elements.iframe.title = `Reproductor - ${server.nombre}`;
+async function loadServer(server) {
+  const url = String(server.url || "").trim();
+  const archiveVideoUrl = isArchiveUrl(url) ? await resolveArchiveVideoUrl(url) : null;
+  const useVideo = isVideoUrl(url) || Boolean(archiveVideoUrl);
+
+  if (elements.sourceLink) {
+    elements.sourceLink.href = url || "#";
+    elements.sourceLink.hidden = !url;
+  }
+
+  if (elements.playbackMode) {
+    if (isVideoUrl(url)) {
+      elements.playbackMode.textContent = "Video nativo: puedes usar los controles de UltraPelis.";
+    } else if (archiveVideoUrl) {
+      elements.playbackMode.textContent = "Archive.org convertido a video directo: ahora usas los controles de UltraPelis.";
+    } else if (isArchiveUrl(url)) {
+      elements.playbackMode.textContent = "Reproductor externo de Archive.org: los controles dependen del proveedor.";
+    } else {
+      elements.playbackMode.textContent = "Embed externo: los controles dependen del reproductor original.";
+    }
+  }
+
+  if (useVideo) {
+    elements.iframe.removeAttribute("src");
+    elements.iframe.hidden = true;
+    elements.video.hidden = false;
+    elements.video.pause();
+    elements.video.src = archiveVideoUrl || url;
+    elements.video.title = `Reproductor - ${server.nombre}`;
+    elements.video.load();
+  } else {
+    elements.video.pause();
+    elements.video.removeAttribute("src");
+    elements.video.hidden = true;
+    elements.iframe.hidden = false;
+    elements.iframe.src = url;
+    elements.iframe.title = `Reproductor - ${server.nombre}`;
+  }
+
   state.currentServer = server;
 
   // Update active state
@@ -182,7 +288,7 @@ async function loadMovie() {
   const { data: movie, error } = await supabase
     .from("peliculas")
     .select(`
-      id, titulo, "año", genero, sinopsis, imagen, backdrop, duracion, clasificacion, 
+      id, titulo, "año", genero, sinopsis, imagen, iframe, backdrop, duracion, clasificacion, 
       fecha_estreno, tmdb_id,
       servidor1_nombre, servidor1_iframe, servidor1_idioma, servidor1_subtitulos, servidor1_idioma_sub, servidor1_calidad,
       servidor2_nombre, servidor2_iframe, servidor2_idioma, servidor2_subtitulos, servidor2_idioma_sub, servidor2_calidad,

@@ -6,6 +6,7 @@ const elements = {
   error: document.querySelector("#movie-error"),
   genre: document.querySelector("#movie-genre"),
   genreLabel: document.querySelector("#movie-genre-label"),
+  youtube: document.querySelector("#movie-youtube"),
   iframe: document.querySelector("#movie-iframe"),
   video: document.querySelector("#movie-video"),
   playbackMode: document.querySelector("#playback-mode"),
@@ -32,6 +33,8 @@ const state = {
   currentServer: null,
   currentVideoSource: "",
   videoFallbackUsed: false,
+  youtubePlayer: null,
+  youtubeLoaderPromise: null,
   hlsInstance: null,
   hlsLoaderPromise: null,
 };
@@ -228,6 +231,63 @@ function buildYouTubeEmbedUrl(url) {
   return url;
 }
 
+function extractYouTubeVideoId(url) {
+  try {
+    const parsedUrl = new URL(url);
+    const hostname = parsedUrl.hostname.replace(/^www\./i, "").toLowerCase();
+
+    if (hostname === "youtu.be") {
+      return parsedUrl.pathname.split("/").filter(Boolean)[0] || null;
+    }
+
+    if (hostname.endsWith("youtube.com")) {
+      const pathParts = parsedUrl.pathname.split("/").filter(Boolean);
+      if (pathParts[0] === "embed" || pathParts[0] === "shorts") {
+        return pathParts[1] || null;
+      }
+
+      return parsedUrl.searchParams.get("v");
+    }
+  } catch {
+    return null;
+  }
+
+  return null;
+}
+
+async function ensureYoutubeApi() {
+  if (window.YT?.Player) return window.YT;
+  if (state.youtubeLoaderPromise) return state.youtubeLoaderPromise;
+
+  state.youtubeLoaderPromise = new Promise((resolve, reject) => {
+    const existingHandler = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = () => {
+      if (typeof existingHandler === "function") existingHandler();
+      resolve(window.YT || null);
+    };
+
+    const script = document.createElement("script");
+    script.src = "https://www.youtube.com/iframe_api";
+    script.async = true;
+    script.onerror = () => reject(new Error("No se pudo cargar la API oficial de YouTube"));
+    document.head.appendChild(script);
+  });
+
+  return state.youtubeLoaderPromise;
+}
+
+function destroyYoutubePlayer() {
+  if (state.youtubePlayer) {
+    state.youtubePlayer.destroy();
+    state.youtubePlayer = null;
+  }
+
+  if (elements.youtube) {
+    elements.youtube.innerHTML = "";
+    elements.youtube.hidden = true;
+  }
+}
+
 async function ensureHlsLibrary() {
   if (window.Hls) return window.Hls;
   if (state.hlsLoaderPromise) return state.hlsLoaderPromise;
@@ -245,6 +305,8 @@ async function ensureHlsLibrary() {
 }
 
 function resetVideoPlayer() {
+  destroyYoutubePlayer();
+
   if (state.hlsInstance) {
     state.hlsInstance.destroy();
     state.hlsInstance = null;
@@ -258,10 +320,57 @@ function resetVideoPlayer() {
 
 function setIframeSource(url, serverName, sourceType) {
   resetVideoPlayer();
+  if (elements.youtube) elements.youtube.hidden = true;
   elements.video.hidden = true;
   elements.iframe.hidden = false;
   elements.iframe.src = sourceType === "youtube" ? buildYouTubeEmbedUrl(url) : url;
   elements.iframe.title = `Reproductor - ${serverName}`;
+}
+
+async function setYoutubeSource(url, serverName) {
+  resetVideoPlayer();
+  if (!elements.youtube) return false;
+
+  const videoId = extractYouTubeVideoId(url);
+  if (!videoId) {
+    elements.playbackMode.textContent = "No se pudo identificar el video de YouTube.";
+    setIframeSource(url, serverName, "youtube");
+    return true;
+  }
+
+  elements.iframe.hidden = true;
+  elements.video.hidden = true;
+  elements.youtube.hidden = false;
+
+  const YouTubeApi = await ensureYoutubeApi().catch(() => null);
+  if (!YouTubeApi?.Player) {
+    elements.playbackMode.textContent = "La API oficial de YouTube no está disponible. Usando embed compatible.";
+    setIframeSource(buildYouTubeEmbedUrl(url), serverName, "youtube");
+    return true;
+  }
+
+  state.youtubePlayer = new YouTubeApi.Player(elements.youtube, {
+    videoId,
+    playerVars: {
+      autoplay: 0,
+      controls: 1,
+      playsinline: 1,
+      rel: 0,
+      modestbranding: 1,
+      origin: window.location.origin,
+    },
+    events: {
+      onReady: () => {
+        elements.playbackMode.textContent = "YouTube: usando la API oficial.";
+      },
+      onError: () => {
+        elements.playbackMode.textContent = "No se pudo cargar el reproductor oficial de YouTube.";
+      },
+    },
+  });
+
+  elements.youtube.title = `Reproductor - ${serverName}`;
+  return true;
 }
 
 async function setHtml5Source(sourceUrls, serverName, sourceType) {
@@ -269,6 +378,7 @@ async function setHtml5Source(sourceUrls, serverName, sourceType) {
   const primarySource = sources[0] || "";
 
   resetVideoPlayer();
+  if (elements.youtube) elements.youtube.hidden = true;
   elements.iframe.hidden = true;
   elements.video.hidden = false;
   elements.video.poster = elements.poster?.src || "";
@@ -406,7 +516,7 @@ async function loadServer(server) {
     } else if (archiveIdentifier) {
       elements.playbackMode.textContent = "Archive.org: intentando abrir el archivo de video directo.";
     } else if (sourceType === "youtube") {
-      elements.playbackMode.textContent = "YouTube: se usa el reproductor embebido del proveedor.";
+      elements.playbackMode.textContent = "YouTube: usando la API oficial del proveedor.";
     } else if (sourceType === "embed" || sourceType === "embedded-html") {
       elements.playbackMode.textContent = "Embed externo: se usa el reproductor embebido del proveedor.";
     } else if (sourceType === "archive") {
@@ -416,8 +526,14 @@ async function loadServer(server) {
     }
   }
 
-  if (useVideo) {
+  if (sourceType === "youtube") {
     elements.iframe.removeAttribute("src");
+    state.currentVideoSource = url;
+    const youtubeLoaded = await setYoutubeSource(url, server.nombre);
+    if (!youtubeLoaded) return;
+  } else if (useVideo) {
+    elements.iframe.removeAttribute("src");
+    if (elements.youtube) elements.youtube.hidden = true;
     const archivePreferredFiles = archiveVideoUrl
       ? [new URL(archiveVideoUrl).pathname.split("/").pop()]
       : [];

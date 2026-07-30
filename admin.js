@@ -1,4 +1,4 @@
-import { createSupabaseBrowserClient } from "./supabase.js";
+import { createSupabaseBrowserClient, getAuthToken } from "./supabase.js";
 
 const supabase = createSupabaseBrowserClient();
 
@@ -80,6 +80,43 @@ function setTmdbStatus(m, k = "info") { elements.tmdbStatus.textContent = m; ele
 
 function setTmdbLoading(l) { state.tmdbLoading = l; elements.fetchTmdbBtn.disabled = l; elements.fetchBtnText.innerHTML = l ? '<span class="tmdb-loading"></span>' : 'Buscar en TMDb'; }
 
+async function ensureFreshSession() {
+  const { data } = await supabase.auth.getSession();
+  const session = data.session || null;
+
+  if (!session) {
+    state.session = null;
+    updateAuthUI();
+    return null;
+  }
+
+  const expiresAt = session.expires_at ? session.expires_at * 1000 : 0;
+  const shouldRefresh = !expiresAt || expiresAt - Date.now() < 60_000;
+  const storedToken = getAuthToken();
+
+  if (storedToken && session.access_token && storedToken !== session.access_token) {
+    console.warn("La sesión almacenada no coincide con el token actual de Supabase. Se usará la sesión activa.");
+  }
+
+  if (!shouldRefresh) {
+    state.session = session;
+    updateAuthUI();
+    return session;
+  }
+
+  const { data: refreshed, error } = await supabase.auth.refreshSession();
+  if (error || !refreshed.session) {
+    await supabase.auth.signOut();
+    state.session = null;
+    updateAuthUI();
+    throw new Error("Token inválido o expirado. Vuelve a iniciar sesión.");
+  }
+
+  state.session = refreshed.session;
+  updateAuthUI();
+  return refreshed.session;
+}
+
 function movieRow(m) { return `<tr><td><strong>${escapeHtml(m.titulo)}</strong><span>${escapeHtml(m.sinopsis)}</span></td><td>${escapeHtml(m.año)}</td><td>${escapeHtml(m.genero)}</td><td><div class="row-actions"><button class="secondary-button" type="button" data-action="edit" data-id="${m.id}">Editar</button><button class="danger-button" type="button" data-action="delete" data-id="${m.id}">Eliminar</button></div></td></tr>`; }
 
 function getLanguageLabel(c) { return { 'es': 'Español Latino', 'es-CO': 'Español Castellano', 'en': 'English', 'ja': 'Japanese', 'other': 'Other' }[c] || c; }
@@ -155,8 +192,19 @@ async function handleTmdbFetch() {
   finally { setTmdbLoading(false); }
 }
 
-async function signIn(e, p) { const { error } = await supabase.auth.signInWithPassword({ email: e, password: p }); if (error) throw error; }
-async function signOut() { const { error } = await supabase.auth.signOut(); if (error) throw error; }
+async function signIn(e, p) {
+  const { data, error } = await supabase.auth.signInWithPassword({ email: e, password: p });
+  if (error) throw error;
+  state.session = data.session || null;
+  updateAuthUI();
+}
+
+async function signOut() {
+  const { error } = await supabase.auth.signOut();
+  if (error) throw error;
+  state.session = null;
+  updateAuthUI();
+}
 
 function updateAuthUI() {
   const si = !!state.session; elements.authStatus.textContent = si ? `Conectado como ${state.session.user.email}` : "Desconectado";
@@ -167,6 +215,13 @@ function updateAuthUI() {
 
 async function saveMovie(e) {
   e.preventDefault();
+  try {
+    await ensureFreshSession();
+  } catch (error) {
+    setStatus(error.message, "error");
+    return;
+  }
+
   const payload = { tmdb_id: elements.tmdbIdHidden.value ? Number(elements.tmdbIdHidden.value) : null, titulo: elements.titulo.value.trim(), "año": Number(elements.anio.value), genero: elements.genero.value.trim(), generos: elements.generos.value.trim(), sinopsis: elements.sinopsis.value.trim(), imagen: elements.imagen.value.trim(), backdrop: elements.backdrop.value.trim(), duracion: elements.duracion.value ? Number(elements.duracion.value) : null, clasificacion: elements.clasificacion.value.trim(), fecha_estreno: elements.fecha_estreno.value || null };
   for (let i = 1; i <= 4; i++) { const s = getServerFields(i); payload[`servidor${i}_nombre`] = s.nombre || null; payload[`servidor${i}_iframe`] = s.iframe || null; payload[`servidor${i}_idioma`] = s.nombre ? s.idioma : null; payload[`servidor${i}_subtitulos`] = s.nombre ? s.subtitulos : false; payload[`servidor${i}_idioma_sub`] = s.subtitulos ? s.idioma_sub : null; payload[`servidor${i}_calidad`] = s.nombre ? s.calidad : null; }
   if (!payload.titulo || !payload["año"] || !payload.genero || !payload.sinopsis || !payload.imagen) { setStatus("Completa todos los campos obligatorios.", "error"); return; }
@@ -176,9 +231,31 @@ async function saveMovie(e) {
   setStatus(editingId ? "Película actualizada." : "Película creada.", "success"); clearForm(); await refreshMovies();
 }
 
-async function deleteMovie(id) { const m = state.movies.find(x => x.id === id); if (!m) return; if (!window.confirm(`¿Eliminar "${m.titulo}"?`)) return; const { error } = await supabase.from("peliculas").delete().eq("id", id); if (error) { setStatus(`Error: ${error.message}`, "error"); return; } setStatus("Película eliminada.", "success"); await refreshMovies(); }
+async function deleteMovie(id) {
+  try {
+    await ensureFreshSession();
+  } catch (error) {
+    setStatus(error.message, "error");
+    return;
+  }
 
-function openServerModal(s) {
+  const m = state.movies.find(x => x.id === id);
+  if (!m) return;
+  if (!window.confirm(`¿Eliminar "${m.titulo}"?`)) return;
+  const { error } = await supabase.from("peliculas").delete().eq("id", id);
+  if (error) { setStatus(`Error: ${error.message}`, "error"); return; }
+  setStatus("Película eliminada.", "success");
+  await refreshMovies();
+}
+
+async function openServerModal(s) {
+  try {
+    await ensureFreshSession();
+  } catch (error) {
+    setStatus(error.message, "error");
+    return;
+  }
+
   if (!state.session) { setStatus("Inicia sesión para agregar servidores.", "error"); return; }
   state.editingServerNum = s; const sv = getServerFields(s);
   elements.serverNombre.value = sv.nombre || ""; elements.serverUrl.value = sv.iframe || ""; elements.serverIdioma.value = sv.idioma || "es";
@@ -190,7 +267,17 @@ function closeServerModal() { elements.serverModal.hidden = true; elements.serve
 
 function saveServerToForm() { const s = state.editingServerNum; if (!s) return; setServerFields(s, { nombre: elements.serverNombre.value.trim(), iframe: elements.serverUrl.value.trim(), idioma: elements.serverIdioma.value, subtitulos: elements.serverSubtitulos.checked, idioma_sub: elements.serverSubtitulos.checked ? elements.serverIdiomaSubtitulos.value : null, calidad: elements.serverCalidad.value }); closeServerModal(); }
 
-function clearServer(s) { if (!state.session) return; if (confirm(`¿Eliminar datos del Servidor ${s}?`)) setServerFields(s, { nombre: "", iframe: "", idioma: "es", subtitulos: false, idioma_sub: "", calidad: "720p" }); }
+async function clearServer(s) {
+  try {
+    await ensureFreshSession();
+  } catch (error) {
+    setStatus(error.message, "error");
+    return;
+  }
+
+  if (!state.session) return;
+  if (confirm(`¿Eliminar datos del Servidor ${s}?`)) setServerFields(s, { nombre: "", iframe: "", idioma: "es", subtitulos: false, idioma_sub: "", calidad: "720p" });
+}
 
 function bindTableActions() { elements.moviesTable.addEventListener("click", async (ev) => { const btn = ev.target.closest("button[data-action]"); if (!btn) return; const id = Number(btn.dataset.id); const m = state.movies.find(x => x.id === id); if (!m) return; if (btn.dataset.action === "edit") { await fillForm(m); window.scrollTo({ top: 0, behavior: "smooth" }); } if (btn.dataset.action === "delete") await deleteMovie(id); }); }
 
@@ -211,7 +298,11 @@ function bindForm() {
 
 function initRealtime() { supabase.channel("peliculas-admin").on("postgres_changes", { event: "*", schema: "public", table: "peliculas" }, async () => { await refreshMovies(); }).subscribe(); }
 
-async function bootstrapAuth() { const { data } = await supabase.auth.getSession(); state.session = data.session; updateAuthUI(); supabase.auth.onAuthStateChange((_e, s) => { state.session = s; updateAuthUI(); }); }
+async function bootstrapAuth() {
+  state.session = await ensureFreshSession().catch(() => null);
+  updateAuthUI();
+  supabase.auth.onAuthStateChange((_e, s) => { state.session = s; updateAuthUI(); });
+}
 
 async function init() { try { bindAuth(); bindForm(); bindSearch(); bindTableActions(); await bootstrapAuth(); await refreshMovies(); initRealtime(); } catch (e) { console.error("Init error:", e); setStatus(`Error de conexión: ${e.message}`, "error"); } }
 

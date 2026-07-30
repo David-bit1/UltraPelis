@@ -30,6 +30,10 @@ const elements = {
 const state = {
   servers: [],
   currentServer: null,
+  currentVideoSource: "",
+  videoFallbackUsed: false,
+  hlsInstance: null,
+  hlsLoaderPromise: null,
 };
 
 function escapeHtml(value) {
@@ -62,8 +66,36 @@ function getLanguageLabel(code) {
   return labels[code] || code;
 }
 
+function extractEmbeddedSource(rawValue) {
+  const text = String(rawValue || "").trim();
+  if (!text) return "";
+
+  const sourceMatch = text.match(/<(?:iframe|video|source)\b[^>]*\bsrc\s*=\s*["']([^"']+)["']/i);
+  if (sourceMatch?.[1]) {
+    return sourceMatch[1].trim();
+  }
+
+  return text;
+}
+
+function normalizeServerUrl(rawValue) {
+  return extractEmbeddedSource(rawValue);
+}
+
 function isVideoUrl(url) {
   return /\.(mp4|webm|ogg|m4v)(?:$|\?)/i.test(String(url || "").trim());
+}
+
+function isM3u8Url(url) {
+  return /\.m3u8(?:$|\?)/i.test(String(url || "").trim());
+}
+
+function isYouTubeUrl(url) {
+  return /(?:youtube\.com|youtu\.be)/i.test(String(url || "").trim());
+}
+
+function isEmbedUrl(url) {
+  return /\/embed\//i.test(String(url || "").trim());
 }
 
 function isArchiveUrl(url) {
@@ -72,7 +104,7 @@ function isArchiveUrl(url) {
 
 function getArchiveIdentifier(url) {
   try {
-    const parsedUrl = new URL(url);
+    const parsedUrl = new URL(normalizeServerUrl(url));
     const pathParts = parsedUrl.pathname.split("/").filter(Boolean);
     const detailsIndex = pathParts.indexOf("details");
     const embedIndex = pathParts.indexOf("embed");
@@ -96,6 +128,53 @@ function getArchiveIdentifier(url) {
   return null;
 }
 
+function detectServerType(rawValue) {
+  const text = String(rawValue || "").trim();
+  const url = normalizeServerUrl(text);
+
+  if (!url) return "unknown";
+  if (isArchiveUrl(url)) return "archive";
+  if (isYouTubeUrl(url)) return "youtube";
+  if (isM3u8Url(url)) return "m3u8";
+  if (isVideoUrl(url)) return "html5";
+  if (isEmbedUrl(url)) return "embed";
+  if (/^<(?:iframe|video|embed)\b/i.test(text)) return "embedded-html";
+  if (/^https?:\/\//i.test(url)) return "iframe";
+  return "iframe";
+}
+
+function buildArchiveCandidateUrls(identifier, preferredFiles = []) {
+  const base = `https://archive.org/download/${encodeURIComponent(identifier)}`;
+  const candidateNames = new Set([
+    `${identifier}.mp4`,
+    `${identifier}_512kb.mp4`,
+    `${identifier}_720p.mp4`,
+    `${identifier}_1080p.mp4`,
+    `${identifier}_360p.mp4`,
+    `${identifier}_h264.mp4`,
+    `${identifier}.webm`,
+    `${identifier}.m4v`,
+  ]);
+
+  for (const file of preferredFiles) {
+    if (file) candidateNames.add(file);
+  }
+
+  return [...candidateNames].map((name) => `${base}/${encodeURIComponent(name)}`);
+}
+
+function getVideoMimeType(sourceUrl, sourceType = "html5") {
+  if (sourceType === "m3u8" || isM3u8Url(sourceUrl)) {
+    return "application/vnd.apple.mpegurl";
+  }
+
+  if (String(sourceUrl).toLowerCase().endsWith(".webm")) {
+    return "video/webm";
+  }
+
+  return "video/mp4";
+}
+
 async function resolveArchiveVideoUrl(url) {
   const identifier = getArchiveIdentifier(url);
   if (!identifier) return null;
@@ -114,6 +193,118 @@ async function resolveArchiveVideoUrl(url) {
   if (!preferredFile?.name) return null;
 
   return `https://archive.org/download/${encodeURIComponent(identifier)}/${encodeURIComponent(preferredFile.name)}`;
+}
+
+function buildYouTubeEmbedUrl(url) {
+  try {
+    const parsedUrl = new URL(url);
+    const hostname = parsedUrl.hostname.replace(/^www\./i, "").toLowerCase();
+
+    if (hostname === "youtu.be") {
+      const videoId = parsedUrl.pathname.split("/").filter(Boolean)[0];
+      return videoId ? `https://www.youtube.com/embed/${encodeURIComponent(videoId)}` : url;
+    }
+
+    if (hostname.endsWith("youtube.com")) {
+      const pathParts = parsedUrl.pathname.split("/").filter(Boolean);
+
+      if (pathParts[0] === "embed" && pathParts[1]) {
+        return `https://www.youtube.com/embed/${encodeURIComponent(pathParts[1])}`;
+      }
+
+      if (pathParts[0] === "shorts" && pathParts[1]) {
+        return `https://www.youtube.com/embed/${encodeURIComponent(pathParts[1])}`;
+      }
+
+      const videoId = parsedUrl.searchParams.get("v");
+      if (videoId) {
+        return `https://www.youtube.com/embed/${encodeURIComponent(videoId)}`;
+      }
+    }
+  } catch {
+    return url;
+  }
+
+  return url;
+}
+
+async function ensureHlsLibrary() {
+  if (window.Hls) return window.Hls;
+  if (state.hlsLoaderPromise) return state.hlsLoaderPromise;
+
+  state.hlsLoaderPromise = new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = "https://cdn.jsdelivr.net/npm/hls.js@1.5.15/dist/hls.min.js";
+    script.async = true;
+    script.onload = () => resolve(window.Hls || null);
+    script.onerror = () => reject(new Error("No se pudo cargar Hls.js"));
+    document.head.appendChild(script);
+  });
+
+  return state.hlsLoaderPromise;
+}
+
+function resetVideoPlayer() {
+  if (state.hlsInstance) {
+    state.hlsInstance.destroy();
+    state.hlsInstance = null;
+  }
+
+  elements.video.pause();
+  elements.video.removeAttribute("src");
+  elements.video.innerHTML = "";
+  elements.video.load();
+}
+
+function setIframeSource(url, serverName, sourceType) {
+  resetVideoPlayer();
+  elements.video.hidden = true;
+  elements.iframe.hidden = false;
+  elements.iframe.src = sourceType === "youtube" ? buildYouTubeEmbedUrl(url) : url;
+  elements.iframe.title = `Reproductor - ${serverName}`;
+}
+
+async function setHtml5Source(sourceUrls, serverName, sourceType) {
+  const sources = Array.isArray(sourceUrls) ? sourceUrls.filter(Boolean) : [sourceUrls].filter(Boolean);
+  const primarySource = sources[0] || "";
+
+  resetVideoPlayer();
+  elements.iframe.hidden = true;
+  elements.video.hidden = false;
+  elements.video.poster = elements.poster?.src || "";
+  elements.video.title = `Reproductor - ${serverName}`;
+
+  if (sourceType === "m3u8") {
+    const nativeHlsSupport =
+      elements.video.canPlayType("application/vnd.apple.mpegurl") ||
+      elements.video.canPlayType("application/x-mpegURL");
+
+    if (nativeHlsSupport) {
+      elements.video.src = primarySource;
+      elements.video.load();
+      return true;
+    }
+
+    const HlsConstructor = await ensureHlsLibrary().catch(() => null);
+    if (HlsConstructor && HlsConstructor.isSupported()) {
+      state.hlsInstance = new HlsConstructor();
+      state.hlsInstance.loadSource(primarySource);
+      state.hlsInstance.attachMedia(elements.video);
+      return true;
+    }
+
+    elements.playbackMode.textContent = "Este navegador no reproduce streams m3u8 de forma nativa.";
+    return false;
+  }
+
+  sources.forEach((sourceUrl) => {
+    const sourceElement = document.createElement("source");
+    sourceElement.src = sourceUrl;
+    sourceElement.type = getVideoMimeType(sourceUrl, sourceType);
+    elements.video.appendChild(sourceElement);
+  });
+  elements.video.load();
+  return true;
 }
 
 function getServersFromMovie(movie) {
@@ -191,9 +382,14 @@ function renderServerButtons() {
 }
 
 async function loadServer(server) {
-  const url = String(server.url || "").trim();
-  const archiveVideoUrl = isArchiveUrl(url) ? await resolveArchiveVideoUrl(url) : null;
-  const useVideo = isVideoUrl(url) || Boolean(archiveVideoUrl);
+  const rawUrl = String(server.url || "").trim();
+  const url = normalizeServerUrl(rawUrl);
+  const sourceType = detectServerType(rawUrl);
+  const archiveIdentifier = sourceType === "archive" ? getArchiveIdentifier(url) : null;
+  const archiveVideoUrl = sourceType === "archive" ? await resolveArchiveVideoUrl(url) : null;
+  const useVideo = sourceType === "html5" || sourceType === "archive" || sourceType === "m3u8";
+  state.currentVideoSource = "";
+  state.videoFallbackUsed = false;
 
   if (elements.sourceLink) {
     elements.sourceLink.href = url || "#";
@@ -201,11 +397,19 @@ async function loadServer(server) {
   }
 
   if (elements.playbackMode) {
-    if (isVideoUrl(url)) {
+    if (sourceType === "html5") {
       elements.playbackMode.textContent = "Video nativo: puedes usar los controles de UltraPelis.";
+    } else if (sourceType === "m3u8") {
+      elements.playbackMode.textContent = "Stream HLS: usando el reproductor de UltraPelis si el navegador lo permite.";
     } else if (archiveVideoUrl) {
       elements.playbackMode.textContent = "Archive.org convertido a video directo: ahora usas los controles de UltraPelis.";
-    } else if (isArchiveUrl(url)) {
+    } else if (archiveIdentifier) {
+      elements.playbackMode.textContent = "Archive.org: intentando abrir el archivo de video directo.";
+    } else if (sourceType === "youtube") {
+      elements.playbackMode.textContent = "YouTube: se usa el reproductor embebido del proveedor.";
+    } else if (sourceType === "embed" || sourceType === "embedded-html") {
+      elements.playbackMode.textContent = "Embed externo: se usa el reproductor embebido del proveedor.";
+    } else if (sourceType === "archive") {
       elements.playbackMode.textContent = "Reproductor externo de Archive.org: los controles dependen del proveedor.";
     } else {
       elements.playbackMode.textContent = "Embed externo: los controles dependen del reproductor original.";
@@ -214,19 +418,28 @@ async function loadServer(server) {
 
   if (useVideo) {
     elements.iframe.removeAttribute("src");
-    elements.iframe.hidden = true;
-    elements.video.hidden = false;
-    elements.video.pause();
-    elements.video.src = archiveVideoUrl || url;
-    elements.video.title = `Reproductor - ${server.nombre}`;
-    elements.video.load();
+    const archivePreferredFiles = archiveVideoUrl
+      ? [new URL(archiveVideoUrl).pathname.split("/").pop()]
+      : [];
+    const archiveCandidates = archiveIdentifier
+      ? buildArchiveCandidateUrls(archiveIdentifier, archivePreferredFiles)
+      : [];
+    const sources = sourceType === "html5" || sourceType === "m3u8"
+      ? [url]
+      : archiveCandidates.length > 0
+        ? archiveCandidates
+        : [archiveVideoUrl || url];
+
+    state.currentVideoSource = sources[0] || "";
+
+    if (sourceType === "m3u8") {
+      const hlsLoaded = await setHtml5Source(sources, server.nombre, sourceType);
+      if (!hlsLoaded) return;
+    } else {
+      await setHtml5Source(sources, server.nombre, sourceType);
+    }
   } else {
-    elements.video.pause();
-    elements.video.removeAttribute("src");
-    elements.video.hidden = true;
-    elements.iframe.hidden = false;
-    elements.iframe.src = url;
-    elements.iframe.title = `Reproductor - ${server.nombre}`;
+    setIframeSource(url, server.nombre, sourceType);
   }
 
   state.currentServer = server;
@@ -236,6 +449,26 @@ async function loadServer(server) {
     btn.classList.toggle("active", Number(btn.dataset.server) === server.num);
   });
 }
+
+elements.video.addEventListener("error", async () => {
+  if (state.videoFallbackUsed || !state.currentServer) return;
+  state.videoFallbackUsed = true;
+
+  const currentUrl = normalizeServerUrl(state.currentServer.url || "");
+  const archiveIdentifier = isArchiveUrl(currentUrl) ? getArchiveIdentifier(currentUrl) : null;
+
+  elements.video.pause();
+  elements.video.hidden = true;
+
+  if (archiveIdentifier) {
+    elements.playbackMode.textContent = "No se pudo abrir el video directo. Volviendo al reproductor externo de Archive.org.";
+    elements.iframe.hidden = false;
+    elements.iframe.src = currentUrl;
+    return;
+  }
+
+  elements.playbackMode.textContent = "No se pudo reproducir el video directo en este navegador.";
+});
 
 function renderError(message) {
   elements.root.hidden = true;

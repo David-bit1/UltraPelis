@@ -178,24 +178,41 @@ function getVideoMimeType(sourceUrl, sourceType = "html5") {
   return "video/mp4";
 }
 
+function withTimeout(promise, timeoutMs, label) {
+  let timeoutId;
+  const timeoutPromise = new Promise((_, reject) => {
+    timeoutId = window.setTimeout(() => reject(new Error(`${label} timeout`)), timeoutMs);
+  });
+
+  return Promise.race([promise, timeoutPromise]).finally(() => window.clearTimeout(timeoutId));
+}
+
 async function resolveArchiveVideoUrl(url) {
   const identifier = getArchiveIdentifier(url);
   if (!identifier) return null;
 
-  const response = await fetch(`https://archive.org/metadata/${encodeURIComponent(identifier)}`);
-  if (!response.ok) return null;
+  try {
+    const response = await withTimeout(
+      fetch(`https://archive.org/metadata/${encodeURIComponent(identifier)}`),
+      5000,
+      "archive metadata",
+    );
+    if (!response.ok) return null;
 
-  const data = await response.json();
-  const files = Array.isArray(data.files) ? data.files : [];
-  const preferredFile = files.find((file) => {
-    const name = String(file?.name || "").toLowerCase();
-    const format = String(file?.format || "").toLowerCase();
-    return name.endsWith(".mp4") || format.includes("mp4") || format.includes("h.264") || format.includes("webm");
-  });
+    const data = await response.json();
+    const files = Array.isArray(data.files) ? data.files : [];
+    const preferredFile = files.find((file) => {
+      const name = String(file?.name || "").toLowerCase();
+      const format = String(file?.format || "").toLowerCase();
+      return name.endsWith(".mp4") || format.includes("mp4") || format.includes("h.264") || format.includes("webm");
+    });
 
-  if (!preferredFile?.name) return null;
+    if (!preferredFile?.name) return null;
 
-  return `https://archive.org/download/${encodeURIComponent(identifier)}/${encodeURIComponent(preferredFile.name)}`;
+    return `https://archive.org/download/${encodeURIComponent(identifier)}/${encodeURIComponent(preferredFile.name)}`;
+  } catch {
+    return null;
+  }
 }
 
 function buildYouTubeEmbedUrl(url) {
@@ -257,7 +274,9 @@ function extractYouTubeVideoId(url) {
 
 async function ensureYoutubeApi() {
   if (window.YT?.Player) return window.YT;
-  if (state.youtubeLoaderPromise) return state.youtubeLoaderPromise;
+  if (state.youtubeLoaderPromise) {
+    return withTimeout(state.youtubeLoaderPromise, 5000, "YouTube API").catch(() => null);
+  }
 
   state.youtubeLoaderPromise = new Promise((resolve, reject) => {
     const existingHandler = window.onYouTubeIframeAPIReady;
@@ -273,7 +292,7 @@ async function ensureYoutubeApi() {
     document.head.appendChild(script);
   });
 
-  return state.youtubeLoaderPromise;
+  return withTimeout(state.youtubeLoaderPromise, 5000, "YouTube API").catch(() => null);
 }
 
 function destroyYoutubePlayer() {
@@ -290,7 +309,9 @@ function destroyYoutubePlayer() {
 
 async function ensureHlsLibrary() {
   if (window.Hls) return window.Hls;
-  if (state.hlsLoaderPromise) return state.hlsLoaderPromise;
+  if (state.hlsLoaderPromise) {
+    return withTimeout(state.hlsLoaderPromise, 5000, "Hls.js").catch(() => null);
+  }
 
   state.hlsLoaderPromise = new Promise((resolve, reject) => {
     const script = document.createElement("script");
@@ -301,7 +322,7 @@ async function ensureHlsLibrary() {
     document.head.appendChild(script);
   });
 
-  return state.hlsLoaderPromise;
+  return withTimeout(state.hlsLoaderPromise, 5000, "Hls.js").catch(() => null);
 }
 
 function resetVideoPlayer() {
@@ -349,28 +370,33 @@ async function setYoutubeSource(url, serverName) {
     return true;
   }
 
-  state.youtubePlayer = new YouTubeApi.Player(elements.youtube, {
-    videoId,
-    playerVars: {
-      autoplay: 0,
-      controls: 1,
-      playsinline: 1,
-      rel: 0,
-      modestbranding: 1,
-      origin: window.location.origin,
-    },
-    events: {
-      onReady: () => {
-        elements.playbackMode.textContent = "YouTube: usando la API oficial.";
+  try {
+    state.youtubePlayer = new YouTubeApi.Player(elements.youtube, {
+      videoId,
+      playerVars: {
+        autoplay: 0,
+        controls: 1,
+        playsinline: 1,
+        rel: 0,
+        modestbranding: 1,
+        origin: window.location.origin,
       },
-      onError: () => {
-        elements.playbackMode.textContent = "No se pudo cargar el reproductor oficial de YouTube.";
+      events: {
+        onReady: () => {
+          elements.playbackMode.textContent = "YouTube: usando la API oficial.";
+        },
+        onError: () => {
+          elements.playbackMode.textContent = "No se pudo cargar el reproductor oficial de YouTube.";
+        },
       },
-    },
-  });
+    });
 
-  elements.youtube.title = `Reproductor - ${serverName}`;
-  return true;
+    elements.youtube.title = `Reproductor - ${serverName}`;
+    return true;
+  } catch {
+    setIframeSource(buildYouTubeEmbedUrl(url), serverName, "youtube");
+    return true;
+  }
 }
 
 async function setHtml5Source(sourceUrls, serverName, sourceType) {
@@ -492,78 +518,83 @@ function renderServerButtons() {
 }
 
 async function loadServer(server) {
-  const rawUrl = String(server.url || "").trim();
-  const url = normalizeServerUrl(rawUrl);
-  const sourceType = detectServerType(rawUrl);
-  const archiveIdentifier = sourceType === "archive" ? getArchiveIdentifier(url) : null;
-  const archiveVideoUrl = sourceType === "archive" ? await resolveArchiveVideoUrl(url) : null;
-  const useVideo = sourceType === "html5" || sourceType === "archive" || sourceType === "m3u8";
-  state.currentVideoSource = "";
-  state.videoFallbackUsed = false;
+  try {
+    const rawUrl = String(server.url || "").trim();
+    const url = normalizeServerUrl(rawUrl);
+    const sourceType = detectServerType(rawUrl);
+    const archiveIdentifier = sourceType === "archive" ? getArchiveIdentifier(url) : null;
+    const archiveVideoUrl = sourceType === "archive" ? await resolveArchiveVideoUrl(url) : null;
+    const useVideo = sourceType === "html5" || sourceType === "archive" || sourceType === "m3u8";
+    state.currentVideoSource = "";
+    state.videoFallbackUsed = false;
 
-  if (elements.sourceLink) {
-    elements.sourceLink.href = url || "#";
-    elements.sourceLink.hidden = !url;
-  }
-
-  if (elements.playbackMode) {
-    if (sourceType === "html5") {
-      elements.playbackMode.textContent = "Video nativo: puedes usar los controles de UltraPelis.";
-    } else if (sourceType === "m3u8") {
-      elements.playbackMode.textContent = "Stream HLS: usando el reproductor de UltraPelis si el navegador lo permite.";
-    } else if (archiveVideoUrl) {
-      elements.playbackMode.textContent = "Archive.org convertido a video directo: ahora usas los controles de UltraPelis.";
-    } else if (archiveIdentifier) {
-      elements.playbackMode.textContent = "Archive.org: intentando abrir el archivo de video directo.";
-    } else if (sourceType === "youtube") {
-      elements.playbackMode.textContent = "YouTube: usando la API oficial del proveedor.";
-    } else if (sourceType === "embed" || sourceType === "embedded-html") {
-      elements.playbackMode.textContent = "Embed externo: se usa el reproductor embebido del proveedor.";
-    } else if (sourceType === "archive") {
-      elements.playbackMode.textContent = "Reproductor externo de Archive.org: los controles dependen del proveedor.";
-    } else {
-      elements.playbackMode.textContent = "Embed externo: los controles dependen del reproductor original.";
+    if (elements.sourceLink) {
+      elements.sourceLink.href = url || "#";
+      elements.sourceLink.hidden = !url;
     }
-  }
 
-  if (sourceType === "youtube") {
-    elements.iframe.removeAttribute("src");
-    state.currentVideoSource = url;
-    const youtubeLoaded = await setYoutubeSource(url, server.nombre);
-    if (!youtubeLoaded) return;
-  } else if (useVideo) {
-    elements.iframe.removeAttribute("src");
-    if (elements.youtube) elements.youtube.hidden = true;
-    const archivePreferredFiles = archiveVideoUrl
-      ? [new URL(archiveVideoUrl).pathname.split("/").pop()]
-      : [];
-    const archiveCandidates = archiveIdentifier
-      ? buildArchiveCandidateUrls(archiveIdentifier, archivePreferredFiles)
-      : [];
-    const sources = sourceType === "html5" || sourceType === "m3u8"
-      ? [url]
-      : archiveCandidates.length > 0
-        ? archiveCandidates
-        : [archiveVideoUrl || url];
-
-    state.currentVideoSource = sources[0] || "";
-
-    if (sourceType === "m3u8") {
-      const hlsLoaded = await setHtml5Source(sources, server.nombre, sourceType);
-      if (!hlsLoaded) return;
-    } else {
-      await setHtml5Source(sources, server.nombre, sourceType);
+    if (elements.playbackMode) {
+      if (sourceType === "html5") {
+        elements.playbackMode.textContent = "Video nativo: puedes usar los controles de UltraPelis.";
+      } else if (sourceType === "m3u8") {
+        elements.playbackMode.textContent = "Stream HLS: usando el reproductor de UltraPelis si el navegador lo permite.";
+      } else if (archiveVideoUrl) {
+        elements.playbackMode.textContent = "Archive.org convertido a video directo: ahora usas los controles de UltraPelis.";
+      } else if (archiveIdentifier) {
+        elements.playbackMode.textContent = "Archive.org: intentando abrir el archivo de video directo.";
+      } else if (sourceType === "youtube") {
+        elements.playbackMode.textContent = "YouTube: usando la API oficial del proveedor.";
+      } else if (sourceType === "embed" || sourceType === "embedded-html") {
+        elements.playbackMode.textContent = "Embed externo: se usa el reproductor embebido del proveedor.";
+      } else if (sourceType === "archive") {
+        elements.playbackMode.textContent = "Reproductor externo de Archive.org: los controles dependen del proveedor.";
+      } else {
+        elements.playbackMode.textContent = "Embed externo: los controles dependen del reproductor original.";
+      }
     }
-  } else {
-    setIframeSource(url, server.nombre, sourceType);
+
+    if (sourceType === "youtube") {
+      elements.iframe.removeAttribute("src");
+      state.currentVideoSource = url;
+      await setYoutubeSource(url, server.nombre);
+    } else if (useVideo) {
+      elements.iframe.removeAttribute("src");
+      if (elements.youtube) elements.youtube.hidden = true;
+      const archivePreferredFiles = archiveVideoUrl
+        ? [new URL(archiveVideoUrl).pathname.split("/").pop()]
+        : [];
+      const archiveCandidates = archiveIdentifier
+        ? buildArchiveCandidateUrls(archiveIdentifier, archivePreferredFiles)
+        : [];
+      const sources = sourceType === "html5" || sourceType === "m3u8"
+        ? [url]
+        : archiveCandidates.length > 0
+          ? archiveCandidates
+          : [archiveVideoUrl || url];
+
+      state.currentVideoSource = sources[0] || "";
+
+      if (sourceType === "m3u8") {
+        const hlsLoaded = await setHtml5Source(sources, server.nombre, sourceType);
+        if (!hlsLoaded) return;
+      } else {
+        await setHtml5Source(sources, server.nombre, sourceType);
+      }
+    } else {
+      setIframeSource(url, server.nombre, sourceType);
+    }
+
+    state.currentServer = server;
+
+    // Update active state
+    elements.serversContainer.querySelectorAll(".server-btn").forEach(btn => {
+      btn.classList.toggle("active", Number(btn.dataset.server) === server.num);
+    });
+  } catch (error) {
+    console.error("loadServer error:", error);
+    const fallbackUrl = normalizeServerUrl(server.url || "");
+    setIframeSource(fallbackUrl, server.nombre, detectServerType(server.url || ""));
   }
-
-  state.currentServer = server;
-
-  // Update active state
-  elements.serversContainer.querySelectorAll(".server-btn").forEach(btn => {
-    btn.classList.toggle("active", Number(btn.dataset.server) === server.num);
-  });
 }
 
 elements.video.addEventListener("error", async () => {

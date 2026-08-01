@@ -1,4 +1,5 @@
 import { createSupabaseBrowserClient } from "./supabase.js";
+import { PlayerManager, setVideoSource } from "./player-manager.js";
 
 const supabase = createSupabaseBrowserClient();
 
@@ -38,6 +39,8 @@ const state = {
   hlsInstance: null,
   hlsLoaderPromise: null,
 };
+
+const playerManager = new PlayerManager(elements);
 
 function escapeHtml(value) {
   return String(value)
@@ -519,71 +522,7 @@ function renderServerButtons() {
 
 async function loadServer(server) {
   try {
-    const rawUrl = String(server.url || "").trim();
-    const url = normalizeServerUrl(rawUrl);
-    const sourceType = detectServerType(rawUrl);
-    const archiveIdentifier = sourceType === "archive" ? getArchiveIdentifier(url) : null;
-    const archiveVideoUrl = sourceType === "archive" ? await resolveArchiveVideoUrl(url) : null;
-    const useVideo = sourceType === "html5" || sourceType === "archive" || sourceType === "m3u8";
-    state.currentVideoSource = "";
-    state.videoFallbackUsed = false;
-
-    if (elements.sourceLink) {
-      elements.sourceLink.href = url || "#";
-      elements.sourceLink.hidden = !url;
-    }
-
-    if (elements.playbackMode) {
-      if (sourceType === "html5") {
-        elements.playbackMode.textContent = "Video nativo: puedes usar los controles de UltraPelis.";
-      } else if (sourceType === "m3u8") {
-        elements.playbackMode.textContent = "Stream HLS: usando el reproductor de UltraPelis si el navegador lo permite.";
-      } else if (archiveVideoUrl) {
-        elements.playbackMode.textContent = "Archive.org convertido a video directo: ahora usas los controles de UltraPelis.";
-      } else if (archiveIdentifier) {
-        elements.playbackMode.textContent = "Archive.org: intentando abrir el archivo de video directo.";
-      } else if (sourceType === "youtube") {
-        elements.playbackMode.textContent = "YouTube: usando la API oficial del proveedor.";
-      } else if (sourceType === "embed" || sourceType === "embedded-html") {
-        elements.playbackMode.textContent = "Embed externo: se usa el reproductor embebido del proveedor.";
-      } else if (sourceType === "archive") {
-        elements.playbackMode.textContent = "Reproductor externo de Archive.org: los controles dependen del proveedor.";
-      } else {
-        elements.playbackMode.textContent = "Embed externo: los controles dependen del reproductor original.";
-      }
-    }
-
-    if (sourceType === "youtube") {
-      elements.iframe.removeAttribute("src");
-      state.currentVideoSource = url;
-      await setYoutubeSource(url, server.nombre);
-    } else if (useVideo) {
-      elements.iframe.removeAttribute("src");
-      if (elements.youtube) elements.youtube.hidden = true;
-      const archivePreferredFiles = archiveVideoUrl
-        ? [new URL(archiveVideoUrl).pathname.split("/").pop()]
-        : [];
-      const archiveCandidates = archiveIdentifier
-        ? buildArchiveCandidateUrls(archiveIdentifier, archivePreferredFiles)
-        : [];
-      const sources = sourceType === "html5" || sourceType === "m3u8"
-        ? [url]
-        : archiveCandidates.length > 0
-          ? archiveCandidates
-          : [archiveVideoUrl || url];
-
-      state.currentVideoSource = sources[0] || "";
-
-      if (sourceType === "m3u8") {
-        const hlsLoaded = await setHtml5Source(sources, server.nombre, sourceType);
-        if (!hlsLoaded) return;
-      } else {
-        await setHtml5Source(sources, server.nombre, sourceType);
-      }
-    } else {
-      setIframeSource(url, server.nombre, sourceType);
-    }
-
+    await setVideoSource(playerManager, server);
     state.currentServer = server;
 
     // Update active state
@@ -592,30 +531,8 @@ async function loadServer(server) {
     });
   } catch (error) {
     console.error("loadServer error:", error);
-    const fallbackUrl = normalizeServerUrl(server.url || "");
-    setIframeSource(fallbackUrl, server.nombre, detectServerType(server.url || ""));
   }
 }
-
-elements.video.addEventListener("error", async () => {
-  if (state.videoFallbackUsed || !state.currentServer) return;
-  state.videoFallbackUsed = true;
-
-  const currentUrl = normalizeServerUrl(state.currentServer.url || "");
-  const archiveIdentifier = isArchiveUrl(currentUrl) ? getArchiveIdentifier(currentUrl) : null;
-
-  elements.video.pause();
-  elements.video.hidden = true;
-
-  if (archiveIdentifier) {
-    elements.playbackMode.textContent = "No se pudo abrir el video directo. Volviendo al reproductor externo de Archive.org.";
-    elements.iframe.hidden = false;
-    elements.iframe.src = currentUrl;
-    return;
-  }
-
-  elements.playbackMode.textContent = "No se pudo reproducir el video directo en este navegador.";
-});
 
 function renderError(message) {
   elements.root.hidden = true;

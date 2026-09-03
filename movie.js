@@ -523,55 +523,7 @@ function renderServerButtons() {
 
 async function loadServer(server) {
   try {
-    // TEST: Create a BRAND NEW iframe element for iframe-type servers
-    const rawUrl = String(server.url || "").trim();
-    const isEmbedType = /\/embed\//i.test(rawUrl) || /\/e\//i.test(rawUrl) || /\/v\//i.test(rawUrl) || /\/watch\//i.test(rawUrl) || /\/player\//i.test(rawUrl);
-    const isIframeType = /^https?:\/\//i.test(rawUrl) && !isEmbedType;
-    
-    console.log('[TEST] Server:', server.nombre);
-    console.log('[TEST] Raw URL:', rawUrl);
-    console.log('[TEST] isEmbedType:', isEmbedType);
-    console.log('[TEST] isIframeType:', isIframeType);
-    
-    if (isIframeType) {
-      // BYPASS PlayerManager - create NEW iframe from scratch
-      const playerFrame = document.querySelector('.player-frame');
-      if (playerFrame) {
-        // Hide existing players
-        if (elements.youtube) elements.youtube.hidden = true;
-        if (elements.video) elements.video.hidden = true;
-        if (elements.iframe) elements.iframe.hidden = true;
-        
-        // Create NEW iframe element (not reuse)
-        const newIframe = document.createElement('iframe');
-        newIframe.src = rawUrl;
-        newIframe.title = `Reproductor - ${server.nombre}`;
-        newIframe.allow = 'autoplay; fullscreen; picture-in-picture; encrypted-media';
-        newIframe.allowFullscreen = true;
-        newIframe.referrerPolicy = 'origin';  // KEY DIFFERENCE: origin vs no-referrer
-        newIframe.style.width = '100%';
-        newIframe.style.height = '100%';
-        newIframe.style.border = '0';
-        newIframe.style.display = 'block';
-        newIframe.id = 'test-new-iframe';
-        
-        console.log('[TEST] NEW IFRAME CREATED');
-        console.log('[TEST] IFRAME SRC:', newIframe.src);
-        console.log('[TEST] IFRAME OUTERHTML:', newIframe.outerHTML);
-        
-        // Insert into player-frame
-        playerFrame.appendChild(newIframe);
-        
-        elements.playbackMode.textContent = 'TEST: Nuevo iframe creado dinámicamente (referrerPolicy=origin)';
-        
-        // Still call PlayerManager for button state but don't let it control iframe
-        // setVideoSource will be skipped for this test
-      }
-    } else {
-      // Normal flow for embed/youtube/m3u8/html5
-      await setVideoSource(playerManager, server);
-    }
-    
+    await setVideoSource(playerManager, server);
     state.currentServer = server;
 
     // Update active state

@@ -10,6 +10,7 @@
     <meta name="supabase-anon-key" content="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptbXd1d2t6cGpnc2F0cGJ4aXZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4MTY4MzEsImV4cCI6MjA5NzM5MjgzMX0.knZ7wJ6YSm1-_BwlaQMV7GhS0O_Pn1cxuEIC1r6QeIE" />
     <link rel="icon" href="img/incono.png" />
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="custom-player.css" />
   </head>
   <body>
     <header class="site-header">
@@ -121,6 +122,25 @@
           </div>
         </section>
 
+        <section class="custom-player-test" aria-labelledby="custom-player-test-title" style="margin-top: clamp(20px, 4vw, 40px);">
+          <div class="section-header">
+            <div>
+              <p class="section-label">Prueba</p>
+              <h2 id="custom-player-test-title">Reproductor Personalizado (CustomPlayer)</h2>
+            </div>
+          </div>
+          <p style="color: var(--muted); margin-bottom: 16px; font-size: clamp(0.85rem, 1.6vw, 0.95rem);">
+            Reproductor HTML5 propio con soporte MP4, WebM, HLS y DASH. Controles personalizados, selector de calidad, velocidad, subtítulos y pantalla completa.
+          </p>
+          <div id="custom-player-container" style="width: 100%; max-width: 960px; margin: 0 auto;"></div>
+          <div style="margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px;">
+            <button class="secondary-button" id="test-mp4-btn" type="button">Probar MP4</button>
+            <button class="secondary-button" id="test-hls-btn" type="button">Probar HLS</button>
+            <button class="secondary-button" id="test-dash-btn" type="button">Probar DASH</button>
+            <button class="secondary-button" id="test-destroy-btn" type="button">Destruir</button>
+          </div>
+        </section>
+
         <section class="related-section" aria-labelledby="related-title">
           <div class="section-header">
             <div>
@@ -140,5 +160,52 @@
     </main>
 
     <script src="movie.js" type="module"></script>
+    <script type="module">
+      import { CustomPlayer } from './custom-player.js';
+      
+      const container = document.querySelector('#custom-player-container');
+      let customPlayer = null;
+      
+      const testSources = {
+        mp4: [
+          { url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4', type: 'video/mp4', quality: '720p' },
+          { url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4', type: 'video/mp4', quality: '1080p' }
+        ],
+        hls: [
+          { url: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8', type: 'application/vnd.apple.mpegurl', quality: 'Auto' },
+          { url: 'https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8', type: 'application/vnd.apple.mpegurl', quality: 'Auto' }
+        ],
+        dash: [
+          { url: 'https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd', type: 'application/dash+xml', quality: 'Auto' },
+          { url: 'https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.mpd', type: 'application/dash+xml', quality: 'Auto' }
+        ]
+      };
+      
+      async function loadPlayer(type) {
+        if (customPlayer) {
+          customPlayer.destroy();
+        }
+        customPlayer = await CustomPlayer.create({
+          container,
+          sources: testSources[type],
+          poster: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/BigBuckBunny.jpg',
+          autoplay: true
+        });
+      }
+      
+      document.querySelector('#test-mp4-btn')?.addEventListener('click', () => loadPlayer('mp4'));
+      document.querySelector('#test-hls-btn')?.addEventListener('click', () => loadPlayer('hls'));
+      document.querySelector('#test-dash-btn')?.addEventListener('click', () => loadPlayer('dash'));
+      document.querySelector('#test-destroy-btn')?.addEventListener('click', () => {
+        if (customPlayer) {
+          customPlayer.destroy();
+          customPlayer = null;
+          container.innerHTML = '';
+        }
+      });
+      
+      // Auto-load MP4 on page load
+      loadPlayer('mp4');
+    </script>
   </body>
 </html>

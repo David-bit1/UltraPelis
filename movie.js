@@ -11,6 +11,7 @@ const elements = {
   iframe: document.querySelector("#movie-iframe"),
   video: document.querySelector("#movie-video"),
   playbackMode: document.querySelector("#playback-mode"),
+  playbackNote: document.querySelector("#playback-note"),
   sourceLink: document.querySelector("#source-link"),
   poster: document.querySelector("#movie-poster"),
   backdropContainer: document.querySelector("#movie-backdrop-container"),

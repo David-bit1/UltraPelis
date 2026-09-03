@@ -366,6 +366,24 @@ main { padding-top: var(--header-h); }
   width: fit-content;
 }
 
+.playback-note--blocked {
+  border-color: rgba(255, 82, 82, 0.4);
+  background: rgba(255, 82, 82, 0.08);
+}
+.playback-note--blocked .playback-note-label {
+  color: #ffb9b9;
+}
+.playback-note--blocked .playback-source-link {
+  background: linear-gradient(135deg, #ff5252, #ff6b6b);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(255, 82, 82, 0.3);
+}
+.playback-note--blocked .playback-source-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(255, 82, 82, 0.4);
+}
+
 /* ===== SERVER SELECTOR ===== */
 .server-buttons-container { display: flex; flex-direction: column; gap: 6px; }
 .server-selector-label { color: var(--muted); font-size: clamp(0.78rem, 1.5vw, 0.88rem); margin: 0; }

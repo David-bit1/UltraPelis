@@ -73,7 +73,8 @@ function isYouTubeUrl(url) {
 }
 
 function isEmbedUrl(url) {
-  return /\/embed\//i.test(String(url || "").trim());
+  const u = String(url || "").trim();
+  return /\/embed\//i.test(u) || /\/e\//i.test(u) || /\/v\//i.test(u) || /\/watch\//i.test(u) || /\/player\//i.test(u);
 }
 
 function isArchiveUrl(url) {
@@ -805,7 +806,14 @@ class IframeAdapter extends BaseAdapter {
     elements.iframe.hidden = false;
     elements.iframe.src = context.url;
     elements.iframe.title = `Reproductor - ${context.server.nombre}`;
-    this.manager.setPlaybackMode("Iframe HTML completo: se muestra exactamente la fuente proporcionada.");
+    elements.iframe.onload = () => {
+      this.manager.setPlaybackMode("Iframe HTML completo: se muestra exactamente la fuente proporcionada.");
+      this.manager.elements.playbackNote?.classList?.remove("playback-note--blocked");
+    };
+    elements.iframe.onerror = () => {
+      this.manager.setPlaybackMode("El servidor bloquea la reproducción integrada. Usa el botón de abajo para abrir en nueva pestaña.");
+      this.manager.elements.playbackNote?.classList?.add("playback-note--blocked");
+    };
     this.log("create", "end", buildAdapterDetails(this, "create", context, {
       elementType: elements.iframe?.tagName || "IFRAME",
       result: "iframe"
@@ -912,7 +920,14 @@ class EmbedAdapter extends BaseAdapter {
     elements.iframe.hidden = false;
     elements.iframe.src = context.url;
     elements.iframe.title = `Reproductor - ${context.server.nombre}`;
-    this.manager.setPlaybackMode("Embed externo: se muestran los controles del proveedor.");
+    elements.iframe.onload = () => {
+      this.manager.setPlaybackMode("Embed externo: se muestran los controles del proveedor.");
+      this.manager.elements.playbackNote?.classList?.remove("playback-note--blocked");
+    };
+    elements.iframe.onerror = () => {
+      this.manager.setPlaybackMode("El servidor bloquea la reproducción integrada. Usa el botón de abajo para abrir en nueva pestaña.");
+      this.manager.elements.playbackNote?.classList?.add("playback-note--blocked");
+    };
     this.log("create", "end", buildAdapterDetails(this, "create", context, {
       elementType: elements.iframe?.tagName || "IFRAME",
       result: "embed"
@@ -1086,6 +1101,7 @@ export class PlayerManager {
     const context = await this.buildContext(server);
     this.currentContext = context;
     this.setSourceLink(context.url);
+    this.elements.playbackNote?.classList?.remove("playback-note--blocked");
 
     if (!context.url) {
       this.setPlaybackMode("No hay fuente de reproducción para este servidor.");

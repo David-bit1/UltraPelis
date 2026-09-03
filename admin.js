@@ -35,7 +35,7 @@ const elements = {
   tmdbStatus: document.querySelector("#tmdb-status"),
   tmdbSearchCard: document.querySelector("#tmdb-search-card"),
   tmdbPreviews: document.querySelector("#tmdb-previews"),
-  tmdbPosterImg: document.querySelector("#tmdb-poster-img"),
+  tmdbPosterImg: document.query.querySelector("#tmdb-poster-img"),
   tmdbPosterPlaceholder: document.querySelector("#tmdb-poster-placeholder"),
   tmdbBackdropPreview: document.querySelector("#tmdb-backdrop-preview"),
   tmdbBackdropImg: document.querySelector("#tmdb-backdrop-img"),
@@ -59,6 +59,22 @@ const elements = {
   serverOrden: document.querySelector("#server-orden"),
   subtituloOptions: document.querySelector("#subtitulo-options"),
   serversContainer: document.querySelector("#servers-container"),
+  profileCard: document.querySelector("#profile-card"),
+  profileStatus: document.querySelector("#profile-status"),
+  profileAvatar: document.querySelector("#profile-avatar"),
+  profileName: document.querySelector("#profile-name"),
+  profileEmail: document.querySelector("#profile-email"),
+  profileRole: document.querySelector("#profile-role"),
+  lastSignIn: document.querySelector("#last-sign-in"),
+  authProvider: document.querySelector("#auth-provider"),
+  userId: document.querySelector("#user-id"),
+  passwordForm: document.querySelector("#password-form"),
+  currentPassword: document.querySelector("#current-password"),
+  newPassword: document.querySelector("#new-password"),
+  confirmPassword: document.querySelector("#confirm-password"),
+  passwordStatus: document.querySelector("#password-status"),
+  refreshProfile: document.querySelector("#refresh-profile"),
+  forceLogout: document.querySelector("#force-logout"),
 };
 
 for (let i = 1; i <= 4; i++) {
@@ -208,9 +224,100 @@ async function signOut() {
 
 function updateAuthUI() {
   const si = !!state.session; elements.authStatus.textContent = si ? `Conectado como ${state.session.user.email}` : "Desconectado";
-  elements.authStatus.dataset.kind = si ? "success" : "info"; elements.logoutButton.hidden = !si; elements.tmdbSearchCard.hidden = !si;
+  elements.authStatus.dataset.kind = si ? "success" : "info"; elements.logoutButton.hidden = !si; elements.tmdbSearchCard.hidden = !si; elements.profileCard.hidden = !si;
   document.querySelectorAll("#movie-form input, #movie-form textarea, #movie-form select").forEach(f => f.disabled = !si);
   document.querySelectorAll("#movie-form .form-actions button").forEach(f => f.disabled = !si);
+  if (si) loadProfile();
+  else clearProfile();
+}
+
+function clearProfile() {
+  elements.profileName.textContent = "Administrador";
+  elements.profileEmail.textContent = "admin@ultrapelis.com";
+  elements.profileRole.textContent = "Super Admin";
+  elements.profileAvatar.textContent = "A";
+  elements.lastSignIn.textContent = "-";
+  elements.authProvider.textContent = "Email";
+  elements.userId.textContent = "-";
+  elements.profileStatus.textContent = "Desconectado";
+  elements.profileStatus.dataset.kind = "info";
+}
+
+async function loadProfile() {
+  if (!state.session) return;
+  const user = state.session.user;
+  elements.profileStatus.textContent = "Perfil cargado";
+  elements.profileStatus.dataset.kind = "success";
+  elements.profileEmail.textContent = user.email || "-";
+  elements.userId.textContent = user.id || "-";
+  elements.authProvider.textContent = user.app_metadata?.provider || "Email";
+  
+  const name = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split("@")[0] || "Administrador";
+  elements.profileName.textContent = name;
+  elements.profileAvatar.textContent = name.charAt(0).toUpperCase();
+  
+  const lastSignIn = user.last_sign_in_at ? new Date(user.last_sign_in_at).toLocaleString("es-ES") : "Nunca";
+  elements.lastSignIn.textContent = lastSignIn;
+  
+  elements.profileRole.textContent = user.role === "service_role" ? "Service Role" : "Admin";
+}
+
+async function changePassword() {
+  const current = elements.currentPassword.value;
+  const newPass = elements.newPassword.value;
+  const confirm = elements.confirmPassword.value;
+  
+  if (!current || !newPass || !confirm) {
+    showPasswordStatus("Completa todos los campos", "error");
+    return;
+  }
+  if (newPass.length < 6) {
+    showPasswordStatus("La nueva contraseña debe tener al menos 6 caracteres", "error");
+    return;
+  }
+  if (newPass !== confirm) {
+    showPasswordStatus("Las contraseñas no coinciden", "error");
+    return;
+  }
+  
+  try {
+    showPasswordStatus("Actualizando...", "info");
+    const { error } = await supabase.auth.updateUser({ password: newPass });
+    if (error) throw error;
+    showPasswordStatus("Contraseña actualizada correctamente", "success");
+    elements.passwordForm.reset();
+  } catch (e) {
+    showPasswordStatus(`Error: ${e.message}`, "error");
+  }
+}
+
+function showPasswordStatus(msg, kind) {
+  elements.passwordStatus.textContent = msg;
+  elements.passwordStatus.dataset.kind = kind;
+  elements.passwordStatus.className = `admin-note ${kind}`;
+}
+
+async function forceLogoutAll() {
+  if (!confirm("¿Cerrar sesión en TODOS los dispositivos? Tendrás que volver a iniciar sesión.")) return;
+  try {
+    const { error } = await supabase.auth.signOut({ scope: "global" });
+    if (error) throw error;
+    state.session = null;
+    updateAuthUI();
+    clearForm();
+    setStatus("Todas las sesiones cerradas.", "success");
+  } catch (e) {
+    setStatus(`Error: ${e.message}`, "error");
+  }
+}
+
+async function refreshProfileData() {
+  if (!state.session) return;
+  const { data } = await supabase.auth.getUser();
+  if (data.user) {
+    state.session.user = data.user;
+    loadProfile();
+  }
 }
 
 async function saveMovie(e) {

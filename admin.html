@@ -71,6 +71,77 @@
           <p class="admin-note">Solo administradores con credenciales válidas pueden acceder.</p>
         </div>
 
+        <div class="admin-card profile-card" id="profile-card" hidden>
+          <div class="section-header">
+            <div>
+              <p class="section-label">Perfil</p>
+              <h2>Mi cuenta</h2>
+            </div>
+            <p class="catalog-status" id="profile-status">Cargando...</p>
+          </div>
+
+          <div class="profile-info">
+            <div class="profile-avatar">
+              <div class="avatar-placeholder" id="profile-avatar">A</div>
+            </div>
+            <div class="profile-details">
+              <h3 id="profile-name">Administrador</h3>
+              <p id="profile-email">admin@ultrapelis.com</p>
+              <span class="profile-role" id="profile-role">Super Admin</span>
+            </div>
+          </div>
+
+          <div class="profile-sections">
+            <section class="profile-section">
+              <h4>Cambiar contraseña</h4>
+              <form id="password-form" class="admin-form">
+                <label class="field">
+                  <span>Contraseña actual</span>
+                  <input id="current-password" type="password" placeholder="Tu contraseña actual" required />
+                </label>
+                <label class="field">
+                  <span>Nueva contraseña</span>
+                  <input id="new-password" type="password" placeholder="Mínimo 6 caracteres" minlength="6" required />
+                </label>
+                <label class="field">
+                  <span>Confirmar nueva contraseña</span>
+                  <input id="confirm-password" type="password" placeholder="Repite la nueva contraseña" required />
+                </label>
+                <div class="form-actions">
+                  <button class="primary-button" type="submit">Actualizar contraseña</button>
+                </div>
+                <p class="admin-note" id="password-status"></p>
+              </form>
+            </section>
+
+            <section class="profile-section">
+              <h4>Información de sesión</h4>
+              <div class="session-info">
+                <div class="session-item">
+                  <span class="session-label">Último acceso</span>
+                  <span class="session-value" id="last-sign-in">-</span>
+                </div>
+                <div class="session-item">
+                  <span class="session-label">Proveedor</span>
+                  <span class="session-value" id="auth-provider">Email</span>
+                </div>
+                <div class="session-item">
+                  <span class="session-label">ID de usuario</span>
+                  <span class="session-value" id="user-id">-</span>
+                </div>
+              </div>
+            </section>
+
+            <section class="profile-section">
+              <h4>Acciones</h4>
+              <div class="profile-actions">
+                <button class="secondary-button" id="refresh-profile" type="button">Actualizar perfil</button>
+                <button class="danger-button" id="force-logout" type="button">Cerrar todas las sesiones</button>
+              </div>
+            </section>
+          </div>
+        </div>
+
         <div class="admin-tmdb-card" id="tmdb-search-card" hidden>
           <div class="section-header">
             <div>

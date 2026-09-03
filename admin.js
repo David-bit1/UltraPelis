@@ -390,7 +390,7 @@ function bindTableActions() { elements.moviesTable.addEventListener("click", asy
 
 function bindSearch() { let t; elements.adminSearch.addEventListener("input", () => { clearTimeout(t); t = window.setTimeout(async () => { state.search = elements.adminSearch.value.trim(); await refreshMovies(); }, 180); }); }
 
-function bindAuth() { elements.loginForm.addEventListener("submit", async (ev) => { try { setStatus("Iniciando sesión..."); await signIn(elements.loginEmail.value.trim(), elements.loginPassword.value); setStatus("Sesión iniciada.", "success"); elements.loginPassword.value = ""; } catch (e) { setStatus(`Error: ${e.message}`, "error"); } }); elements.logoutButton.addEventListener("click", async () => { await signOut(); clearForm(); setStatus("Sesión cerrada."); }); }
+function bindAuth() { elements.loginForm.addEventListener("submit", async (ev) => { try { setStatus("Iniciando sesión..."); await signIn(elements.loginEmail.value.trim(), elements.loginPassword.value); setStatus("Sesión iniciada.", "success"); elements.loginPassword.value = ""; } catch (e) { setStatus(`Error: ${e.message}`, "error"); } }); elements.logoutButton.addEventListener("click", async () => { await signOut(); clearForm(); setStatus("Sesión cerrada."); }); elements.passwordForm?.addEventListener("submit", (ev) => { ev.preventDefault(); changePassword(); }); elements.refreshProfile?.addEventListener("click", refreshProfileData); elements.forceLogout?.addEventListener("click", forceLogoutAll); }
 
 function bindForm() {
   elements.movieForm.addEventListener("submit", saveMovie); elements.cancelEdit.addEventListener("click", clearForm);
